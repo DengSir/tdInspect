@@ -1,0 +1,61 @@
+-- Modal.lua
+-- @Author : Dencer (tdaddon@163.com)
+-- @Link   : https://dengsir.github.io
+-- @Date   : 5/18/2020, 1:04:14 AM
+
+---@type ns
+local ns = select(2, ...)
+
+local UnitFactionGroup = UnitFactionGroup
+
+local Inspect = ns.Inspect
+
+local factionLogoTextures = {
+    ['Alliance'] = 'Interface\\Timer\\Alliance-Logo',
+    ['Horde'] = 'Interface\\Timer\\Horde-Logo',
+    ['Neutral'] = 'Interface\\Timer\\Panda-Logo',
+}
+
+---@type tdInspectModalFrame
+local ModalFrame = ns.Addon:NewClass('UI.ModalFrame', 'Frame')
+
+function ModalFrame:Constructor()
+    self.Modal = InspectModelFrame
+    self.Faction = InspectFaction
+
+    self.Faction:SetPoint('CENTER', InspectPaperDollFrame, 'CENTER', -10, 20)
+
+    self.Modal:SetParent(self)
+    self.Faction:SetParent(self)
+
+    self:Hide()
+    self:SetScript('OnShow', self.OnShow)
+end
+
+function ModalFrame:OnShow()
+    self:RegisterEvent('UNIT_MODEL_CHANGED', 'Update')
+    self:RegisterMessage('INSPECT_TARGET_CHANGED', 'Update')
+    self:Update()
+end
+
+function ModalFrame:OnHide()
+    self:UnregisterAllEvents()
+    self:UnregisterAllMessages()
+end
+
+function ModalFrame:Update()
+    local unit = Inspect.unit
+    if unit then
+        self.Modal:Show()
+
+        if self.Modal:SetUnit(unit) then
+            self.Modal:Show()
+            self.Faction:Hide()
+            return
+        end
+    end
+
+    self.Modal:Hide()
+    self.Faction:SetTexture(factionLogoTextures[UnitFactionGroup(unit or 'player')])
+    self.Faction:Show()
+end
