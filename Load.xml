@@ -4,8 +4,20 @@
     <Include file="Localization\Localization.xml" />
     <Script file="Api.lua" />
     <Script file="Addon.lua" />
+
+    <Script file="Data\DRUID.lua" />
+    <Script file="Data\HUNTER.lua" />
+    <Script file="Data\MAGE.lua" />
+    <Script file="Data\PALADIN.lua" />
+    <Script file="Data\PRIEST.lua" />
+    <Script file="Data\ROGUE.lua" />
+    <Script file="Data\SHAMAN.lua" />
+    <Script file="Data\WARLOCK.lua" />
+    <Script file="Data\WARRIOR.lua" />
+
     <Script file="Core\Inspect.lua" />
     <Script file="Core\Hook.lua" />
+    <Script file="Core\Talent.lua" />
 
     <Script file="UI\BaseItem.lua" />
     <Script file="UI\SlotItem.lua" />
@@ -14,4 +26,6 @@
     <Script file="UI\ModalFrame.lua" />
     <Script file="UI\PaperDoll.lua" />
     <Script file="UI\InspectFrame.lua" />
+    <Script file="UI\TalentFrame.lua" />
+    <Script file="UI\InspectTalent.lua" />
 </Ui>

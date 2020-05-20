@@ -9,6 +9,7 @@ local ns = select(2, ...)
 local ShowUIPanel = ShowUIPanel
 
 ns.UI = {}
+ns.Talents = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
 
 local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0', 'AceEvent-3.0')

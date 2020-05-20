@@ -50,6 +50,22 @@ end
 function Inspect:SetUnit(unit, name)
     self.unit = unit
     self.unitName = unit and ns.UnitName(unit) or ns.GetFullName(name)
+
+    INSPECTED_UNIT = unit
+    if InspectFrame then
+        InspectFrame.unit = unit
+    end
+end
+
+function Inspect:Clear()
+    ClearInspectPlayer()
+    self.unitName = nil
+    self.unit = nil
+
+    INSPECTED_UNIT = nil
+    if InspectFrame then
+        InspectFrame.unit = nil
+    end
 end
 
 function Inspect:GetItemLink(slot)
@@ -78,7 +94,7 @@ function Inspect:Query(unit, name)
 
     self:SetUnit(unit, name)
 
-    if unit and CanInspect(unit) and CheckInteractDistance(unit, 1) then
+    if unit and CheckInteractDistance(unit, 1) and CanInspect(unit) then
         NotifyInspect(unit)
     else
         self:SendCommMessage(ALA_PREFIX, '_q_equ', 'WHISPER', self.unitName)
@@ -96,13 +112,6 @@ end
 function Inspect:BuildCharacterDb(name)
     self.db[name] = self.db[name] or {}
     return self.db[name]
-end
-
-function Inspect:Clear()
-    self.unitName = nil
-    self.unit = nil
-
-    ClearInspectPlayer()
 end
 
 function Inspect:INSPECT_READY(_, guid)
