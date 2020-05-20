@@ -58,9 +58,35 @@ function TalentFrame:Constructor()
     self.arrowInsetX = 2
     self.arrowInsetY = 2
 
-    self.ArrowParent = CreateFrame('Frame', nil, self)
-    self.ArrowParent:SetAllPoints(true)
-    self.ArrowParent:SetFrameLevel(self:GetFrameLevel() + 100)
+    local xRatio, yRatio = 1.063, 1.065
+
+    local TopLeft = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+    TopLeft:SetPoint('TOPLEFT', 23, -77)
+    TopLeft:SetSize(256 * xRatio, 256 * yRatio)
+
+    local TopRight = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+    TopRight:SetPoint('TOPLEFT', TopLeft, 'TopRight')
+    TopRight:SetSize(64 * xRatio, 256 * yRatio)
+
+    local BottomLeft = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+    BottomLeft:SetPoint('TOPLEFT', TopLeft, 'BOTTOMLEFT')
+    BottomLeft:SetSize(256 * xRatio, 128 * yRatio)
+
+    local BottomRight = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+    BottomRight:SetPoint('TOPLEFT', TopLeft, 'BOTTOMRIGHT')
+    BottomRight:SetSize(64 * xRatio, 128 * yRatio)
+
+    local ArrowParent = CreateFrame('Frame', nil, self)
+    ArrowParent:SetAllPoints(true)
+    ArrowParent:SetFrameLevel(self:GetFrameLevel() + 100)
+
+    self.TopLeft = TopLeft
+    self.TopRight = TopRight
+    self.BottomLeft = BottomLeft
+    self.BottomRight = BottomRight
+    self.ArrowParent = ArrowParent
+
+    self:SetScript('OnShow', self.Update)
 
     for i = 1, MAX_NUM_TALENT_TIERS do
         self.branches[i] = {}
@@ -142,19 +168,11 @@ function TalentFrame:Update()
         -- temporary default for classes without talents poor guys
         base = 'Interface\\TalentFrame\\MageFire-'
     end
-    -- desaturate the background if this isn't the active talent group
-    -- local backgroundPiece = _G[talentFrameName .. 'BackgroundTopLeft']
-    -- backgroundPiece:SetTexture(base .. 'TopLeft')
-    -- SetDesaturation(backgroundPiece, not isActiveTalentGroup)
-    -- backgroundPiece = _G[talentFrameName .. 'BackgroundTopRight']
-    -- backgroundPiece:SetTexture(base .. 'TopRight')
-    -- SetDesaturation(backgroundPiece, not isActiveTalentGroup)
-    -- backgroundPiece = _G[talentFrameName .. 'BackgroundBottomLeft']
-    -- backgroundPiece:SetTexture(base .. 'BottomLeft')
-    -- SetDesaturation(backgroundPiece, not isActiveTalentGroup)
-    -- backgroundPiece = _G[talentFrameName .. 'BackgroundBottomRight']
-    -- backgroundPiece:SetTexture(base .. 'BottomRight')
-    -- SetDesaturation(backgroundPiece, not isActiveTalentGroup)
+
+    self.TopLeft:SetTexture(base .. 'TopLeft')
+    self.TopRight:SetTexture(base .. 'TopRight')
+    self.BottomLeft:SetTexture(base .. 'BottomLeft')
+    self.BottomRight:SetTexture(base .. 'BottomRight')
 
     local numTalents = ns.Talent:GetNumTalents(self.class, self.tabIndex)
     -- Just a reminder error if there are more talents than available buttons
@@ -401,6 +419,9 @@ function TalentFrame:Update()
             end
         end
     end
+
+    print(self.arrowIndex, self.textureIndex)
+
     -- Hide any unused branch textures
     for i = self:GetBranchTextureCount(), #self.brancheTextures do
         self.brancheTextures[i]:Hide()
@@ -419,6 +440,7 @@ end
 
 function TalentFrame:SetBranchTexture(tier, column, texCoords, xOffset, yOffset, xSize, ySize)
     local branchTexture = self:GetBranchTexture()
+    -- print(branchTexture)
     branchTexture:SetTexCoord(texCoords[1], texCoords[2], texCoords[3], texCoords[4])
     branchTexture:SetPoint('TOPLEFT', branchTexture:GetParent(), 'TOPLEFT', xOffset, yOffset)
     branchTexture:SetWidth(xSize or self.talentButtonSize or TALENT_BUTTON_SIZE_DEFAULT)
@@ -432,8 +454,8 @@ function TalentFrame:GetArrowTexture()
         texture:SetSize(37, 37)
         texture:SetTexture([[Interface\TalentFrame\UI-TalentArrows]])
         self.arrowTextures[self.arrowIndex] = texture
-        self.arrowIndex = self.arrowIndex + 1
     end
+    self.arrowIndex = self.arrowIndex + 1
     texture:Show()
     return texture
 end
@@ -441,12 +463,12 @@ end
 function TalentFrame:GetBranchTexture()
     local texture = self.brancheTextures[self.textureIndex]
     if not texture then
-        texture = self:CreateTexture(nil, 'BACKGROUND')
+        texture = self:CreateTexture(nil, 'ARTWORK')
         texture:SetSize(30, 30)
         texture:SetTexture([[Interface\TalentFrame\UI-TalentBranches]])
         self.brancheTextures[self.textureIndex] = texture
-        self.textureIndex = self.textureIndex + 1
     end
+    self.textureIndex = self.textureIndex + 1
     texture:Show()
     return texture
 end
@@ -653,4 +675,14 @@ function TalentFrame:ResetBranches()
             node.topArrow = 0
         end
     end
+end
+
+function TalentFrame:SetClass(class)
+    self.class = class
+    self:Update()
+end
+
+function TalentFrame:SetTalentTab(tabIndex)
+    self.tabIndex = tabIndex
+    self:Update()
 end

@@ -6,14 +6,17 @@
 ---@type ns
 local ns = select(2, ...)
 
+local TalentFrame = ns.UI.TalentFrame
+
 ---@type tdInspectInspectTalentFrame
-local InspectTalent = ns.Addon:NewClass('UI.InspectTalent', ns.UI.TalentFrame)
+local InspectTalent = ns.Addon:NewClass('UI.InspectTalent', TalentFrame)
 
 function InspectTalent:Constructor()
-    self.initialOffsetX = 90
+    self.initialOffsetX = 92
     self.initialOffsetY = 90
     self.Tabs = {}
     self.selectedTab = 1
+    self.class = 'PALADIN'
 
     self:AddTab('Tab1')
     self:AddTab('Tab2')
@@ -22,6 +25,7 @@ end
 
 local function TabOnClick(self)
     PanelTemplates_SetTab(self:GetParent(), self:GetID())
+    self:GetParent():SetTalentTab(self:GetID())
 end
 
 function InspectTalent:AddTab(text)
@@ -42,4 +46,13 @@ function InspectTalent:AddTab(text)
     PanelTemplates_TabResize(tab)
     PanelTemplates_SetNumTabs(self, id)
     PanelTemplates_UpdateTabs(self)
+end
+
+function InspectTalent:Update()
+    TalentFrame.Update(self)
+
+    for i = 1, 3 do
+        local name = ns.Talent:GetTabInfo(self.class, i)
+        self.Tabs[i]:SetText(name)
+    end
 end
