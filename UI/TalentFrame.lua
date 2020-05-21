@@ -106,65 +106,13 @@ local function TalentOnEnter(button)
     button:GetParent():ShowTooltip(button)
 end
 
-local function addline(line, color, split)
-    GameTooltip:AddLine(line, color and color.r, color and color.g, color and color.b, split)
-end
-
-local function gettipline(tip, tipValues, rank)
-    -- ─── CHECK FOR MISSING TOOLTIPS OR RANKS ────────────────────────────────────────
-    -- TipValues doesn't exist. Maybe tip was called using data straight from the WoW client?
-    if not tipValues then
-        return tip -- If we have no data on what to do with ranks, just return the tooltip.
-        -- This might be unformatted,
-        -- or it might be the rank 1 tooltip extracted from the client without parsing - we don't know.
-        -- tipRank = {} --this would yield no arguments for format, to make %% -> %. Dangerous if single % exists.
-
-        -- Format values for requested rank are missing.
-        -- Three cases: Talented_Data is incorrect; called rank is incorrect; talent only has one rank.
-    elseif not tipValues[rank] then
-        if rank == 1 then
-            tipRank = {} -- It is likely this talent has a single rank -> no formatting needed
-        else
-            self:Print(string.format('Error: tooltip found for "%s" but rank %d is missing. Size of rank array: %d. %s',
-                                     tip, rank, #tipValues, 'Yielding rank 1 instead.'))
-            tipRank = tipValues[1]
-        end
-
-        -- Rank requested for exists and all is well
-    else
-        tipRank = tipValues[rank]
-    end
-
-    return string.format(tip, unpack(tipRank))
-end
-
-local function addtipline(tip)
-    local color = HIGHLIGHT_FONT_COLOR
-    tip = tip or ''
-    if type(tip) == 'string' then
-        addline(tip, NORMAL_FONT_COLOR, true)
-    else
-        for _, i in ipairs(tip) do
-            if (_ == #tip) then
-                color = NORMAL_FONT_COLOR
-            end
-            if i.right then
-                GameTooltip:AddDoubleLine(i.left, i.right, color.r, color.g, color.b, color.r, color.g, color.b)
-            else
-                addline(i.left, color, true)
-            end
-        end
-    end
-end
-
 function TalentFrame:ShowTooltip(button)
-    GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
-
     local id = button:GetID()
     local name, _, row, _, maxRank, prereqs, rank = self.talent:GetTalentInfo(self.tabIndex, id)
     local spells = self.talent:GetTalentTips(self.tabIndex, id)
     local spell = spells[rank == 0 and 1 or rank]
 
+    GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
     GameTooltip:SetText(name, 1, 1, 1)
     GameTooltip:AddLine(TOOLTIP_TALENT_RANK:format(rank, maxRank), 1, 1, 1)
 
@@ -180,33 +128,6 @@ function TalentFrame:ShowTooltip(button)
     elseif summary == false then
         GameTooltip:SetSpellByID(spell)
     end
-
-    -- GameTooltip:SetSpellByID(spells[rank == 0 and 1 or rank])
-
-    -- GameTooltip:SetText(name, 1, 1, 1)
-    -- addline(TOOLTIP_TALENT_RANK:format(rank, ranks), HIGHLIGHT_FONT_COLOR)
-
-    -- if prereqs then
-    --     -- body...
-    -- end
-
-    -- if row >= 1 and select(3, self.talent:GetTabInfo(self.tabIndex)) < row then
-    --     -- body...
-    -- end
-
-    -- if rank > 0 then
-    --     -- addtipline(info.tips)
-    --     addtipline(gettipline(tips, tipValues, rank))
-    -- end
-    -- if rank < ranks then
-    --     if rank > 0 then
-    --         addline(' ')
-    --         addline(TOOLTIP_TALENT_NEXT_RANK, HIGHLIGHT_FONT_COLOR)
-    --     end
-    --     -- addtipline(info.tips)
-    --     -- addtipline(self:GetTalentDesc(class, tab, index, rank + 1))
-    --     addtipline(gettipline(tips, tipValues, rank + 1))
-    -- end
 
     GameTooltip:Show()
 end

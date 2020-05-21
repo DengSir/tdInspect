@@ -23,10 +23,6 @@ function Addon:OnInitialize()
         for _, tab in ipairs(tabs) do
             for _, talent in ipairs(tab.talents) do
                 talent.name, _, talent.icon = GetSpellInfo(talent.ranks[1])
-
-                for _, id in ipairs(talent.ranks) do
-                    ns.GetSpellSummary(id)
-                end
             end
         end
     end

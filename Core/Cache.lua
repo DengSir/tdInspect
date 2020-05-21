@@ -28,22 +28,17 @@ local function Build(id)
         tip:SetSpellByID(id)
 
         local num = tip:NumLines()
-        local done = num > 2
-
-        if done then
-            cache[id] = false
+        if num <= 2 then
+            return
         end
+
+        cache[id] = false
 
         for i = 1, num do
             if lcache[i]:GetText() == SPELL_PASSIVE then
-                if done then
-                    cache[id] = lcache[num]:GetText()
-                end
+                cache[id] = lcache[num]:GetText()
+                break
             end
-        end
-
-        if not done then
-            print(id)
         end
     end
     return cache[id]
