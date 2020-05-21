@@ -43,10 +43,6 @@ function Inspect:OnEnable()
     self:RegisterComm(ALA_PREFIX, 'OnAlaCommand')
 end
 
-function Inspect:GetUnitName()
-    return self.unitName
-end
-
 function Inspect:SetUnit(unit, name)
     self.unit = unit
     self.unitName = unit and ns.UnitName(unit) or ns.GetFullName(name)
@@ -82,6 +78,24 @@ function Inspect:GetItemLink(slot)
     return link
 end
 
+function Inspect:GetUnitClass()
+    if self.unit then
+        return UnitClassBase(self.unit)
+    else
+        local db = self.db[self.unitName]
+        if db then
+            return db.class
+        end
+    end
+end
+
+function Inspect:GetUnitTalent()
+    local db = self.db[self.unitName]
+    if db then
+        return db.talent
+    end
+end
+
 function Inspect:GetLastUpdate()
     local db = self.db[self.unitName]
     return db and db.timestamp
@@ -94,12 +108,13 @@ function Inspect:Query(unit, name)
 
     self:SetUnit(unit, name)
 
+    self:SendCommMessage(ALA_PREFIX, '_q_tal', 'WHISPER', self.unitName)
+
     if unit and CheckInteractDistance(unit, 1) and CanInspect(unit) then
         NotifyInspect(unit)
     else
         self:SendCommMessage(ALA_PREFIX, '_q_equ', 'WHISPER', self.unitName)
     end
-
     self:CheckQuery()
 end
 
@@ -168,7 +183,18 @@ function Inspect:OnAlaCommand(_, msg, channel, sender)
         self:SendMessage('INSPECT_READY', nil, name)
     elseif cmd == '_r_tal' then
         local code = msg:sub(ALA_CMD_LEN + 1)
-        print(code)
+        code = strsplit('#', code)
+
+        local classFileName, data, level = ns.Ala:Decode(code)
+
+        local name = ns.GetFullName(sender)
+        local db = self:BuildCharacterDb(name)
+
+        db.class = classFileName
+        db.talent = data
+        db.level = level
+
+        self:SendMessage('INSPECT_TALENT_READY', nil, name)
     end
 end
 

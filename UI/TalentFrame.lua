@@ -42,8 +42,7 @@ local TALENT_ARROW_TEXTURECOORDS = {
 }
 
 function TalentFrame:Constructor()
-    self.class = 'ROGUE'
-    self.tabIndex = 3
+    self.tabIndex = 1
 
     self.branches = {}
     self.buttons = {}
@@ -53,10 +52,10 @@ function TalentFrame:Constructor()
     self.talentButtonSize = 37
     self.initialOffsetX = 0
     self.initialOffsetY = 0
-    self.buttonSpacingX = 48
-    self.buttonSpacingY = 48
+    self.buttonSpacingX = 0
+    self.buttonSpacingY = 0
     self.arrowInsetX = 2
-    self.arrowInsetY = 2
+    self.arrowInsetY = -2
 
     local xRatio, yRatio = 1.063, 1.065
 
@@ -86,8 +85,6 @@ function TalentFrame:Constructor()
     self.BottomRight = BottomRight
     self.ArrowParent = ArrowParent
 
-    self:SetScript('OnShow', self.Update)
-
     for i = 1, MAX_NUM_TALENT_TIERS do
         self.branches[i] = {}
         for j = 1, NUM_TALENT_COLUMNS do
@@ -105,29 +102,120 @@ function TalentFrame:Constructor()
     end
 end
 
+local function TalentOnEnter(button)
+    button:GetParent():ShowTooltip(button)
+end
+
+local function addline(line, color, split)
+    GameTooltip:AddLine(line, color and color.r, color and color.g, color and color.b, split)
+end
+
+local function gettipline(tip, tipValues, rank)
+    -- ─── CHECK FOR MISSING TOOLTIPS OR RANKS ────────────────────────────────────────
+    -- TipValues doesn't exist. Maybe tip was called using data straight from the WoW client?
+    if not tipValues then
+        return tip -- If we have no data on what to do with ranks, just return the tooltip.
+        -- This might be unformatted,
+        -- or it might be the rank 1 tooltip extracted from the client without parsing - we don't know.
+        -- tipRank = {} --this would yield no arguments for format, to make %% -> %. Dangerous if single % exists.
+
+        -- Format values for requested rank are missing.
+        -- Three cases: Talented_Data is incorrect; called rank is incorrect; talent only has one rank.
+    elseif not tipValues[rank] then
+        if rank == 1 then
+            tipRank = {} -- It is likely this talent has a single rank -> no formatting needed
+        else
+            self:Print(string.format('Error: tooltip found for "%s" but rank %d is missing. Size of rank array: %d. %s',
+                                     tip, rank, #tipValues, 'Yielding rank 1 instead.'))
+            tipRank = tipValues[1]
+        end
+
+        -- Rank requested for exists and all is well
+    else
+        tipRank = tipValues[rank]
+    end
+
+    return string.format(tip, unpack(tipRank))
+end
+
+local function addtipline(tip)
+    local color = HIGHLIGHT_FONT_COLOR
+    tip = tip or ''
+    if type(tip) == 'string' then
+        addline(tip, NORMAL_FONT_COLOR, true)
+    else
+        for _, i in ipairs(tip) do
+            if (_ == #tip) then
+                color = NORMAL_FONT_COLOR
+            end
+            if i.right then
+                GameTooltip:AddDoubleLine(i.left, i.right, color.r, color.g, color.b, color.r, color.g, color.b)
+            else
+                addline(i.left, color, true)
+            end
+        end
+    end
+end
+
+function TalentFrame:ShowTooltip(button)
+    GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
+
+    local id = button:GetID()
+    local name, _, row, _, ranks, prereqs, rank = self.talent:GetTalentInfo(self.tabIndex, id)
+    local spells = self.talent:GetTalentTips(self.tabIndex, id)
+
+    GameTooltip:SetSpellByID(spells[rank == 0 and 1 or rank])
+
+    -- GameTooltip:SetText(name, 1, 1, 1)
+    -- addline(TOOLTIP_TALENT_RANK:format(rank, ranks), HIGHLIGHT_FONT_COLOR)
+
+    -- if prereqs then
+    --     -- body...
+    -- end
+
+    -- if row >= 1 and select(3, self.talent:GetTabInfo(self.tabIndex)) < row then
+    --     -- body...
+    -- end
+
+    -- if rank > 0 then
+    --     -- addtipline(info.tips)
+    --     addtipline(gettipline(tips, tipValues, rank))
+    -- end
+    -- if rank < ranks then
+    --     if rank > 0 then
+    --         addline(' ')
+    --         addline(TOOLTIP_TALENT_NEXT_RANK, HIGHLIGHT_FONT_COLOR)
+    --     end
+    --     -- addtipline(info.tips)
+    --     -- addtipline(self:GetTalentDesc(class, tab, index, rank + 1))
+    --     addtipline(gettipline(tips, tipValues, rank + 1))
+    -- end
+
+    GameTooltip:Show()
+end
+
 function TalentFrame:GetTalentButton(i)
     if not self.buttons[i] then
         local button = CreateFrame('Button', nil, self, 'ItemButtonTemplate')
         button:SetSize(self.talentButtonSize, self.talentButtonSize)
+        button:SetID(i)
+        button:SetScript('OnEnter', TalentOnEnter)
+        button:SetScript('OnLeave', GameTooltip_Hide)
 
-        local Slot = button:CreateTexture(nil, 'ARTWORK', 'Talent-SingleBorder')
-        Slot:SetPoint('TOPLEFT', -1, 0)
+        local Slot = button:CreateTexture(nil, 'BACKGROUND')
+        Slot:SetSize(64, 64)
+        Slot:SetPoint('CENTER', 0, -1)
+        Slot:SetTexture([[Interface\Buttons\UI-EmptySlot-White]])
 
-        local SlotShadow = button:CreateTexture(nil, 'ARTWORK', 'Talent-SingleBorder-Shadow')
-        SlotShadow:SetPoint('TOPLEFT', -4, 3)
-
-        local GoldBorder = button:CreateTexture(nil, 'ARTWORK', 'Talent-GoldMedal-Border')
-        GoldBorder:SetPoint('TOPLEFT', -7, 7)
-
-        local RankBorder = button:CreateTexture(nil, 'OVERLAY', 'Talent-PointBg')
-        RankBorder:SetPoint('CENTER', self, 'BOTTOMRIGHT', -3, 3)
+        local RankBorder = button:CreateTexture(nil, 'OVERLAY')
+        RankBorder:SetSize(32, 32)
+        RankBorder:SetPoint('CENTER', button, 'BOTTOMRIGHT')
+        RankBorder:SetTexture([[Interface\TalentFrame\TalentFrame-RankBorder]])
 
         local Rank = button:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
         Rank:SetPoint('CENTER', RankBorder, 'CENTER')
 
         button.Slot = Slot
-        button.SlotShadow = SlotShadow
-        button.GoldBorder = GoldBorder
         button.RankBorder = RankBorder
         button.Rank = Rank
 
@@ -136,32 +224,30 @@ function TalentFrame:GetTalentButton(i)
     return self.buttons[i]
 end
 
+function TalentFrame:Refresh()
+    self:SetScript('OnUpdate', self.OnUpdate)
+end
+
+function TalentFrame:OnUpdate()
+    self:SetScript('OnUpdate', nil)
+    self:Update()
+end
+
 function TalentFrame:Update()
-    -- local preview = GetCVarBool('previewTalentsOption')
-    local preview = false
+    if not self.talent then
+        return
+    end
+
     local talentButtonSize = self.talentButtonSize or TALENT_BUTTON_SIZE_DEFAULT
     local initialOffsetX = self.initialOffsetX or INITIAL_TALENT_OFFSET_X_DEFAULT
     local initialOffsetY = self.initialOffsetY or INITIAL_TALENT_OFFSET_Y_DEFAULT
     local buttonSpacingX = self.buttonSpacingX or (2 * talentButtonSize - 1)
     local buttonSpacingY = self.buttonSpacingY or (2 * talentButtonSize - 1)
 
-    -- get active talent group
-    local isActiveTalentGroup
-    if self.inspect then
-        -- even though we have inspection data for more than one talent group, we're only showing one for now
-        isActiveTalentGroup = true
-    else
-        -- isActiveTalentGroup = self.talentGroup == GetActiveTalentGroup(self.inspect, self.pet)
-        isActiveTalentGroup = true
-    end
     -- Setup Frame
     local base
-    -- local id, name, description, icon, pointsSpent, background, previewPointsSpent, isUnlocked =
-    --     GetTalentTabInfo(selectedTab, self.inspect, self.pet, self.talentGroup)
-    local isUnlocked = false
-    local pointsSpent = 0
-    local previewPointsSpent = 0
-    local name, background = ns.Talent:GetTabInfo(self.class, self.tabIndex)
+    local isUnlocked = true
+    local name, background, pointsSpent = self.talent:GetTabInfo(self.tabIndex)
     if name then
         base = 'Interface\\TalentFrame\\' .. background .. '-'
     else
@@ -174,7 +260,7 @@ function TalentFrame:Update()
     self.BottomLeft:SetTexture(base .. 'BottomLeft')
     self.BottomRight:SetTexture(base .. 'BottomRight')
 
-    local numTalents = ns.Talent:GetNumTalents(self.class, self.tabIndex)
+    local numTalents = self.talent:GetNumTalents(self.tabIndex)
     -- Just a reminder error if there are more talents than available buttons
     if numTalents > MAX_NUM_TALENTS then
         message('Too many talents in talent frame!')
@@ -182,13 +268,6 @@ function TalentFrame:Update()
 
     -- get unspent talent points
     local unspentPoints = self:GetUnspentTalentPoints()
-    -- compute tab points spent if any
-    local tabPointsSpent
-    if self.pointsSpent and self.previewPointsSpent then
-        tabPointsSpent = self.pointsSpent + self.previewPointsSpent
-    else
-        tabPointsSpent = pointsSpent + previewPointsSpent
-    end
 
     self:ResetBranches()
     local forceDesaturated, tierUnlocked
@@ -196,48 +275,22 @@ function TalentFrame:Update()
         local button = self:GetTalentButton(i)
         if i <= numTalents then
             -- Set the button info
-            -- local name, iconTexture, tier, column, rank, maxRank, meetsPrereq, previewRank, meetsPreviewPrereq,
-            --       isExceptional, goldBorder = GetTalentInfo(selectedTab, i, self.inspect, self.pet, self.talentGroup)
-
-            local info = ns.Talent:GetTalentInfo(self.class, self.tabIndex, i)
-            local name = info.name
-            local iconTexture = info.icon
-            local tier = info.row
-            local column = info.column
-            local maxRank = info.ranks
-            local goldBorder = false
-            local isExceptional = false
-            local previewRank = 0
-            local rank = 0
-            local meetsPreviewPrereq = not not info.prereqs
-            local meetsPrereq = not not info.prereqs
-
-            -- Temp hack - For now, we are just ignoring the "goldBorder" flag and putting the gold border on any "exceptional" talents
-            goldBorder = isExceptional
-
+            local name, iconTexture, tier, column, maxRank, prereqs, rank = self.talent:GetTalentInfo(self.tabIndex, i)
             if name and tier <= MAX_NUM_TALENT_TIERS then
-                local displayRank
-                if preview then
-                    displayRank = previewRank
-                else
-                    displayRank = rank
-                end
-
-                button.Rank:SetText(displayRank)
+                button.Rank:SetText(rank)
                 self:SetButtonLocation(button, tier, column, talentButtonSize, initialOffsetX, initialOffsetY,
                                        buttonSpacingX, buttonSpacingY)
                 self.branches[tier][column].id = button:GetID()
 
                 -- If player has no talent points or this is the inactive talent group then show only talents with points in them
-                if (unspentPoints <= 0 or not isActiveTalentGroup) and displayRank == 0 then
+                if unspentPoints <= 0 and rank == 0 then
                     forceDesaturated = 1
                 else
                     forceDesaturated = nil
                 end
 
                 -- is this talent's tier unlocked?
-                if isUnlocked and (tier - 1) * (self.pet and PET_TALENTS_PER_TIER or PLAYER_TALENTS_PER_TIER) <=
-                    tabPointsSpent then
+                if isUnlocked and (tier - 1) * PLAYER_TALENTS_PER_TIER <= pointsSpent then
                     tierUnlocked = 1
                 else
                     tierUnlocked = nil
@@ -245,78 +298,23 @@ function TalentFrame:Update()
 
                 SetItemButtonTexture(button, iconTexture)
 
-                if goldBorder and button.GoldBorder then
-                    button.GoldBorder:Show()
-                    button.Slot:Hide()
-                    button.SlotShadow:Hide()
-                else
-                    if button.GoldBorder then
-                        button.GoldBorder:Hide()
-                    end
-                    button.Slot:Show()
-                    button.SlotShadow:Show()
-                end
-
-                -- Talent must meet prereqs or the player must have no points to spend
-                -- local prereqsSet = self:SetPrereqs(tier, column, forceDesaturated, tierUnlocked, preview,
-                --                                    GetTalentPrereqs(selectedTab, i, self.inspect, self.pet,
-                --                                                     self.talentGroup))
-                local prereqsSet = self:SetPrereqs(tier, column, forceDesaturated, tierUnlocked, preview, info.prereqs)
-                if prereqsSet and ((preview and meetsPreviewPrereq) or (not preview and meetsPrereq)) then
+                local prereqsSet = self:SetPrereqs(tier, column, forceDesaturated, tierUnlocked, prereqs)
+                if prereqsSet then
                     SetItemButtonDesaturated(button, nil)
-                    button:SetPushedTexture('Interface\\Buttons\\UI-Quickslot-Depress')
-                    button:SetHighlightTexture('Interface\\Buttons\\ButtonHilight-Square', 'ADD')
                     button.RankBorder:Show()
                     button.RankBorder:SetVertexColor(1, 1, 1)
                     button.Rank:Show()
 
-                    button.GoldBorder:SetDesaturated(nil)
-
-                    if displayRank < maxRank then
+                    if rank < maxRank then
                         -- Rank is green if not maxed out
                         button.Rank:SetTextColor(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
-
-                        if (button.RankBorderGreen) then
-                            button.RankBorder:Hide()
-                            button.RankBorderGreen:Show()
-                            button.Slot:SetVertexColor(1.0, 0.82, 0)
-                        else
-                            button.Slot:SetVertexColor(0.1, 1.0, 0.1)
-                        end
-
-                        if button.GlowBorder then
-                            if (unspentPoints > 0 and not goldBorder) then
-                                button.GlowBorder:Show()
-                            else
-                                button.GlowBorder:Hide()
-                            end
-                        end
-
-                        if button.GoldBorderGlow then
-                            if (unspentPoints > 0 and goldBorder) then
-                                button.GoldBorderGlow:Show()
-                            else
-                                button.GoldBorderGlow:Hide()
-                            end
-                        end
+                        button.Slot:SetVertexColor(0.1, 1.0, 0.1)
                     else
                         button.Slot:SetVertexColor(1.0, 0.82, 0)
                         button.Rank:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
-                        if (button.GlowBorder) then
-                            button.GlowBorder:Hide()
-                        end
-                        if (button.GoldBorderGlow) then
-                            button.GoldBorderGlow:Hide()
-                        end
-                        if (button.RankBorderGreen) then
-                            button.RankBorderGreen:Hide()
-                        end
                     end
                 else
                     SetItemButtonDesaturated(button, 1)
-                    button:SetPushedTexture(nil)
-                    button:SetHighlightTexture(nil)
-                    button.GoldBorder:SetDesaturated(1)
                     button.Slot:SetVertexColor(0.5, 0.5, 0.5)
                     if rank == 0 then
                         button.RankBorder:Hide()
@@ -324,19 +322,10 @@ function TalentFrame:Update()
                     else
                         button.RankBorder:SetVertexColor(0.5, 0.5, 0.5)
                         button.Rank:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
-                    end
-                    if button.GlowBorder then
-                        button.GlowBorder:Hide()
-                    end
-                    if button.GoldBorderGlow then
-                        button.GoldBorderGlow:Hide()
-                    end
-                    if button.RankBorderGreen then
-                        button.RankBorderGreen:Hide()
+                        button.RankBorder:Show()
+                        button.Rank:Show()
                     end
                 end
-
-                self.branches[tier][column].goldBorder = goldBorder
 
                 button:Show()
             else
@@ -379,10 +368,6 @@ function TalentFrame:Update()
             if node.id then
                 -- There is a talent in this slot; draw arrows
                 local arrowInsetX, arrowInsetY = (self.arrowInsetX or 0), (self.arrowInsetY or 0)
-                if node.goldBorder then
-                    arrowInsetX = arrowInsetX - TALENT_GOLD_BORDER_WIDTH
-                    arrowInsetY = arrowInsetY - TALENT_GOLD_BORDER_WIDTH
-                end
 
                 if node.rightArrow ~= 0 then
                     self:SetArrowTexture(i, j, TALENT_ARROW_TEXTURECOORDS['right'][node.rightArrow],
@@ -420,8 +405,6 @@ function TalentFrame:Update()
         end
     end
 
-    print(self.arrowIndex, self.textureIndex)
-
     -- Hide any unused branch textures
     for i = self:GetBranchTextureCount(), #self.brancheTextures do
         self.brancheTextures[i]:Hide()
@@ -440,7 +423,6 @@ end
 
 function TalentFrame:SetBranchTexture(tier, column, texCoords, xOffset, yOffset, xSize, ySize)
     local branchTexture = self:GetBranchTexture()
-    -- print(branchTexture)
     branchTexture:SetTexCoord(texCoords[1], texCoords[2], texCoords[3], texCoords[4])
     branchTexture:SetPoint('TOPLEFT', branchTexture:GetParent(), 'TOPLEFT', xOffset, yOffset)
     branchTexture:SetWidth(xSize or self.talentButtonSize or TALENT_BUTTON_SIZE_DEFAULT)
@@ -490,25 +472,18 @@ function TalentFrame:GetBranchTextureCount()
 end
 
 ---@param prereqs tdInspectTalentPrereqs[]
-function TalentFrame:SetPrereqs(buttonTier, buttonColumn, forceDesaturated, tierUnlocked, preview, prereqs)
+function TalentFrame:SetPrereqs(buttonTier, buttonColumn, forceDesaturated, tierUnlocked, prereqs)
     local requirementsMet = tierUnlocked and not forceDesaturated
 
     if prereqs then
         for i, v in ipairs(prereqs) do
-            local tier, column, isLearnable, isPreviewLearnable = v.row, v.column, false, false
-            if forceDesaturated or (preview and not isPreviewLearnable) or (not preview and not isLearnable) then
+            local tier, column = v.row, v.column
+            if forceDesaturated then
                 requirementsMet = nil
             end
             self:DrawLines(buttonTier, buttonColumn, tier, column, requirementsMet)
         end
     end
-    -- for i = 1, select('#', ...), 4 do
-    --     local tier, column, isLearnable, isPreviewLearnable = select(i, ...)
-    --     if (forceDesaturated or (preview and not isPreviewLearnable) or (not preview and not isLearnable)) then
-    --         requirementsMet = nil
-    --     end
-    --     self:DrawLines(buttonTier, buttonColumn, tier, column, requirementsMet)
-    -- end
     return requirementsMet
 end
 
@@ -677,12 +652,12 @@ function TalentFrame:ResetBranches()
     end
 end
 
-function TalentFrame:SetClass(class)
-    self.class = class
-    self:Update()
-end
-
 function TalentFrame:SetTalentTab(tabIndex)
     self.tabIndex = tabIndex
-    self:Update()
+    self:Refresh()
+end
+
+function TalentFrame:SetTalent(class, data)
+    self.talent = ns.Talent:New(class, data)
+    self:Refresh()
 end

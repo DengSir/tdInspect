@@ -75,3 +75,5 @@
 ---@field rightArrow number
 ---@field leftArrow number
 ---@field topArrow number
+
+---@class tdInspectTalent

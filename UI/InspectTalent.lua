@@ -12,15 +12,18 @@ local TalentFrame = ns.UI.TalentFrame
 local InspectTalent = ns.Addon:NewClass('UI.InspectTalent', TalentFrame)
 
 function InspectTalent:Constructor()
-    self.initialOffsetX = 92
+    self.initialOffsetX = 86
     self.initialOffsetY = 90
+    self.buttonSpacingX = 52
+    self.buttonSpacingY = 48
     self.Tabs = {}
     self.selectedTab = 1
-    self.class = 'PALADIN'
 
     self:AddTab('Tab1')
     self:AddTab('Tab2')
     self:AddTab('Tab3')
+
+    self:SetScript('OnShow', self.OnShow)
 end
 
 local function TabOnClick(self)
@@ -36,23 +39,31 @@ function InspectTalent:AddTab(text)
     tab:SetScript('OnClick', TabOnClick)
 
     if id == 1 then
-        tab:SetPoint('TOPLEFT', 78, -41)
+        tab:SetPoint('TOPLEFT', 70, -41)
     else
         tab:SetPoint('LEFT', self.Tabs[id - 1], 'RIGHT')
     end
 
     self.Tabs[id] = tab
 
-    PanelTemplates_TabResize(tab)
     PanelTemplates_SetNumTabs(self, id)
     PanelTemplates_UpdateTabs(self)
 end
 
-function InspectTalent:Update()
-    TalentFrame.Update(self)
+function InspectTalent:OnShow()
+    local class = ns.Inspect:GetUnitClass()
+    local talent = ns.Inspect:GetUnitTalent()
+
+    self:SetTalent(class, talent)
 
     for i = 1, 3 do
-        local name = ns.Talent:GetTabInfo(self.class, i)
-        self.Tabs[i]:SetText(name)
+        local name = self.talent:GetTabInfo(i)
+        if name then
+            local tab = self.Tabs[i]
+            tab:SetText(name)
+            PanelTemplates_TabResize(tab, 0, nil, nil, 55)
+        end
     end
+
+    self:Refresh()
 end

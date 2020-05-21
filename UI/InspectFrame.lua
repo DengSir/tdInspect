@@ -49,7 +49,9 @@ function InspectFrame:OnShow()
     self:RegisterEvent('UNIT_PORTRAIT_UPDATE')
     self:RegisterEvent('PORTRAITS_UPDATED', 'UpdatePortrait')
     self:RegisterMessage('INSPECT_TARGET_CHANGED', 'Update')
+    self:RegisterMessage('INSPECT_TALENT_READY', 'UpdateTabs')
     self:Update()
+    self:UpdateTabs()
     PlaySound(839) -- SOUNDKIT.IG_CHARACTER_INFO_OPEN
 end
 
@@ -136,5 +138,19 @@ end
 function InspectFrame:UNIT_PORTRAIT_UPDATE(_, unit)
     if unit == self.unit then
         self:UpdatePortrait()
+    end
+end
+
+function InspectFrame:UpdateTabs()
+    if Inspect:GetUnitTalent() and Inspect:GetUnitClass() then
+        PanelTemplates_EnableTab(self, 3)
+    else
+        PanelTemplates_DisableTab(self, 3)
+    end
+
+    if Inspect.unit and CheckInteractDistance(Inspect.unit, 1) and CanInspect(Inspect.unit) then
+        PanelTemplates_EnableTab(self, 2)
+    else
+        PanelTemplates_DisableTab(self, 2)
     end
 end
