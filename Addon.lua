@@ -6,14 +6,31 @@
 ---@type ns
 local ns = select(2, ...)
 
+local _
+local pairs, ipairs = pairs, ipairs
+
+local GetSpellInfo = GetSpellInfo
 local ShowUIPanel = ShowUIPanel
 
 ns.UI = {}
-ns.Talents = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
 
 local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0', 'AceEvent-3.0')
 ns.Addon = Addon
+
+function Addon:OnInitialize()
+    for class, tabs in pairs(ns.Talents) do
+        for _, tab in ipairs(tabs) do
+            for _, talent in ipairs(tab.talents) do
+                talent.name, _, talent.icon = GetSpellInfo(talent.ranks[1])
+
+                for _, id in ipairs(talent.ranks) do
+                    ns.GetSpellSummary(id)
+                end
+            end
+        end
+    end
+end
 
 function Addon:OnEnable()
     self:RegisterEvent('ADDON_LOADED')

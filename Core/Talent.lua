@@ -24,7 +24,7 @@ function Talent:ParseTalent(data)
         self.talents[i] = {}
 
         local pointsSpent = 0
-        for j = 1, self.data[i].numtalents do
+        for j = 1, self.data[i].numTalents do
             local point = tonumber(data:sub(index, index)) or 0
             self.talents[i][j] = point
             pointsSpent = pointsSpent + point
@@ -37,14 +37,14 @@ end
 
 function Talent:GetTabInfo(tab)
     local tabData = self.data[tab]
-    if tabData and tabData.info then
-        return tabData.info.name, tabData.info.background, self.talents[tab].pointsSpent
+    if tabData then
+        return tabData.name, tabData.background, self.talents[tab].pointsSpent
     end
 end
 
 function Talent:GetNumTalents(tab)
     local tabData = self.data[tab]
-    return tabData and tabData.numtalents
+    return tabData and tabData.numTalents
 end
 
 function Talent:GetTalentInfo(tab, index)
@@ -53,17 +53,11 @@ function Talent:GetTalentInfo(tab, index)
         return
     end
 
-    local talent = tabData.talents[index].info
-
+    local talent = tabData.talents[index]
     if talent then
-        return talent.name, talent.icon, talent.row, talent.column, talent.ranks, talent.prereqs,
+        return talent.name, talent.icon, talent.row, talent.column, talent.maxRank, talent.prereqs,
                self.talents[tab][index]
     end
-end
-
-function Talent:BuildTooltip(tip, tab, index)
-    local talent = self.data[tab].talents[index].info
-    tip:SetText(talent.name)
 end
 
 function Talent:GetTalentTips(tab, index)
@@ -72,9 +66,8 @@ function Talent:GetTalentTips(tab, index)
         return
     end
 
-    local talent = tabData.talents[index].info
-
+    local talent = tabData.talents[index]
     if talent then
-        return talent.rankSpells
+        return talent.ranks
     end
 end

@@ -161,10 +161,27 @@ function TalentFrame:ShowTooltip(button)
     GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
 
     local id = button:GetID()
-    local name, _, row, _, ranks, prereqs, rank = self.talent:GetTalentInfo(self.tabIndex, id)
+    local name, _, row, _, maxRank, prereqs, rank = self.talent:GetTalentInfo(self.tabIndex, id)
     local spells = self.talent:GetTalentTips(self.tabIndex, id)
+    local spell = spells[rank == 0 and 1 or rank]
 
-    GameTooltip:SetSpellByID(spells[rank == 0 and 1 or rank])
+    GameTooltip:SetText(name, 1, 1, 1)
+    GameTooltip:AddLine(TOOLTIP_TALENT_RANK:format(rank, maxRank), 1, 1, 1)
+
+    local summary = ns.GetSpellSummary(spell)
+    if summary then
+        GameTooltip:AddLine(summary, 1, 0.82, 0, true)
+
+        if rank > 0 and rank < maxRank then
+            GameTooltip:AddLine(' ')
+            GameTooltip:AddLine(TOOLTIP_TALENT_NEXT_RANK, 1, 1, 1)
+            GameTooltip:AddLine(ns.GetSpellSummary(spells[rank + 1]), 1, 0.82, 0, true)
+        end
+    elseif summary == false then
+        GameTooltip:SetSpellByID(spell)
+    end
+
+    -- GameTooltip:SetSpellByID(spells[rank == 0 and 1 or rank])
 
     -- GameTooltip:SetText(name, 1, 1, 1)
     -- addline(TOOLTIP_TALENT_RANK:format(rank, ranks), HIGHLIGHT_FONT_COLOR)
@@ -218,6 +235,7 @@ function TalentFrame:GetTalentButton(i)
         button.Slot = Slot
         button.RankBorder = RankBorder
         button.Rank = Rank
+        button.UpdateTooltip = TalentOnEnter
 
         self.buttons[i] = button
     end
