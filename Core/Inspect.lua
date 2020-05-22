@@ -192,7 +192,10 @@ function Inspect:OnAlaCommand(_, msg, channel, sender)
 
         db.timestamp = time()
 
-        self:SendMessage('INSPECT_READY', nil, name)
+        if name == self.unitName then
+            self:SendMessage('INSPECT_READY', nil, name)
+        end
+
     elseif cmd == '_r_tal' then
         local code = msg:sub(ALA_CMD_LEN + 1)
         code = strsplit('#', code)
@@ -206,7 +209,9 @@ function Inspect:OnAlaCommand(_, msg, channel, sender)
         db.talent = data
         db.level = level
 
-        self:SendMessage('INSPECT_TALENT_READY', nil, name)
+        if name == self.unitName then
+            self:SendMessage('INSPECT_TALENT_READY', nil, name)
+        end
     end
 end
 

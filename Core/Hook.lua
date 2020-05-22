@@ -99,6 +99,20 @@ hooksecurefunc('UnitPopup_ShowMenu', function(dropdownMenu, which, _, name)
     end
 end)
 
+hooksecurefunc('UnitPopup_OnUpdate', function()
+    local dropdown = OPEN_DROPDOWNMENUS[1]
+    if not dropdown or not dropdown.unit or not (dropdown.which == 'PARTY' or dropdown.which == 'PLAYER') then
+        return
+    end
+
+    if UnitIsConnected(dropdown.unit) then
+        return
+    end
+
+    local i = FindDropdownItem(DropDownList1, INSPECT)
+    UIDropDownMenu_DisableButton(1, i)
+end)
+
 function InspectUnit(unit)
     return ns.Inspect:Query(unit)
 end
