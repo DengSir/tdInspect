@@ -200,14 +200,14 @@ end
 
 function Inspect:PLAYER_TARGET_CHANGED()
     if self.unit == 'target' then
-        self.unit = nil
+        self:SetUnit(nil, self.unitName)
         self:SendMessage('INSPECT_TARGET_CHANGED')
     end
 end
 
 function Inspect:GROUP_ROSTER_UPDATE()
     if self.unit and self.unitName ~= ns.UnitName(self.unit) then
-        self.unit = nil
+        self:SetUnit(nil, self.unitName)
         self:SendMessage('INSPECT_TARGET_CHANGED')
     end
 end

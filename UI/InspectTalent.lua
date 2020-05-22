@@ -50,6 +50,8 @@ function InspectTalent:AddTab(text)
     PanelTemplates_UpdateTabs(self)
 end
 
+InspectTalent.SetTab = PanelTemplates_SetTab
+
 function InspectTalent:OnShow()
     local class = ns.Inspect:GetUnitClass()
     local talent = ns.Inspect:GetUnitTalent()

@@ -12,7 +12,7 @@
     <Script file="Core\Hook.lua" />
     <Script file="Core\Talent.lua" />
     <Script file="Core\Ala.lua" />
-    <Script file="Core\Cache.lua" />
+    <Script file="Core\TipScaner.lua" />
 
     <Script file="UI\BaseItem.lua" />
     <Script file="UI\SlotItem.lua" />

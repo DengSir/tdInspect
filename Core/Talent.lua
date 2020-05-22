@@ -35,6 +35,11 @@ function Talent:ParseTalent(data)
     end
 end
 
+function Talent:_GetTalent(tab, index)
+    local tabData = self.data[tab]
+    return tabData and tabData.talents[index]
+end
+
 function Talent:GetTabInfo(tab)
     local tabData = self.data[tab]
     if tabData then
@@ -48,26 +53,31 @@ function Talent:GetNumTalents(tab)
 end
 
 function Talent:GetTalentInfo(tab, index)
-    local tabData = self.data[tab]
-    if not tabData then
-        return
-    end
-
-    local talent = tabData.talents[index]
+    local talent = self:_GetTalent(tab, index)
     if talent then
-        return talent.name, talent.icon, talent.row, talent.column, talent.maxRank, talent.prereqs,
-               self.talents[tab][index]
+        return talent.name, --
+        talent.icon, --
+        talent.row, --
+        talent.column, --
+        self.talents[tab][index], --
+        talent.maxRank, talent.prereqs, self.talents[tab][index]
     end
 end
 
-function Talent:GetTalentTips(tab, index)
-    local tabData = self.data[tab]
-    if not tabData then
-        return
-    end
-
-    local talent = tabData.talents[index]
+function Talent:GetTalentPrereqs(tab, index)
+    local talent = self:_GetTalent(tab, index)
     if talent then
-        return talent.ranks
+        return talent.prereqs
+    end
+end
+
+function Talent:GetTalentRankSpell(tab, index, rank)
+    local talent = self:_GetTalent(tab, index)
+    if talent then
+        dump(rank, talent.ranks)
+        if rank == 0 then
+            rank = 1
+        end
+        return talent.ranks[rank]
     end
 end

@@ -55,6 +55,7 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
 
     self:SetScript('OnLeave', GameTooltip_Hide)
     self:SetScript('OnEnter', self.OnEnter)
+    self.UpdateTooltip = self.OnEnter
 end
 
 function EquipItem:OnHide()

@@ -15,6 +15,7 @@ local ShowUIPanel = ShowUIPanel
 ns.UI = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
 
+---@type tdInspectAddon
 local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0', 'AceEvent-3.0')
 ns.Addon = Addon
 
@@ -62,6 +63,7 @@ end
 
 function Addon:INSPECT_READY(_, unit, name)
     if unit == ns.Inspect.unit or name == ns.Inspect.unitName then
+        self.InspectFrame.TalentFrame:SetTab(1)
         ShowUIPanel(self.InspectFrame)
     end
 end

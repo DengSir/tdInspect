@@ -106,27 +106,33 @@ local function TalentOnEnter(button)
     button:GetParent():ShowTooltip(button)
 end
 
+local function AddLine(line)
+    GameTooltip:AddLine(line, 1, 1, 1)
+end
+
+local function AddSpellSummary(spellId)
+    GameTooltip:AddLine(ns.GetTalentSpellSummary(spellId), 1, 0.82, 0, true)
+end
+
 function TalentFrame:ShowTooltip(button)
     local id = button:GetID()
-    local name, _, row, _, maxRank, prereqs, rank = self.talent:GetTalentInfo(self.tabIndex, id)
-    local spells = self.talent:GetTalentTips(self.tabIndex, id)
-    local spell = spells[rank == 0 and 1 or rank]
+    local name, _, row, _, rank, maxRank = self.talent:GetTalentInfo(self.tabIndex, id)
+    local spellId = self.talent:GetTalentRankSpell(self.tabIndex, id, rank)
 
     GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
-    GameTooltip:SetText(name, 1, 1, 1)
-    GameTooltip:AddLine(TOOLTIP_TALENT_RANK:format(rank, maxRank), 1, 1, 1)
 
-    local summary = ns.GetSpellSummary(spell)
-    if summary then
-        GameTooltip:AddLine(summary, 1, 0.82, 0, true)
+    if ns.IsTalentPassive(spellId) then
+        GameTooltip:SetSpellByID(spellId)
+    else
+        AddLine(name)
+        AddLine(TOOLTIP_TALENT_RANK:format(rank, maxRank))
+        AddSpellSummary(spellId)
 
         if rank > 0 and rank < maxRank then
-            GameTooltip:AddLine(' ')
-            GameTooltip:AddLine(TOOLTIP_TALENT_NEXT_RANK, 1, 1, 1)
-            GameTooltip:AddLine(ns.GetSpellSummary(spells[rank + 1]), 1, 0.82, 0, true)
+            AddLine(' ')
+            AddLine(TOOLTIP_TALENT_NEXT_RANK)
+            AddSpellSummary(self.talent:GetTalentRankSpell(self.tabIndex, id, rank + 1))
         end
-    elseif summary == false then
-        GameTooltip:SetSpellByID(spell)
     end
 
     GameTooltip:Show()
@@ -214,7 +220,7 @@ function TalentFrame:Update()
         local button = self:GetTalentButton(i)
         if i <= numTalents then
             -- Set the button info
-            local name, iconTexture, tier, column, maxRank, prereqs, rank = self.talent:GetTalentInfo(self.tabIndex, i)
+            local name, iconTexture, tier, column, rank, maxRank = self.talent:GetTalentInfo(self.tabIndex, i)
             if name and tier <= MAX_NUM_TALENT_TIERS then
                 button.Rank:SetText(rank)
                 self:SetButtonLocation(button, tier, column, talentButtonSize, initialOffsetX, initialOffsetY,
@@ -237,7 +243,8 @@ function TalentFrame:Update()
 
                 SetItemButtonTexture(button, iconTexture)
 
-                local prereqsSet = self:SetPrereqs(tier, column, forceDesaturated, tierUnlocked, prereqs)
+                local prereqsSet = self:SetPrereqs(tier, column, forceDesaturated, tierUnlocked,
+                                                   self.talent:GetTalentPrereqs(self.tabIndex, i))
                 if prereqsSet then
                     SetItemButtonDesaturated(button, nil)
                     button.RankBorder:Show()

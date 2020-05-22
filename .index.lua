@@ -18,6 +18,9 @@
 ---@field PaperDoll tdInspectPaperDoll
 ---@field InspectFrame tdInspectInspectFrame
 
+---@class tdInspectAddon
+---@field InspectFrame tdInspectInspectTalentFrame
+
 ---@class tdInspectInspect
 
 ---@class tdInspectEquipFrame: Frame
@@ -33,6 +36,7 @@
 ---@field private IconBorder Texture
 
 ---@class tdInspectInspectFrame: Frame
+---@field Portrait Texture
 
 ---@class tdInspectBaseItem: Button
 

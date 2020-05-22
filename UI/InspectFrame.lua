@@ -41,6 +41,8 @@ function InspectFrame:Constructor()
     self.PaperDoll = ns.UI.PaperDoll:Bind(InspectPaperDollFrame)
     self.TalentFrame = ns.UI.InspectTalent:Bind(self:AddTab(TALENT))
 
+    self.Portrait:SetPoint('TOPLEFT', 9, -7)
+
     self.TalentFrame:Update()
 end
 
@@ -110,9 +112,17 @@ end
 
 function InspectFrame:UpdatePortrait()
     if self.unit then
+        self.Portrait:SetTexCoord(0, 1, 0, 1)
         SetPortraitTexture(self.Portrait, self.unit)
     else
-        self.Portrait:SetTexture([[Interface\FriendsFrame\FriendsFrameScrollIcon]])
+        local class = Inspect:GetUnitClass()
+        if class then
+            self.Portrait:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
+            self.Portrait:SetTexCoord(unpack(CLASS_ICON_TCOORDS[class]))
+        else
+            self.Portrait:SetTexture([[Interface\FriendsFrame\FriendsFrameScrollIcon]])
+            self.Portrait:SetTexCoord(0, 1, 0, 1)
+        end
     end
 end
 

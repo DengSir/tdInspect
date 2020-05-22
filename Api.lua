@@ -32,3 +32,32 @@ end
 function ns.UnitName(unit)
     return ns.GetFullName(UnitFullName(unit))
 end
+
+local summaryCache = {}
+function ns.GetTalentSpellSummary(spellId)
+    if summaryCache[spellId] == nil then
+        local TipScaner = ns.TipScaner
+        TipScaner:Clear()
+        TipScaner:SetSpellByID(spellId)
+
+        local n = TipScaner:NumLines()
+        local passive
+        for i = 1, n do
+            if TipScaner.L[i]:GetText() == SPELL_PASSIVE then
+                passive = true
+                break
+            end
+        end
+
+        if not passive then
+            summaryCache[spellId] = false
+        elseif n > 2 then
+            summaryCache[spellId] = TipScaner.L[n]:GetText()
+        end
+    end
+    return summaryCache[spellId]
+end
+
+function ns.IsTalentPassive(spellId)
+    return ns.GetTalentSpellSummary(spellId) == false
+end
