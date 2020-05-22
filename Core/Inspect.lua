@@ -78,6 +78,18 @@ function Inspect:GetItemLink(slot)
     return link
 end
 
+function Inspect:IsItemEquipped(itemId)
+    for slot = 1, 18 do
+        local link = self:GetItemLink(slot)
+        if link then
+            local id = ns.ItemLinkToId(link)
+            if id and id == itemId then
+                return true
+            end
+        end
+    end
+end
+
 function Inspect:GetUnitClass()
     if self.unit then
         return UnitClassBase(self.unit)

@@ -74,7 +74,6 @@ end
 function Talent:GetTalentRankSpell(tab, index, rank)
     local talent = self:_GetTalent(tab, index)
     if talent then
-        dump(rank, talent.ranks)
         if rank == 0 then
             rank = 1
         end

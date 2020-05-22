@@ -31,6 +31,6 @@ function BaseItem:GET_ITEM_INFO_RECEIVED(_, itemId, ok)
 end
 
 function BaseItem:WaitItem(item)
-    self.itemId = tonumber(item:match('item:(%d+)'))
+    self.itemId = ns.ItemLinkToId(item)
     self:RegisterEvent('GET_ITEM_INFO_RECEIVED')
 end

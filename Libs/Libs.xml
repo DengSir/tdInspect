@@ -9,4 +9,5 @@
     <!-- <Include file="AceLocale-3.0\AceLocale-3.0.xml"/> -->
 
     <Include file="LibClass-2.0\LibClass-2.0.xml"/>
+    <Include file="LibClassicItemSets-1.0\LibClassicItemSets-1.0.xml"/>
 </Ui>

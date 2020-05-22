@@ -1,3 +1,6 @@
 [submodule "Libs/LibClass-2.0"]
 	path = Libs/LibClass-2.0
 	url = https://github.com/DengSir/LibClass-2.0.git
+[submodule "Libs/LibClassicItemSets-1.0"]
+	path = Libs/LibClassicItemSets-1.0
+	url = https://github.com/Hoizame/LibClassicItemSets-1.0.git

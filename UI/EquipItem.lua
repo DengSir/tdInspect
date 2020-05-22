@@ -68,6 +68,7 @@ function EquipItem:OnEnter()
         GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
         GameTooltip:SetHyperlink(item)
         GameTooltip:Show()
+        ns.FixInspectItemTooltip()
     end
 end
 

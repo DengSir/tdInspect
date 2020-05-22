@@ -95,6 +95,7 @@ function SlotItem:OnEnter()
     local item = Inspect:GetItemLink(self:GetID())
     if item then
         GameTooltip:SetHyperlink(item)
+        ns.FixInspectItemTooltip()
     else
         GameTooltip:SetText(_G[strupper(strsub(self:GetName(), 8))])
     end
