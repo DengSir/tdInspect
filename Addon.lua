@@ -32,6 +32,7 @@ end
 function Addon:OnEnable()
     self:RegisterEvent('ADDON_LOADED')
     self:RegisterMessage('INSPECT_READY')
+    self:RegisterMessage('INSPECT_TALENT_READY', 'INSPECT_READY')
 end
 
 function Addon:OnModuleCreated(module)
@@ -62,6 +63,9 @@ function Addon:ADDON_LOADED(_, addon)
 end
 
 function Addon:INSPECT_READY(_, unit, name)
+    if not InspectFrame then
+        return
+    end
     if unit == ns.Inspect.unit or name == ns.Inspect.unitName then
         self.InspectFrame.TalentFrame:SetTab(1)
         ShowUIPanel(self.InspectFrame)

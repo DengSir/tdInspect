@@ -67,7 +67,6 @@ function EquipItem:OnEnter()
     if item then
         GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
         GameTooltip:SetHyperlink(item)
-        GameTooltip:Show()
         ns.FixInspectItemTooltip()
     end
 end
@@ -93,8 +92,7 @@ function EquipItem:Update()
         end
     end
 
-    local r, g, b = 0.6, 0.6, 0.6
     self.Name:SetText('')
-    self.Slot:SetTextColor(r, g, b)
     self.ItemLevel:SetText('')
+    self.Slot:SetTextColor(0.6, 0.6, 0.6)
 end

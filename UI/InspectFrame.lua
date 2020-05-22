@@ -8,10 +8,24 @@ local ns = select(2, ...)
 
 local Inspect = ns.Inspect
 
+local unpack = unpack
+
 local PlaySound = PlaySound
 local Ambiguate = Ambiguate
+local CanInspect = CanInspect
 local GetUnitName = GetUnitName
+local CreateFrame = CreateFrame
 local SetPortraitTexture = SetPortraitTexture
+local CheckInteractDistance = CheckInteractDistance
+
+local PanelTemplates_EnableTab = PanelTemplates_EnableTab
+local PanelTemplates_DisableTab = PanelTemplates_DisableTab
+local PanelTemplates_SetNumTabs = PanelTemplates_SetNumTabs
+local PanelTemplates_SetTab = PanelTemplates_SetTab
+
+local GameTooltip = GameTooltip
+
+local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
 ---@type tdInspectInspectFrame
 local InspectFrame = ns.Addon:NewClass('UI.InspectFrame', 'Frame')

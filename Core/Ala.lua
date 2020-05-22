@@ -82,7 +82,7 @@ function Ala:Decode(code)
         end
     end
 
-    if useCodeLevel then
+    if true then
         return class, data, revCodeTable[strsub(code, -2, -2)] + bit.lshift(revCodeTable[strsub(code, -1, -1)], 6)
     else
         return class, data, 60

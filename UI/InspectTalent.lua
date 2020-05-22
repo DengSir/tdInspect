@@ -6,6 +6,13 @@
 ---@type ns
 local ns = select(2, ...)
 
+local CreateFrame = CreateFrame
+
+local PanelTemplates_SetTab = PanelTemplates_SetTab
+local PanelTemplates_SetNumTabs = PanelTemplates_SetNumTabs
+local PanelTemplates_UpdateTabs = PanelTemplates_UpdateTabs
+local PanelTemplates_TabResize = PanelTemplates_TabResize
+
 local TalentFrame = ns.UI.TalentFrame
 
 ---@type tdInspectInspectTalentFrame
@@ -26,9 +33,13 @@ function InspectTalent:Constructor()
     self:SetScript('OnShow', self.OnShow)
 end
 
+function InspectTalent:OnShow()
+    self:RegisterMessage('INSPECT_TALENT_READY', 'UpdateInfo')
+    self:UpdateInfo()
+end
+
 local function TabOnClick(self)
-    PanelTemplates_SetTab(self:GetParent(), self:GetID())
-    self:GetParent():SetTalentTab(self:GetID())
+    self:GetParent():SetTab(self:GetID())
 end
 
 function InspectTalent:AddTab(text)
@@ -50,13 +61,16 @@ function InspectTalent:AddTab(text)
     PanelTemplates_UpdateTabs(self)
 end
 
-InspectTalent.SetTab = PanelTemplates_SetTab
+function InspectTalent:SetTab(id)
+    PanelTemplates_SetTab(self, id)
+    self:SetTalentTab(id)
+end
 
-function InspectTalent:OnShow()
+function InspectTalent:UpdateInfo()
     local class = ns.Inspect:GetUnitClass()
     local talent = ns.Inspect:GetUnitTalent()
-
     self:SetTalent(class, talent)
+    self:Refresh()
 
     for i = 1, 3 do
         local name = self.talent:GetTabInfo(i)
@@ -66,6 +80,4 @@ function InspectTalent:OnShow()
             PanelTemplates_TabResize(tab, 0, nil, nil, 55)
         end
     end
-
-    self:Refresh()
 end

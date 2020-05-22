@@ -7,6 +7,8 @@ local max = max
 local huge = math.huge
 local rshift = bit.rshift
 
+local GameTooltip = GameTooltip
+
 ---@type tdInspectTalentFrame
 local TalentFrame = ns.Addon:NewClass('UI.TalentFrame', 'Frame')
 
