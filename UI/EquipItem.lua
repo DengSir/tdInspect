@@ -27,8 +27,7 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
     Slot:SetText(slotName)
 
     local ItemLevel = self:CreateFontString(nil, 'ARTWORK', 'TextStatusBarText')
-    ItemLevel:SetFont(ItemLevel:GetFont(), 14, 'OUTLINE')
-    ItemLevel:SetWidth(20)
+    ItemLevel:SetFont(ItemLevel:GetFont(), 13, 'OUTLINE')
     ItemLevel:SetJustifyH('LEFT')
     ItemLevel:SetPoint('LEFT', Slot, 'RIGHT', 5, 0)
 
@@ -36,7 +35,7 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
     Name:SetFont(Name:GetFont(), 13)
     Name:SetWordWrap(false)
     Name:SetJustifyH('LEFT')
-    Name:SetPoint('LEFT', ItemLevel, 'RIGHT', 5, 0)
+    Name:SetPoint('LEFT', Slot, 'RIGHT', 30, 0)
     Name:SetPoint('RIGHT')
 
     local ht = self:CreateTexture(nil, 'HIGHLIGHT')

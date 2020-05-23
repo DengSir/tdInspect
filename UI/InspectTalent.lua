@@ -6,6 +6,8 @@
 ---@type ns
 local ns = select(2, ...)
 
+local Inspect = ns.Inspect
+
 local CreateFrame = CreateFrame
 
 local PanelTemplates_SetTab = PanelTemplates_SetTab
@@ -67,8 +69,9 @@ function InspectTalent:SetTab(id)
 end
 
 function InspectTalent:UpdateInfo()
-    local class = ns.Inspect:GetUnitClass()
-    local talent = ns.Inspect:GetUnitTalent()
+    local class = Inspect:GetUnitClassFileName()
+    local talent = Inspect:GetUnitTalent()
+
     self:SetTalent(class, talent)
     self:Refresh()
 

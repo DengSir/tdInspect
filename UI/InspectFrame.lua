@@ -55,7 +55,8 @@ function InspectFrame:Constructor()
     self.PaperDoll = ns.UI.PaperDoll:Bind(InspectPaperDollFrame)
     self.TalentFrame = ns.UI.InspectTalent:Bind(self:AddTab(TALENT))
 
-    self.Portrait:SetPoint('TOPLEFT', 9, -7)
+    -- self.Portrait:SetPoint('TOPLEFT', 9, -7)
+    self.Portrait:SetSize(64, 64)
 
     self.TalentFrame:Update()
 end
@@ -129,7 +130,7 @@ function InspectFrame:UpdatePortrait()
         self.Portrait:SetTexCoord(0, 1, 0, 1)
         SetPortraitTexture(self.Portrait, self.unit)
     else
-        local class = Inspect:GetUnitClass()
+        local class = Inspect:GetUnitClassFileName()
         if class then
             self.Portrait:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
             self.Portrait:SetTexCoord(unpack(CLASS_ICON_TCOORDS[class]))
@@ -166,7 +167,7 @@ function InspectFrame:UNIT_PORTRAIT_UPDATE(_, unit)
 end
 
 function InspectFrame:UpdateTabs()
-    if Inspect:GetUnitTalent() and Inspect:GetUnitClass() then
+    if Inspect:GetUnitTalent() and Inspect:GetUnitClassFileName() then
         PanelTemplates_EnableTab(self, 3)
     else
         PanelTemplates_DisableTab(self, 3)

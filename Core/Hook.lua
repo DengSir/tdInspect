@@ -101,7 +101,8 @@ end)
 
 hooksecurefunc('UnitPopup_OnUpdate', function()
     local dropdown = OPEN_DROPDOWNMENUS[1]
-    if not dropdown or not dropdown.unit or not (dropdown.which == 'PARTY' or dropdown.which == 'PLAYER') then
+    if not dropdown or not dropdown.unit or
+        not (dropdown.which == 'PARTY' or dropdown.which == 'PLAYER' or dropdown.which == 'RAID_PLAYER') then
         return
     end
 

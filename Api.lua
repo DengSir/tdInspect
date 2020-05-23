@@ -21,6 +21,20 @@ local GameTooltip = GameTooltip
 local SPELL_PASSIVE = SPELL_PASSIVE
 local ITEM_SET_BONUS_GRAY_P = '^' .. ITEM_SET_BONUS_GRAY:gsub('%%s', '(.+)'):gsub('%(%%d%)', '%%((%%d+)%%)') .. '$'
 
+local function memorize(func)
+    local cache = {}
+
+    return function(k, ...)
+        if not k then
+            return
+        end
+        if not cache[k] then
+            cache[k] = func(k, ...)
+        end
+        return cache[k]
+    end
+end
+
 function ns.strcolor(str, r, g, b)
     return format('|cff%02x%02x%02x%s|r', r * 255, g * 255, b * 255, str)
 end
@@ -28,6 +42,38 @@ end
 function ns.ItemLinkToId(link)
     return link and (tonumber(link) or tonumber(link:match('item:(%d+)')))
 end
+
+ns.GetClassFileName = memorize(function(classId)
+    if not classId then
+        return
+    end
+    local classInfo = C_CreatureInfo.GetClassInfo(classId)
+    return classInfo and classInfo.classFile
+end)
+
+ns.GetClassLocale = memorize(function(classId)
+    if not classId then
+        return
+    end
+    local classInfo = C_CreatureInfo.GetClassInfo(classId)
+    return classInfo and classInfo.className
+end)
+
+ns.GetRaceFileName = memorize(function(raceId)
+    if not raceId then
+        return
+    end
+    local raceInfo = C_CreatureInfo.GetRaceInfo(raceId)
+    return raceInfo and raceInfo.clientFileString
+end)
+
+ns.GetRaceLocale = memorize(function(raceId)
+    if not raceId then
+        return
+    end
+    local raceInfo = C_CreatureInfo.GetRaceInfo(raceId)
+    return raceInfo and raceInfo.raceName
+end)
 
 function ns.GetFullName(name, realm)
     if not name then
@@ -105,7 +151,7 @@ function ns.FixInspectItemTooltip()
             if not name then
                 return
             end
-            itemNames[name] = true
+            itemNames[name] = (itemNames[name] or 0) + 1
             equippedCount = equippedCount + 1
         end
     end
@@ -124,8 +170,11 @@ function ns.FixInspectItemTooltip()
                 textLeft:SetText(prefix .. equippedCount .. '/' .. maxCount .. suffix)
             end
         elseif i - setLine <= itemsCount then
-            if itemNames[text:trim()] then
+            local line = text:trim()
+            local n = itemNames[line]
+            if n and n > 0 then
                 textLeft:SetTextColor(1, 1, 0.6)
+                itemNames[line] = n > 1 and n - 1 or nil
             else
                 textLeft:SetTextColor(0.5, 0.5, 0.5)
             end

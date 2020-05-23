@@ -86,7 +86,6 @@ function PaperDoll:Constructor()
         RaceBackground:SetPoint('TOPLEFT', 65, -76)
         RaceBackground:SetPoint('BOTTOMRIGHT', -85, 115)
         RaceBackground:SetAtlas('transmog-background-race-draenei')
-        RaceBackground:SetDesaturated(true)
     end
 
     local LastUpdate = self:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmallLeft')
@@ -131,23 +130,23 @@ function PaperDoll:Update()
 end
 
 function PaperDoll:UpdateInfo()
-    local unit = Inspect.unit
-    if unit then
-        local level = UnitLevel(unit)
-        local class, classFileName = UnitClass(unit)
-        local race, raceFileName = UnitRace(unit)
+    local level = Inspect:GetUnitLevel()
+    local class = Inspect:GetUnitClass()
+    local race = Inspect:GetUnitRace()
+    local classFileName = Inspect:GetUnitClassFileName()
+    local raceFileName = Inspect:GetUnitRaceFileName()
+    local lastUpdate = Inspect:GetLastUpdate()
 
-        class = ns.strcolor(class, GetClassColor(classFileName))
+    self.LevelText:SetFormattedText(PLAYER_LEVEL, level or '??', race or '',
+                                    ns.strcolor(class, GetClassColor(classFileName)))
 
-        self.LevelText:SetFormattedText(PLAYER_LEVEL, level, race, class)
+    if raceFileName then
         self.RaceBackground:SetAtlas('transmog-background-race-' .. raceFileName:lower())
-        self.RaceBackground:Show()
     else
-        self.LevelText:SetText('')
-        self.RaceBackground:Hide()
+        self.RaceBackground:SetAtlas(UnitFactionGroup('player') == 'Alliance' and 'transmog-background-race-draenei' or
+                                         'transmog-background-race-bloodelf')
     end
 
-    local lastUpdate = Inspect:GetLastUpdate()
     if lastUpdate then
         self.LastUpdate:SetFormattedText('%s\n|cffffffff%s|r', L['Last update:'], FriendsFrame_GetLastOnline(lastUpdate))
     else

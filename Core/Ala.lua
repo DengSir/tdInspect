@@ -13,7 +13,18 @@ local ALA_CLASSES = {}
 
 local CODE_TABLE = {}
 local REV_CODE_TABLE = {}
-local INDEX_TO_CLASS = {'DRUID', 'HUNTER', 'MAGE', 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR'}
+local INDEX_TO_CLASS = {
+    11, -- DRUID
+    3, -- HUNTER
+    8, -- MAGE
+    2, -- PALADIN
+    5, -- PRIEST
+    4, -- ROGUE
+    7, -- SHAMAN
+    9, -- WARLOCK
+    1, -- WARRIOR
+}
+
 do
     for i = 0, 9 do
         CODE_TABLE[i] = tostring(i)
