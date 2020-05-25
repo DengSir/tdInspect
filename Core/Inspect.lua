@@ -6,23 +6,28 @@
 ---@type ns
 local ns = select(2, ...)
 
-local ipairs = ipairs
-local tinsert = tinsert
+local ipairs, pairs, time = ipairs, pairs, time
+local strsplit, tostring = strsplit, tostring
+local tinsert, tconcat = table.insert, table.concat
 local select = select
-local strsplit = strsplit
 local tonumber = tonumber
-local time = time
 
-local UnitGUID = UnitGUID
-local LoadAddOn = LoadAddOn
 local CanInspect = CanInspect
-local NotifyInspect = NotifyInspect
-local UnitClassBase = UnitClassBase
+local CheckInteractDistance = CheckInteractDistance
 local ClearInspectPlayer = ClearInspectPlayer
 local GetInventoryItemID = GetInventoryItemID
-local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetInventoryItemLink = GetInventoryItemLink
-local CheckInteractDistance = CheckInteractDistance
+local GetNumTalents = GetNumTalents
+local GetNumTalentTabs = GetNumTalentTabs
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID
+local GetTalentInfo = GetTalentInfo
+local LoadAddOn = LoadAddOn
+local NotifyInspect = NotifyInspect
+local UnitClass = UnitClass
+local UnitClassBase = UnitClassBase
+local UnitGUID = UnitGUID
+local UnitLevel = UnitLevel
+local UnitRace = UnitRace
 
 local HideUIPanel = HideUIPanel
 
@@ -241,22 +246,12 @@ end
 
 local function PackTalent()
     local talents = {}
-    for i = 1, 3 do
+    for i = 1, GetNumTalentTabs() do
         for j = 1, GetNumTalents(i) do
-            local rank = select(5, GetTalentInfo(i, j))
-
-            tinsert(talents, tostring(rank or 0))
+            tinsert(talents, tostring(select(5, GetTalentInfo(i, j)) or 0))
         end
     end
-
-    for i = #talents, 1, -1 do
-        if talents[i] ~= '0' then
-            break
-        else
-            talents[i] = nil
-        end
-    end
-    return table.concat(talents)
+    return (tconcat(talents):gsub('0+$', ''))
 end
 
 local function PackEquip()
@@ -332,12 +327,12 @@ function Inspect:OnAlaCommand(_, msg, channel, sender)
         local code = msg:sub(ALA_CMD_LEN + 1)
         code = strsplit('#', code)
 
-        local classFileName, talent, level = ns.Ala:Decode(code)
+        local class, talent, level = ns.Ala:Decode(code)
 
         local name = ns.GetFullName(sender)
         local db = self:BuildCharacterDb(name)
 
-        db.class = classFileName
+        db.class = class
         db.level = level
         db.talent = talent
 

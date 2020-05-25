@@ -75,7 +75,7 @@ function InspectTalent:UpdateInfo()
     self:SetTalent(class, talent)
     self:Refresh()
 
-    for i = 1, 3 do
+    for i = 1, GetNumTalentTabs() do
         local name = self.talent:GetTabInfo(i)
         if name then
             local tab = self.Tabs[i]

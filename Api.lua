@@ -145,6 +145,9 @@ function ns.FixInspectItemTooltip()
 
     local itemNames = {}
     local equippedCount = 0
+    local itemsCount = #items
+    local setNameLinePattern = '^(' .. setName .. '.+)(%d+)/(%d+)(.+)$'
+
     for _, itemId in ipairs(items) do
         if ns.Inspect:IsItemEquipped(itemId) then
             local name = GetItemInfo(itemId)
@@ -157,14 +160,13 @@ function ns.FixInspectItemTooltip()
     end
 
     local setLine
-    local itemsCount = #items
 
     for i = 2, GameTooltip:NumLines() do
         local textLeft = _G['GameTooltipTextLeft' .. i]
         local text = textLeft:GetText()
 
         if not setLine then
-            local prefix, n, maxCount, suffix = text:match('^(' .. setName .. '.+)(%d+)/(%d+)(.+)$')
+            local prefix, n, maxCount, suffix = text:match(setNameLinePattern)
             if prefix then
                 setLine = i
                 textLeft:SetText(prefix .. equippedCount .. '/' .. maxCount .. suffix)

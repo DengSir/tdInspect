@@ -6,6 +6,10 @@
 ---@type ns
 local ns = select(2, ...)
 
+local tonumber = tonumber
+
+local GetNumTalentTabs = GetNumTalentTabs
+
 ---@type tdInspectTalent
 local Talent = ns.Addon:NewClass('Talent')
 
@@ -20,7 +24,7 @@ function Talent:ParseTalent(data)
     data = data:gsub('[^%d]+', '')
 
     local index = 1
-    for i = 1, 3 do
+    for i = 1, GetNumTalentTabs() do
         self.talents[i] = {}
 
         local pointsSpent = 0

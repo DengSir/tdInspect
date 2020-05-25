@@ -8,9 +8,8 @@
 
 const fs = require("fs");
 const got = require("got");
-const json2lua = require("json2lua");
 
-const LOCALES = ["deDE", "esES", "frFR", "itIT", "koKR", "ptBR", "ruRU", "zhCN"];
+const LOCALES = ["enUS", "deDE", "esES", "frFR", "itIT", "koKR", "ptBR", "ruRU", "zhCN"];
 
 const TALENTS = "https://classic.wowhead.com/data/talents-classic";
 const LOCALE = "https://wow.zamimg.com/js/locale/classic.enus.js";
@@ -71,69 +70,52 @@ function getTalentLocales(body) {
     return JSON.parse(m[1]);
 }
 
-async function main() {
-    const enUS = (await got(LOCALE)).body;
-    const ClassTalents = getClassTalents(enUS);
+async function genTalents() {
+    const ClassTalents = getClassTalents((await got(LOCALE)).body);
     const Talents = getTalentData((await got(TALENTS)).body);
-    const Locales = getTalentLocales(enUS);
-
-    const result = {};
-
-    for (const [key, value] of Object.entries(ClassTalents)) {
-        result[key.toUpperCase()] = value.map((talentId) => {
-            const talents = Object.values(Talents[talentId]);
-            return {
-                name: Locales[talentId],
-                background: BACKGROUNDS[talentId],
-                numTalents: talents.length,
-                talents: talents
-                    .sort((a, b) => a.row * 10 + a.col - b.row * 10 - b.col)
-                    .map((item) => ({
-                        row: item.row + 1,
-                        column: item.col + 1,
-                        maxRank: item.ranks.length,
-                        ranks: item.ranks,
-                        prereqs:
-                            item.requires.length === 0
-                                ? undefined
-                                : item.requires.map((req) => ({
-                                      row: Talents[talentId][req.id].row + 1,
-                                      column: Talents[talentId][req.id].col + 1,
-                                  })),
-                    })),
-            };
-        });
-    }
-
-    fs.writeFileSync(
-        "Data/Talents.lua",
-        "---@type ns\nlocal ns = select(2, ...)\nns.Talents=" + json2lua.fromString(JSON.stringify(result))
-    );
-
-    const lines = [];
-    lines.push("---@type ns");
-    lines.push("local ns = select(2, ...)");
-    lines.push("local talent");
+    const Locales = {};
 
     for (const locale of LOCALES) {
-        const locales = getTalentLocales(
+        Locales[locale] = getTalentLocales(
             (await got(`https://wow.zamimg.com/js/locale/classic.${locale.toLowerCase()}.js`)).body
         );
-
-        lines.push(`if GetLocale() == '${locale}' then`);
-
-        for (const [key, value] of Object.entries(ClassTalents)) {
-            lines.push(`    talent = ns.Talents.${key.toUpperCase()}`);
-            for (const [i, talentId] of value.entries()) {
-                lines.push(`    talent[${i + 1}].name = '${locales[talentId]}'`);
-            }
-        }
-
-        lines.push("end");
-        lines.push("");
     }
 
-    fs.writeFileSync("Data/Locales.lua", lines.join("\n"));
+    const file = fs.createWriteStream("Data/Talents.lua");
+
+    file.write(`-- GENERATE BY DataGen.js
+select(2,...).Data()`);
+
+    for (const [cls, tabIds] of Object.entries(ClassTalents)) {
+        file.write(`C'${cls.toUpperCase()}'`);
+
+        for (const tabId of tabIds) {
+            const talents = Object.values(Talents[tabId]).sort((a, b) => a.row * 10 + a.col - b.row * 10 - b.col);
+
+            file.write(`T('${BACKGROUNDS[tabId]}',${talents.length})`);
+
+            for (const locale of LOCALES) {
+                file.write(`N('${locale}','${Locales[locale][tabId]}')`);
+            }
+
+            for (const talent of talents) {
+                file.write(`I(${talent.row + 1},${talent.col + 1},${talent.ranks.length})`);
+                file.write(`R{${talent.ranks.join(",")}}`);
+
+                if (talent.requires) {
+                    for (const req of talent.requires) {
+                        const reqTalent = Talents[tabId][req.id];
+                        file.write(`P(${reqTalent.row + 1},${reqTalent.col + 1})`);
+                    }
+                }
+            }
+        }
+    }
+    file.end("", "utf-8");
+}
+
+async function main() {
+    await genTalents();
 }
 
 main();
