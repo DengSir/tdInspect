@@ -43,11 +43,7 @@ function InspectFrame:Constructor()
     end
 
     function InspectSwitchTabs(id)
-        PanelTemplates_SetTab(self, id)
-
-        for i, frame in ipairs(self.tabFrames) do
-            frame:SetShown(i == id)
-        end
+        return self:SetTab(id)
     end
 
     self.Portrait = InspectFramePortrait
@@ -55,10 +51,7 @@ function InspectFrame:Constructor()
     self.PaperDoll = ns.UI.PaperDoll:Bind(InspectPaperDollFrame)
     self.TalentFrame = ns.UI.InspectTalent:Bind(self:AddTab(TALENT))
 
-    -- self.Portrait:SetPoint('TOPLEFT', 9, -7)
     self.Portrait:SetSize(64, 64)
-
-    self.TalentFrame:Update()
 end
 
 function InspectFrame:OnShow()
@@ -74,8 +67,10 @@ end
 
 function InspectFrame:OnHide()
     self:UnregisterAllEvents()
-    PlaySound(840) -- SOUNDKIT.IG_CHARACTER_INFO_CLOSE
     Inspect:Clear()
+    self:SetTab(1)
+    self.TalentFrame:SetTab(1)
+    PlaySound(840) -- SOUNDKIT.IG_CHARACTER_INFO_CLOSE
 end
 
 local function TabOnEnter(self)
@@ -163,6 +158,14 @@ end
 function InspectFrame:UNIT_PORTRAIT_UPDATE(_, unit)
     if unit == self.unit then
         self:UpdatePortrait()
+    end
+end
+
+function InspectFrame:SetTab(id)
+    PanelTemplates_SetTab(self, id)
+
+    for i, frame in ipairs(self.tabFrames) do
+        frame:SetShown(i == id)
     end
 end
 

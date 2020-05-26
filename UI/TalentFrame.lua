@@ -53,28 +53,25 @@ function TalentFrame:Constructor()
     self.talentButtonSize = 37
     self.initialOffsetX = 0
     self.initialOffsetY = 0
-    self.buttonSpacingX = 0
-    self.buttonSpacingY = 0
+    self.buttonSpacingX = 52
+    self.buttonSpacingY = 48
     self.arrowInsetX = 2
     self.arrowInsetY = -2
 
-    local xRatio, yRatio = 1.063, 1.065
-
     local TopLeft = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
-    TopLeft:SetPoint('TOPLEFT', 23, -77)
-    TopLeft:SetSize(256 * xRatio, 256 * yRatio)
+    TopLeft:SetPoint('TOPLEFT')
 
     local TopRight = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
-    TopRight:SetPoint('TOPLEFT', TopLeft, 'TopRight')
-    TopRight:SetSize(64 * xRatio, 256 * yRatio)
+    TopRight:SetPoint('TOPLEFT', TopLeft, 'TOPRIGHT')
+    TopRight:SetTexCoord(0, 44 / 64, 0, 1)
 
     local BottomLeft = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
     BottomLeft:SetPoint('TOPLEFT', TopLeft, 'BOTTOMLEFT')
-    BottomLeft:SetSize(256 * xRatio, 128 * yRatio)
+    BottomLeft:SetTexCoord(0, 1, 0, 74 / 128)
 
     local BottomRight = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
     BottomRight:SetPoint('TOPLEFT', TopLeft, 'BOTTOMRIGHT')
-    BottomRight:SetSize(64 * xRatio, 128 * yRatio)
+    BottomRight:SetTexCoord(0, 44 / 64, 0, 74 / 128)
 
     local ArrowParent = CreateFrame('Frame', nil, self)
     ArrowParent:SetAllPoints(true)
@@ -85,6 +82,8 @@ function TalentFrame:Constructor()
     self.BottomLeft = BottomLeft
     self.BottomRight = BottomRight
     self.ArrowParent = ArrowParent
+
+    self:SetScript('OnSizeChanged', self.OnSizeChanged)
 
     for i = 1, MAX_NUM_TALENT_TIERS do
         self.branches[i] = {}
@@ -113,6 +112,13 @@ end
 
 local function AddSpellSummary(spellId)
     GameTooltip:AddLine(ns.GetTalentSpellSummary(spellId), 1, 0.82, 0, true)
+end
+
+function TalentFrame:OnSizeChanged(width, height)
+    self.TopLeft:SetSize(width * 256 / 300, height * 256 / 330)
+    self.TopRight:SetSize(width * 44 / 300, height * 256 / 330)
+    self.BottomLeft:SetSize(width * 256 / 300, height * 74 / 330)
+    self.BottomRight:SetSize(width * 44 / 300, height * 74 / 330)
 end
 
 function TalentFrame:ShowTooltip(button)

@@ -67,7 +67,6 @@ function Addon:INSPECT_READY(_, unit, name)
         return
     end
     if unit == ns.Inspect.unit or name == ns.Inspect.unitName then
-        self.InspectFrame.TalentFrame:SetTab(1)
         ShowUIPanel(self.InspectFrame)
     end
 end

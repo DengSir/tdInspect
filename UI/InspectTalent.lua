@@ -15,22 +15,24 @@ local PanelTemplates_SetNumTabs = PanelTemplates_SetNumTabs
 local PanelTemplates_UpdateTabs = PanelTemplates_UpdateTabs
 local PanelTemplates_TabResize = PanelTemplates_TabResize
 
-local TalentFrame = ns.UI.TalentFrame
-
 ---@type tdInspectInspectTalentFrame
-local InspectTalent = ns.Addon:NewClass('UI.InspectTalent', TalentFrame)
+local InspectTalent = ns.Addon:NewClass('UI.InspectTalent', 'Frame')
 
 function InspectTalent:Constructor()
-    self.initialOffsetX = 86
-    self.initialOffsetY = 90
-    self.buttonSpacingX = 52
-    self.buttonSpacingY = 48
     self.Tabs = {}
     self.selectedTab = 1
 
     self:AddTab('Tab1')
     self:AddTab('Tab2')
     self:AddTab('Tab3')
+
+    local TalentFrame = ns.UI.TalentFrame:New(self)
+    TalentFrame:SetPoint('TOPLEFT', 23, -77)
+    TalentFrame:SetSize(320, 353)
+    TalentFrame.initialOffsetX = 65
+    TalentFrame.initialOffsetY = 13
+
+    self.TalentFrame = TalentFrame
 
     self:SetScript('OnShow', self.OnShow)
 end
@@ -46,8 +48,7 @@ end
 
 function InspectTalent:AddTab(text)
     local id = #self.Tabs + 1
-    local tab = CreateFrame('Button', nil, self, 'TabButtonTemplate')
-    tab:SetID(id)
+    local tab = CreateFrame('Button', nil, self, 'TabButtonTemplate', id)
     tab:SetText(text)
     tab:SetScript('OnClick', TabOnClick)
 
@@ -65,18 +66,17 @@ end
 
 function InspectTalent:SetTab(id)
     PanelTemplates_SetTab(self, id)
-    self:SetTalentTab(id)
+    self.TalentFrame:SetTalentTab(id)
 end
 
 function InspectTalent:UpdateInfo()
     local class = Inspect:GetUnitClassFileName()
     local talent = Inspect:GetUnitTalent()
 
-    self:SetTalent(class, talent)
-    self:Refresh()
+    self.TalentFrame:SetTalent(class, talent)
 
     for i = 1, GetNumTalentTabs() do
-        local name = self.talent:GetTabInfo(i)
+        local name = self.TalentFrame.talent:GetTabInfo(i)
         if name then
             local tab = self.Tabs[i]
             tab:SetText(name)

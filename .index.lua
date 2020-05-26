@@ -17,9 +17,11 @@
 ---@field SlotItem tdInspectSlotItem
 ---@field PaperDoll tdInspectPaperDoll
 ---@field InspectFrame tdInspectInspectFrame
+---@field TalentFrame tdInspectTalentFrame
+---@field InspectTalent tdInspectInspectTalentFrame
 
 ---@class tdInspectAddon
----@field InspectFrame tdInspectInspectTalentFrame
+---@field InspectFrame tdInspectInspectFrame
 
 ---@class tdInspectInspect
 
@@ -37,10 +39,12 @@
 
 ---@class tdInspectInspectFrame: Frame
 ---@field Portrait Texture
+---@field PaperDoll tdInspectPaperDoll
+---@field TalentFrame tdInspectInspectTalentFrame
 
 ---@class tdInspectBaseItem: Button
 
----@class tdInspectInspectTalentFrame: tdInspectTalentFrame
+---@class tdInspectInspectTalentFrame: Frame
 
 ---@class tdInspectTalentFrame: Frame
 
