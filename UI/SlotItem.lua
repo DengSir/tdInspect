@@ -105,6 +105,7 @@ end
 function SlotItem:OnClick()
     local item = Inspect:GetItemLink(self:GetID())
     if item then
-        HandleModifiedItemClick(item)
+        local _, link = GetItemInfo(item)
+        HandleModifiedItemClick(link)
     end
 end

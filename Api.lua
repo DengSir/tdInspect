@@ -171,7 +171,7 @@ function ns.FixInspectItemTooltip()
                 setLine = i
                 textLeft:SetText(prefix .. equippedCount .. '/' .. maxCount .. suffix)
             end
-        elseif i - setLine <= itemsCount then
+        elseif i - setLine <= itemsCount + 1 then
             local line = text:trim()
             local n = itemNames[line]
             if n and n > 0 then
