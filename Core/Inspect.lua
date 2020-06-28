@@ -57,8 +57,6 @@ function Inspect:OnEnable()
     end
 
     self:RegisterEvent('INSPECT_READY')
-    self:RegisterEvent('PLAYER_TARGET_CHANGED')
-    self:RegisterEvent('GROUP_ROSTER_UPDATE')
     self:RegisterComm(ALA_PREFIX, 'OnAlaCommand')
     self:RegisterComm(PROTO_PREFIX, OnComm)
 end
@@ -70,6 +68,15 @@ function Inspect:SetUnit(unit, name)
     INSPECTED_UNIT = unit
     if InspectFrame then
         InspectFrame.unit = unit
+    end
+
+    self:UnregisterEvent('PLAYER_TARGET_CHANGED')
+    self:UnregisterEvent('UPDATE_MOUSEOVER_UNIT')
+
+    if unit == 'target' then
+        self:RegisterEvent('PLAYER_TARGET_CHANGED')
+    elseif unit == 'mouseover' then
+        self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'GROUP_ROSTER_UPDATE')
     end
 end
 
@@ -331,6 +338,8 @@ function Inspect:OnAlaCommand(_, msg, channel, sender)
 
         local name = ns.GetFullName(sender)
         local db = self:BuildCharacterDb(name)
+
+        print(class)
 
         db.class = class
         db.level = level

@@ -44,10 +44,12 @@ function ns.ItemLinkToId(link)
 end
 
 ns.GetClassFileName = memorize(function(classId)
+    print(classId)
     if not classId then
         return
     end
     local classInfo = C_CreatureInfo.GetClassInfo(classId)
+    dump(classInfo)
     return classInfo and classInfo.classFile
 end)
 

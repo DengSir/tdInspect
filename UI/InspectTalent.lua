@@ -73,6 +73,8 @@ function InspectTalent:UpdateInfo()
     local class = Inspect:GetUnitClassFileName()
     local talent = Inspect:GetUnitTalent()
 
+    print(class, talent)
+
     self.TalentFrame:SetTalent(class, talent)
 
     for i = 1, GetNumTalentTabs() do

@@ -44,16 +44,20 @@ do
 end
 
 function Ala:Decode(code)
+    print(code)
     local data = ''
     local revCodeTable = REV_CODE_TABLE
     local classIndex = revCodeTable[strsub(code, 1, 1)]
     if not classIndex then
         return nil
     end
+
     local class = INDEX_TO_CLASS[classIndex]
     if not class then
         return nil
     end
+
+    print(class)
 
     local len = #code
     if len < 3 then
