@@ -69,7 +69,7 @@ end
 local function FillToDropdownAfter(button, text, level)
     local dropdownName = 'DropDownList' .. level
     local dropdown = _G[dropdownName]
-    local index, dropdownItem = FindDropdownItem(dropdown, WHISPER)
+    local index, dropdownItem = FindDropdownItem(dropdown, text)
     if index then
         local x, y = select(4, dropdownItem:GetPoint())
 
@@ -94,8 +94,15 @@ local function FillToDropdownAfter(button, text, level)
 end
 
 hooksecurefunc('UnitPopup_ShowMenu', function(dropdownMenu, which, _, name)
-    if which == 'FRIEND' and UIDROPDOWNMENU_MENU_LEVEL == 1 and not UnitIsUnit('player', Ambiguate(name, 'none')) then
-        FillToDropdownAfter(InspectButton, WHISPER, 1)
+    if not name then
+        return
+    end
+    if UIDROPDOWNMENU_MENU_LEVEL == 1 and not UnitIsUnit('player', Ambiguate(name, 'none')) then
+        if which == 'FRIEND' then
+            FillToDropdownAfter(InspectButton, WHISPER, 1)
+        elseif which == 'RAID' then
+            FillToDropdownAfter(InspectButton, name, 1)
+        end
     end
 end)
 
