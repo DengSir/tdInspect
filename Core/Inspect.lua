@@ -339,8 +339,6 @@ function Inspect:OnAlaCommand(_, msg, channel, sender)
         local name = ns.GetFullName(sender)
         local db = self:BuildCharacterDb(name)
 
-        print(class)
-
         db.class = class
         db.level = level
         db.talent = talent

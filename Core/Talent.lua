@@ -14,13 +14,10 @@ local GetNumTalentTabs = GetNumTalentTabs
 local Talent = ns.Addon:NewClass('Talent')
 
 function Talent:Constructor(class, data)
-    print(class, data)
     self.talents = {}
     self.class = class
     self.data = ns.Talents[class]
     self:ParseTalent(data)
-
-    print(self.data)
 end
 
 function Talent:ParseTalent(data)

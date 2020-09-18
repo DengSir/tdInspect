@@ -46,7 +46,6 @@ function ns.ItemLinkToId(link)
 end
 
 ns.GetClassFileName = memorize(function(classId)
-    print(classId)
     if not classId then
         return
     end
@@ -201,7 +200,7 @@ function ns.FixInspectItemTooltip()
                     firstBonusLine = i
                 end
 
-                if not count then
+                if not count and firstBonusLine then
                     count = ns.SetsBouns[id] and ns.SetsBouns[id][i - firstBonusLine + 1]
                 end
 
