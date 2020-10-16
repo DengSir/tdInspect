@@ -2,6 +2,9 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/21/2020, 12:59:07 PM
+--
+-- Code from https://github.com/alexqu0822/alaTalentEmu/blob/master/alaShared/core.lua
+--
 
 ---@type ns
 local ns = select(2, ...)
