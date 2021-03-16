@@ -2,7 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/17/2020, 11:41:32 PM
-
+--
 ---@type ns
 local ns = select(2, ...)
 
@@ -21,9 +21,21 @@ local FriendsDropDown = FriendsDropDown
 
 UnitPopupButtons.INSPECT.dist = nil
 
-local function GetDropdownUnitName()
+local function GetDropdownUnit()
     local menu = UIDROPDOWNMENU_INIT_MENU
-    return menu and menu == FriendsDropDown and ns.GetFullName(menu.chatTarget)
+    if not menu or menu ~= FriendsDropDown then
+        return
+    end
+
+    if menu.which == 'FRIEND' then
+        return nil, ns.GetFullName(menu.chatTarget)
+    elseif menu.which == 'RAID' then
+        if menu.unit then
+            return menu.unit, ns.UnitName(menu.unit)
+        elseif menu.name then
+            return ns.GetFullName(menu.name)
+        end
+    end
 end
 
 ---@type Button
@@ -42,9 +54,9 @@ do
 
     InspectButton:SetScript('OnHide', InspectButton.Hide)
     InspectButton:SetScript('OnClick', function()
-        local name = GetDropdownUnitName()
-        if name then
-            ns.Inspect:Query(nil, name)
+        local unit, name = GetDropdownUnit()
+        if unit or name then
+            ns.Inspect:Query(unit, name)
         end
         CloseDropDownMenus()
     end)
