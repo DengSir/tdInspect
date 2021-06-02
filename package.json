@@ -20,6 +20,10 @@
     "got": "^11.1.4"
   },
   "wow": {
-    "name": "tdInspect"
+    "name": "tdInspect",
+    "builds": {
+      "classic": "11307",
+      "bcc": "20501"
+    }
   }
 }

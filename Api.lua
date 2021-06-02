@@ -2,10 +2,9 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 2/9/2020, 1:02:09 PM
+--
 ---@type ns
 local ns = select(2, ...)
-
-local CIS = LibStub('LibClassicItemSets-1.0')
 
 local ipairs = ipairs
 local tonumber = tonumber
@@ -50,7 +49,6 @@ ns.GetClassFileName = memorize(function(classId)
         return
     end
     local classInfo = C_CreatureInfo.GetClassInfo(classId)
-    dump(classInfo)
     return classInfo and classInfo.classFile
 end)
 
@@ -96,6 +94,13 @@ function ns.UnitName(unit)
     return ns.GetFullName(UnitFullName(unit))
 end
 
+-- @classic@
+local SUMMARY_LINE = 3
+-- @end-classic@
+-- @bcc@
+local SUMMARY_LINE = 2
+-- @end-bcc@
+
 local summaryCache = {}
 function ns.GetTalentSpellSummary(spellId)
     if summaryCache[spellId] == nil then
@@ -104,25 +109,15 @@ function ns.GetTalentSpellSummary(spellId)
         TipScaner:SetSpellByID(spellId)
 
         local n = TipScaner:NumLines()
-        local passive
-        for i = 1, n do
-            if TipScaner.L[i]:GetText() == SPELL_PASSIVE then
-                passive = true
-                break
-            end
-        end
+        local passive = IsPassiveSpell(spellId)
 
         if not passive then
             summaryCache[spellId] = false
-        elseif n > 2 then
+        elseif n >= SUMMARY_LINE then
             summaryCache[spellId] = TipScaner.L[n]:GetText()
         end
     end
     return summaryCache[spellId]
-end
-
-function ns.IsTalentPassive(spellId)
-    return ns.GetTalentSpellSummary(spellId) == false
 end
 
 local function MatchBonus(text)
@@ -140,39 +135,22 @@ function ns.FixInspectItemTooltip()
         return
     end
 
-    local setId = CIS:GetItemSetForItemID(id)
+    local setId = select(16, GetItemInfo(id))
     if not setId then
         return
     end
 
-    local setName = CIS:GetSetName(setId)
+    local setName = GetItemSetInfo(setId)
     if not setName then
         return
     end
 
-    local items = CIS:GetItems(setId)
-    if not items then
-        return
-    end
-
-    local itemNames = {}
-    local equippedCount = 0
-    local itemsCount = #items
+    local equippedCount, itemNames = ns.Inspect:GetEquippedSetItems(setId)
     local setNameLinePattern = '^(' .. setName .. '.+)(%d+)/(%d+)(.+)$'
-
-    for _, itemId in ipairs(items) do
-        if ns.Inspect:IsItemEquipped(itemId) then
-            local name = GetItemInfo(itemId)
-            if not name then
-                return
-            end
-            itemNames[name] = (itemNames[name] or 0) + 1
-            equippedCount = equippedCount + 1
-        end
-    end
 
     local setLine
     local firstBonusLine
+    local inSetLine = true
 
     for i = 2, GameTooltip:NumLines() do
         local textLeft = _G['GameTooltipTextLeft' .. i]
@@ -184,14 +162,19 @@ function ns.FixInspectItemTooltip()
                 setLine = i
                 textLeft:SetText(prefix .. equippedCount .. '/' .. maxCount .. suffix)
             end
-        elseif i - setLine <= itemsCount + 1 then
+        elseif inSetLine then
             local line = text:trim()
-            local n = itemNames[line]
-            if n and n > 0 then
-                textLeft:SetTextColor(1, 1, 0.6)
-                itemNames[line] = n > 1 and n - 1 or nil
+
+            if line == '' then
+                inSetLine = false
             else
-                textLeft:SetTextColor(0.5, 0.5, 0.5)
+                local n = itemNames[line]
+                if n and n > 0 then
+                    textLeft:SetTextColor(1, 1, 0.6)
+                    itemNames[line] = n > 1 and n - 1 or nil
+                else
+                    textLeft:SetTextColor(0.5, 0.5, 0.5)
+                end
             end
         else
             local summary, count = MatchBonus(text)

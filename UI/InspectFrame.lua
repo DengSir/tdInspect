@@ -2,7 +2,6 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/18/2020, 1:10:21 PM
-
 ---@type ns
 local ns = select(2, ...)
 
@@ -49,7 +48,27 @@ function InspectFrame:Constructor()
     self.Portrait = InspectFramePortrait
     self.Name = InspectNameText
     self.PaperDoll = ns.UI.PaperDoll:Bind(InspectPaperDollFrame)
-    self.TalentFrame = ns.UI.InspectTalent:Bind(self:AddTab(TALENT))
+    self.TalentFrame = ns.UI.InspectTalent:Bind(self:CreateTabFrame{
+        -- topLeft = [[Interface\FriendsFrame\UI-FRIENDSFRAME-TOPLEFT]],
+        -- topRight = [[Interface\PaperDollInfoFrame\UI-Character-ClassSkillsTab-R1]],
+        -- bottomLeft = [[Interface\FriendsFrame\UI-FriendsFrame-Pending-BotLeft]],
+        -- bottomRight = [[Interface\FriendsFrame\UI-FriendsFrame-Pending-BotRight]],
+    })
+    -- @classic@
+    self:AddTab(TALENT, self.TalentFrame)
+    -- @end-classic@
+    --[[@non-classic@
+    InspectTalentFrame:Hide()
+    InspectTalentFrame.Show = function()
+        self.TalentFrame:Show()
+    end
+    InspectTalentFrame.Hide = function()
+        self.TalentFrame:Hide()
+    end
+    InspectTalentFrame.SetShown = function(_, shown)
+        self.TalentFrame:SetShown(shown)
+    end
+    --@end-non-classic@]]
 
     self.Portrait:SetSize(64, 64)
 end
@@ -78,7 +97,7 @@ local function TabOnEnter(self)
     GameTooltip:SetText(self.text, 1.0, 1.0, 1.0)
 end
 
-function InspectFrame:AddTab(text)
+function InspectFrame:AddTab(text, frame)
     local id = self.numTabs + 1
     local tab = CreateFrame('Button', 'InspectFrameTab' .. id, self, 'CharacterFrameTabButtonTemplate')
     tab:SetPoint('LEFT', _G['InspectFrameTab' .. self.numTabs], 'RIGHT', -16, 0)
@@ -87,9 +106,16 @@ function InspectFrame:AddTab(text)
     tab:SetScript('OnClick', InspectFrameTab_OnClick)
     tab:SetScript('OnLeave', GameTooltip_Hide)
     tab:SetScript('OnEnter', TabOnEnter)
+    tab:SetFrameLevel(InspectFrameTab1:GetFrameLevel())
     tab.text = text
-    PanelTemplates_SetNumTabs(self, 3)
+    PanelTemplates_SetNumTabs(self, id)
 
+    self.tabFrames[id] = frame or self:CreateTabFrame()
+
+    return frame
+end
+
+function InspectFrame:CreateTabFrame(bgs)
     ---@type Frame
     local frame = CreateFrame('Frame', nil, self)
     frame:SetAllPoints(true)
@@ -98,24 +124,22 @@ function InspectFrame:AddTab(text)
     local tl = frame:CreateTexture(nil, 'BACKGROUND')
     tl:SetSize(256, 256)
     tl:SetPoint('TOPLEFT', 2, -1)
-    tl:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-TopLeft]])
+    tl:SetTexture(bgs and bgs.topLeft or [[Interface\PaperDollInfoFrame\UI-Character-General-TopLeft]])
 
     local tr = frame:CreateTexture(nil, 'BACKGROUND')
     tr:SetSize(128, 256)
     tr:SetPoint('TOPLEFT', 258, -1)
-    tr:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-TopRight]])
+    tr:SetTexture(bgs and bgs.topRight or [[Interface\PaperDollInfoFrame\UI-Character-General-TopRight]])
 
     local bl = frame:CreateTexture(nil, 'BACKGROUND')
     bl:SetSize(256, 256)
     bl:SetPoint('TOPLEFT', 2, -257)
-    bl:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft]])
+    bl:SetTexture(bgs and bgs.bottomLeft or [[Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft]])
 
     local br = frame:CreateTexture(nil, 'BACKGROUND')
     br:SetSize(128, 256)
     br:SetPoint('TOPLEFT', 258, -257)
-    br:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-General-BottomRight]])
-
-    self.tabFrames[id] = frame
+    br:SetTexture(bgs and bgs.bottomRight or [[Interface\PaperDollInfoFrame\UI-Character-General-BottomRight]])
 
     return frame
 end

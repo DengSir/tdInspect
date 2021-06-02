@@ -1,4 +1,3 @@
-
 ---@type ns
 local ns = select(2, ...)
 
@@ -10,12 +9,12 @@ local rshift = bit.rshift
 local GameTooltip = GameTooltip
 
 ---@type tdInspectTalentFrame
-local TalentFrame = ns.Addon:NewClass('UI.TalentFrame', 'Frame')
+local TalentFrame = ns.Addon:NewClass('UI.TalentFrame', 'ScrollFrame')
 
 local MAX_TALENT_TABS = 3
-local MAX_NUM_TALENT_TIERS = 7
+local MAX_NUM_TALENT_TIERS = 10
 local NUM_TALENT_COLUMNS = 4
-local MAX_NUM_TALENTS = 28
+local MAX_NUM_TALENTS = 40
 local PLAYER_TALENTS_PER_TIER = 5
 
 local TALENT_BUTTON_SIZE_DEFAULT = 32
@@ -73,7 +72,25 @@ function TalentFrame:Constructor()
     BottomRight:SetPoint('TOPLEFT', TopLeft, 'BOTTOMRIGHT')
     BottomRight:SetTexCoord(0, 44 / 64, 0, 74 / 128)
 
-    local ArrowParent = CreateFrame('Frame', nil, self)
+    local ScrollChild = CreateFrame('Frame', nil, self)
+    ScrollChild:SetPoint('TOPLEFT')
+    ScrollChild:SetSize(1, 1)
+    self:SetScrollChild(ScrollChild)
+    self.ScrollChild = ScrollChild
+
+    local t = self:CreateTexture(nil, 'OVERLAY')
+    t:SetSize(31, 256)
+    t:SetPoint('TOPLEFT', self, 'TOPRIGHT', -2, 5)
+    t:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-ScrollBar]])
+    t:SetTexCoord(0, 0.484375, 0, 1)
+
+    t = self:CreateTexture(nil, 'OVERLAY')
+    t:SetSize(31, 106)
+    t:SetPoint('BOTTOMLEFT', self, 'BOTTOMRIGHT', -2, -2)
+    t:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-ScrollBar]])
+    t:SetTexCoord(0.515625, 1, 0, 0.4140625)
+
+    local ArrowParent = CreateFrame('Frame', nil, self.ScrollChild)
     ArrowParent:SetAllPoints(true)
     ArrowParent:SetFrameLevel(self:GetFrameLevel() + 100)
 
@@ -103,7 +120,7 @@ function TalentFrame:Constructor()
 end
 
 local function TalentOnEnter(button)
-    button:GetParent():ShowTooltip(button)
+    button:GetParent():GetParent():ShowTooltip(button)
 end
 
 local function AddLine(line)
@@ -128,7 +145,7 @@ function TalentFrame:ShowTooltip(button)
 
     GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
 
-    if ns.IsTalentPassive(spellId) then
+    if not IsPassiveSpell(spellId) then
         GameTooltip:SetSpellByID(spellId)
     else
         AddLine(name)
@@ -147,7 +164,7 @@ end
 
 function TalentFrame:GetTalentButton(i)
     if not self.buttons[i] then
-        local button = CreateFrame('Button', nil, self, 'ItemButtonTemplate')
+        local button = CreateFrame('Button', nil, self.ScrollChild, 'ItemButtonTemplate')
         button:SetSize(self.talentButtonSize, self.talentButtonSize)
         button:SetID(i)
         button:SetScript('OnEnter', TalentOnEnter)
@@ -398,7 +415,7 @@ end
 function TalentFrame:GetBranchTexture()
     local texture = self.brancheTextures[self.textureIndex]
     if not texture then
-        texture = self:CreateTexture(nil, 'ARTWORK')
+        texture = self.ScrollChild:CreateTexture(nil, 'ARTWORK')
         texture:SetSize(30, 30)
         texture:SetTexture([[Interface\TalentFrame\UI-TalentBranches]])
         self.brancheTextures[self.textureIndex] = texture
@@ -610,7 +627,7 @@ function TalentFrame:SetTalentTab(tabIndex)
     self:Refresh()
 end
 
-function TalentFrame:SetTalent(class, data)
-    self.talent = ns.Talent:New(class, data)
+function TalentFrame:SetTalent(talent)
+    self.talent = talent
     self:Refresh()
 end

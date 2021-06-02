@@ -2,7 +2,6 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/17/2020, 11:08:38 PM
-
 ---@type ns
 local ns = select(2, ...)
 
@@ -117,6 +116,22 @@ function Inspect:IsItemEquipped(itemId)
     end
 end
 
+function Inspect:GetEquippedSetItems(id)
+    local count = 0
+    local items = {}
+    for slot = 1, 18 do
+        local link = self:GetItemLink(slot)
+        if link then
+            local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, setId = GetItemInfo(link)
+            if setId and setId == id then
+                count = count + 1
+                items[name] = (items[name] or 0) + 1
+            end
+        end
+    end
+    return count, items
+end
+
 function Inspect:GetDBValue(key)
     local db = self.db[self.unitName]
     return db and db[key]
@@ -177,13 +192,19 @@ function Inspect:Query(unit, name)
 
     self:SetUnit(unit, name)
 
+    -- @classic@
     local queryTalent = true
-    local queryEquip = true
+    -- @end-classic@
+    --[[@non-classic@
+    local queryTalent = false
+    --@end-non-classic@]]
+    local queryEquip = false
 
     if unit and CheckInteractDistance(unit, 1) and CanInspect(unit) then
         NotifyInspect(unit)
     else
         queryEquip = true
+        queryTalent = true
     end
 
     if queryTalent or queryEquip then
@@ -192,12 +213,10 @@ function Inspect:Query(unit, name)
 
     if queryTalent then
         self:SendCommMessage(ALA_PREFIX, '_q_tal', 'WHISPER', self.unitName)
-        self:SendCommMessage(ALA_PREFIX, '_query', 'WHISPER', self.unitName)
     end
 
     if queryEquip then
         self:SendCommMessage(ALA_PREFIX, '_q_equ', 'WHISPER', self.unitName)
-        self:SendCommMessage(ALA_PREFIX, '_queeq', 'WHISPER', self.unitName)
     end
 
     self:CheckQuery()
@@ -212,6 +231,27 @@ end
 function Inspect:BuildCharacterDb(name)
     self.db[name] = self.db[name] or {}
     return self.db[name]
+end
+
+local function PackTalent(inspect)
+    local talents = {}
+    for i = 1, GetNumTalentTabs(inspect) do
+        for j = 1, GetNumTalents(i, inspect) do
+            tinsert(talents, tostring(select(5, GetTalentInfo(i, j, inspect)) or 0))
+        end
+    end
+    return (tconcat(talents):gsub('0+$', ''))
+end
+
+local function PackEquip()
+    local equips = {}
+    for i = 1, 18 do
+        local link = GetInventoryItemLink('player', i)
+        if link then
+            equips[i] = link:match('item:([%d:]+)'):gsub(':+$', '')
+        end
+    end
+    return equips
 end
 
 function Inspect:INSPECT_READY(_, guid)
@@ -244,32 +284,12 @@ function Inspect:INSPECT_READY(_, guid)
         db.class = select(3, UnitClass(self.unit))
         db.race = select(3, UnitRace(self.unit))
         db.level = UnitLevel(self.unit)
+        db.talent = PackTalent(true)
 
         db.timestamp = time()
 
         self:SendMessage('INSPECT_READY', self.unit, name)
     end
-end
-
-local function PackTalent()
-    local talents = {}
-    for i = 1, GetNumTalentTabs() do
-        for j = 1, GetNumTalents(i) do
-            tinsert(talents, tostring(select(5, GetTalentInfo(i, j)) or 0))
-        end
-    end
-    return (tconcat(talents):gsub('0+$', ''))
-end
-
-local function PackEquip()
-    local equips = {}
-    for i = 1, 18 do
-        local link = GetInventoryItemLink('player', i)
-        if link then
-            equips[i] = link:match('item:([%d:]+)'):gsub(':+$', '')
-        end
-    end
-    return equips
 end
 
 function Inspect:OnComm(cmd, sender, ...)
