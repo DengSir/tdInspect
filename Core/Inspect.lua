@@ -94,6 +94,7 @@ function Inspect:GetItemLink(slot)
     local link
     if self.unit then
         link = GetInventoryItemLink(self.unit, slot)
+
     end
     if not link and self.unitName then
         local db = self.db[self.unitName]
@@ -119,17 +120,38 @@ end
 function Inspect:GetEquippedSetItems(id)
     local count = 0
     local items = {}
+    local overrideNames = {}
+    local slotItems = ns.ItemSets[id].slots
+
     for slot = 1, 18 do
         local link = self:GetItemLink(slot)
         if link then
-            local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, setId = GetItemInfo(link)
+            local name, _, _, _, _, _, _, _, equipLoc, _, _, _, _, _, _, setId = GetItemInfo(link)
             if setId and setId == id then
+                local baseName
+                local itemId = ns.ItemLinkToId(link)
+
+                if equipLoc == 'INVTYPE_ROBE' then
+                    equipLoc = 'INVTYPE_CHEST'
+                end
+
+                local isBaseItem = slotItems[equipLoc][itemId]
+
+                if not isBaseItem then
+                    local baseItemId = next(slotItems[equipLoc])
+                    baseName = GetItemInfo(baseItemId)
+                    if baseName then
+                        overrideNames[baseName] = name
+                    end
+                end
+
                 count = count + 1
-                items[name] = (items[name] or 0) + 1
+                baseName = baseName or name
+                items[baseName] = (items[baseName] or 0) + 1
             end
         end
     end
-    return count, items
+    return count, items, overrideNames
 end
 
 function Inspect:GetDBValue(key)

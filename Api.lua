@@ -125,7 +125,6 @@ local function MatchBonus(text)
     if count then
         return summary, tonumber(count)
     end
-
     return text:match(ITEM_SET_BONUS_P)
 end
 
@@ -145,12 +144,13 @@ function ns.FixInspectItemTooltip()
         return
     end
 
-    local equippedCount, itemNames = ns.Inspect:GetEquippedSetItems(setId)
+    local equippedCount, itemNames, overrideNames = ns.Inspect:GetEquippedSetItems(setId)
     local setNameLinePattern = '^(' .. setName .. '.+)(%d+)/(%d+)(.+)$'
 
     local setLine
     local firstBonusLine
     local inSetLine = true
+    local bonus = ns.ItemSets[setId].bouns
 
     for i = 2, GameTooltip:NumLines() do
         local textLeft = _G['GameTooltipTextLeft' .. i]
@@ -170,6 +170,11 @@ function ns.FixInspectItemTooltip()
             else
                 local n = itemNames[line]
                 if n and n > 0 then
+                    local overrideName = overrideNames[line]
+                    if overrideName and line ~= overrideName then
+                        textLeft:SetText(text:sub(1, #text - #line) .. overrideName)
+                    end
+
                     textLeft:SetTextColor(1, 1, 0.6)
                     itemNames[line] = n > 1 and n - 1 or nil
                 else
@@ -184,7 +189,7 @@ function ns.FixInspectItemTooltip()
                 end
 
                 if not count and firstBonusLine then
-                    count = ns.SetsBouns[id] and ns.SetsBouns[id][i - firstBonusLine + 1]
+                    count = bonus[i - firstBonusLine + 1]
                 end
 
                 if count then

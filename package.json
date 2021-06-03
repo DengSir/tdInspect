@@ -25,5 +25,8 @@
       "classic": "11307",
       "bcc": "20501"
     }
+  },
+  "dependencies": {
+    "xmldom": "^0.6.0"
   }
 }

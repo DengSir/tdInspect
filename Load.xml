@@ -8,6 +8,8 @@
     <Script file="Data\Data.lua" />
     <Script file="Data\Talents.lua" build="classic" />
     <Script file="Data\Talents.BCC.lua" build="bcc" />
+    <Script file="Data\ItemSet.lua" build="classic" />
+    <Script file="Data\ItemSet.BCC.lua" build="bcc" />
 
     <Script file="Core\Inspect.lua" />
     <Script file="Core\Hook.lua" />
