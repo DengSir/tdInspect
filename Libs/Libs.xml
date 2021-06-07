@@ -9,4 +9,5 @@
     <!-- <Include file="AceLocale-3.0\AceLocale-3.0.xml"/> -->
 
     <Include file="LibClass-2.0\LibClass-2.0.xml"/>
+	<Include file="LibTooltipExtra-1.0\LibTooltipExtra-1.0.xml" />
 </Ui>

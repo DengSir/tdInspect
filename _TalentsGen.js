@@ -141,7 +141,8 @@ select(2,...).TalentMake()`);
                 if (talent.requires) {
                     for (const req of talent.requires) {
                         const reqTalent = Talents[tabId][req.id];
-                        file.write(`P(${reqTalent.row + 1},${reqTalent.col + 1})`);
+                        const reqIndex = talents.indexOf(reqTalent) + 1;
+                        file.write(`P(${reqTalent.row + 1},${reqTalent.col + 1},${reqIndex})`);
                     }
                 }
             }

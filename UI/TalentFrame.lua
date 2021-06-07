@@ -5,8 +5,7 @@ local min = min
 local max = max
 local huge = math.huge
 local rshift = bit.rshift
-
-local GameTooltip = GameTooltip
+local ripairs = ripairs or ipairs_reverse
 
 ---@type tdInspectTalentFrame
 local TalentFrame = ns.Addon:NewClass('UI.TalentFrame', 'ScrollFrame')
@@ -40,6 +39,8 @@ local TALENT_ARROW_TEXTURECOORDS = {
     right = {[1] = {1.0, 0.5, 0, 0.5}, [-1] = {1.0, 0.5, 0.5, 1.0}},
     left = {[1] = {0.5, 1.0, 0, 0.5}, [-1] = {0.5, 1.0, 0.5, 1.0}},
 }
+
+local GameTooltip = LibStub('LibTooltipExtra-1.0').GameTooltip
 
 function TalentFrame:Constructor()
     self.tabIndex = 1
@@ -123,12 +124,12 @@ local function TalentOnEnter(button)
     button:GetParent():GetParent():ShowTooltip(button)
 end
 
-local function AddLine(line)
-    GameTooltip:AddLine(line, 1, 1, 1)
+local function AddLine(line, r, g, b)
+    GameTooltip:AddLine(line, r or 1, g or 1, b or 1)
 end
 
 local function AddSpellSummary(spellId)
-    GameTooltip:AddLine(ns.GetTalentSpellSummary(spellId), 1, 0.82, 0, true)
+    GameTooltip:AddLine(GetSpellDescription(spellId), 1, 0.82, 0, true)
 end
 
 function TalentFrame:OnSizeChanged(width, height)
@@ -138,6 +139,10 @@ function TalentFrame:OnSizeChanged(width, height)
     self.BottomRight:SetSize(width * 44 / 300, height * 74 / 330)
 end
 
+local TOOLTIP_TALENT_RANK = HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(TOOLTIP_TALENT_RANK)
+local TOOLTIP_TALENT_PREREQ = RED_FONT_COLOR:WrapTextInColorCode(TOOLTIP_TALENT_PREREQ)
+local TOOLTIP_TALENT_TIER_POINTS = RED_FONT_COLOR:WrapTextInColorCode(TOOLTIP_TALENT_TIER_POINTS)
+
 function TalentFrame:ShowTooltip(button)
     local id = button:GetID()
     local name, _, row, _, rank, maxRank = self.talent:GetTalentInfo(self.tabIndex, id)
@@ -145,11 +150,38 @@ function TalentFrame:ShowTooltip(button)
 
     GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
 
+    local lines = {}
+    local prereqs = self.talent:GetTalentPrereqs(self.tabIndex, id)
+    if prereqs then
+        for _, req in ipairs(prereqs) do
+            local reqName, _, _, _, rank, reqMaxRank = self.talent:GetTalentInfo(self.tabIndex, req.reqIndex)
+            if reqName and rank < reqMaxRank then
+                tinsert(lines, format(TOOLTIP_TALENT_PREREQ, reqMaxRank, reqName))
+            end
+        end
+    end
+
+    if rank == 0 and row > 1 then
+        local tabName = self.talent:GetTabInfo(self.tabIndex)
+        tinsert(lines, format(TOOLTIP_TALENT_TIER_POINTS, (row - 1) * 5, tabName))
+    end
+
     if not IsPassiveSpell(spellId) then
         GameTooltip:SetSpellByID(spellId)
+
+        for _, line in ripairs(lines) do
+            GameTooltip:AppendLineFront(2, line)
+        end
+
+        GameTooltip:AppendLineFront(2, TOOLTIP_TALENT_RANK:format(rank, maxRank))
     else
         AddLine(name)
         AddLine(TOOLTIP_TALENT_RANK:format(rank, maxRank))
+
+        for _, req in ipairs(lines) do
+            AddLine(req, RED_FONT_COLOR:GetRGB())
+        end
+
         AddSpellSummary(spellId)
 
         if rank > 0 and rank < maxRank then

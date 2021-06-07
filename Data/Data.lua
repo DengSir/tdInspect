@@ -41,11 +41,11 @@ function ns.TalentMake()
         talent.ranks = ranks
     end
 
-    local function FillTalentPrereq(row, column)
+    local function FillTalentPrereq(row, column, reqIndex)
         local tab = CURRENT[#CURRENT]
         local talent = tab.talents[#tab.talents]
         talent.prereqs = talent.prereqs or {}
-        tinsert(talent.prereqs, {row = row, column = column})
+        tinsert(talent.prereqs, {row = row, column = column, reqIndex = reqIndex})
     end
 
     local function SetTabName(locale, name)

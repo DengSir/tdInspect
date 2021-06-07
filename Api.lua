@@ -94,32 +94,6 @@ function ns.UnitName(unit)
     return ns.GetFullName(UnitFullName(unit))
 end
 
--- @classic@
-local SUMMARY_LINE = 3
--- @end-classic@
--- @bcc@
-local SUMMARY_LINE = 2
--- @end-bcc@
-
-local summaryCache = {}
-function ns.GetTalentSpellSummary(spellId)
-    if summaryCache[spellId] == nil then
-        local TipScaner = ns.TipScaner
-        TipScaner:Clear()
-        TipScaner:SetSpellByID(spellId)
-
-        local n = TipScaner:NumLines()
-        local passive = IsPassiveSpell(spellId)
-
-        if not passive then
-            summaryCache[spellId] = false
-        elseif n >= SUMMARY_LINE then
-            summaryCache[spellId] = TipScaner.L[n]:GetText()
-        end
-    end
-    return summaryCache[spellId]
-end
-
 local function MatchBonus(text)
     local count, summary = text:match(ITEM_SET_BONUS_GRAY_P)
     if count then
