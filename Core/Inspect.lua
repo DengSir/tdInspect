@@ -208,6 +208,10 @@ function Inspect:GetLastUpdate()
 end
 
 function Inspect:Query(unit, name)
+    if unit and not UnitIsPlayer(unit) then
+        return
+    end
+
     InspectFrame_LoadUI()
     HideUIPanel(InspectFrame)
     InspectSwitchTabs(1)
