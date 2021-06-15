@@ -2,7 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/18/2020, 11:25:23 AM
-
+--
 ---@type ns
 local ns = select(2, ...)
 
@@ -20,13 +20,18 @@ local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0', 'Ace
 ns.Addon = Addon
 
 function Addon:OnInitialize()
-    for class, tabs in pairs(ns.Talents) do
-        for _, tab in ipairs(tabs) do
-            for _, talent in ipairs(tab.talents) do
-                talent.name, _, talent.icon = GetSpellInfo(talent.ranks[1])
-            end
-        end
-    end
+    ---@class tdInspectProfile
+    local profile = { --
+        global = { --
+            userCache = {},
+        },
+        profile = { --
+            showModel = true,
+        },
+    }
+
+    ---@type tdInspectProfile
+    self.db = LibStub('AceDB-3.0'):New('TDDB_INSPECT2', profile, true)
 end
 
 function Addon:OnEnable()

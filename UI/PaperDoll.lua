@@ -75,8 +75,10 @@ function PaperDoll:Constructor()
         ToggleButton:SetHighlightFontObject('GameFontHighlightSmall')
         ToggleButton:SetText(L['Show Modal'])
 
-        ToggleButton:SetScript('OnClick', function()
-            return self:UpdateInset()
+        ToggleButton:SetScript('OnClick', function(ToggleButton)
+            ns.Addon.db.profile.showModel = not not ToggleButton:GetChecked()
+
+            self:UpdateInset()
         end)
     end
 
@@ -107,6 +109,8 @@ end
 function PaperDoll:OnShow()
     self:RegisterMessage('INSPECT_READY', 'Update')
     self:RegisterEvent('UNIT_LEVEL', 'UpdateInfo')
+    self:UpdateControls()
+    self:UpdateInset()
     self:UpdateInfo()
     self:Update()
 end
@@ -121,6 +125,10 @@ function PaperDoll:CreateInsetFrame()
     frame:SetPoint('TOPLEFT', 65, -76)
     frame:SetPoint('BOTTOMRIGHT', -85, 115)
     return frame
+end
+
+function PaperDoll:UpdateControls()
+    self.ToggleButton:SetChecked(ns.Addon.db.profile.showModel)
 end
 
 function PaperDoll:Update()
@@ -155,7 +163,7 @@ function PaperDoll:UpdateInfo()
 end
 
 function PaperDoll:UpdateInset()
-    local checked = self.ToggleButton:GetChecked()
+    local checked = ns.Addon.db.profile.showModel
     self.ModalFrame:SetShown(checked)
     self.EquipFrame:SetShown(not checked)
 end

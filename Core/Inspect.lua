@@ -41,7 +41,7 @@ local Inspect = ns.Addon:NewModule('Inspect', 'AceEvent-3.0', 'AceComm-3.0')
 
 function Inspect:OnInitialize()
     self.unitName = nil
-    self.db = {}
+    self.db = ns.Addon.db.global.userCache
 end
 
 function Inspect:OnEnable()
@@ -252,6 +252,7 @@ end
 
 function Inspect:BuildCharacterDb(name)
     self.db[name] = self.db[name] or {}
+    self.db[name].timestamp = time()
     return self.db[name]
 end
 
@@ -308,8 +309,6 @@ function Inspect:INSPECT_READY(_, guid)
         db.level = UnitLevel(self.unit)
         db.talent = PackTalent(true)
 
-        db.timestamp = time()
-
         self:SendMessage('INSPECT_READY', self.unit, name)
     end
 end
@@ -329,7 +328,6 @@ function Inspect:OnComm(cmd, sender, ...)
         local class, race, level, talent, equips = ...
 
         local db = self:BuildCharacterDb(sender)
-        db.timestamp = time()
         db.class = class
         db.race = race
         db.level = level
@@ -365,8 +363,6 @@ function Inspect:OnAlaCommand(_, msg, channel, sender)
                 db[slot] = link
             end
         end
-
-        db.timestamp = time()
 
         if name == self.unitName then
             self:SendMessage('INSPECT_READY', nil, name)

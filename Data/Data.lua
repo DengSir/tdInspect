@@ -38,7 +38,9 @@ function ns.TalentMake()
     local function FillTalentRanks(ranks)
         local tab = CURRENT[#CURRENT]
         local talent = tab.talents[#tab.talents]
+        local _
         talent.ranks = ranks
+        talent.name, _, talent.icon = GetSpellInfo(ranks[1])
     end
 
     local function FillTalentPrereq(row, column, reqIndex)
