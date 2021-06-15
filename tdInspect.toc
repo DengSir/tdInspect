@@ -1,4 +1,8 @@
-## Interface: 11304
+#@debug@
+## Interface: 11306
+## Version: 1.0.0
+#@end-debug@
+#@project-interface@
 ## Title: tdInspect
 ## Author: Dencer
 ## Version: @project-version@
