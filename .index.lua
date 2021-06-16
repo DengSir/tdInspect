@@ -12,7 +12,7 @@
 ---@class UI
 ---@field BaseItem tdInspectBaseItem
 ---@field EquipFrame tdInspectEquipFrame
----@field ModalFrame tdInspectModalFrame
+---@field ModelFrame tdInspectModelFrame
 ---@field EquipItem tdInspectEquipItem
 ---@field SlotItem tdInspectSlotItem
 ---@field PaperDoll tdInspectPaperDoll
@@ -29,7 +29,7 @@
 
 ---@class tdInspectEquipItem: tdInspectBaseItem
 
----@class tdInspectModalFrame: Frame
+---@class tdInspectModelFrame: Frame
 
 ---@class tdInspectPaperDoll: Frame
 ---@field private buttons tdInspectSlotItem[]

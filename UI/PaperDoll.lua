@@ -99,7 +99,7 @@ function PaperDoll:Constructor()
     self.LastUpdate = LastUpdate
     self.ToggleButton = ToggleButton
     self.LevelText = InspectLevelText
-    self.ModalFrame = ns.UI.ModalFrame:Bind(self:CreateInsetFrame())
+    self.ModelFrame = ns.UI.ModelFrame:Bind(self:CreateInsetFrame())
     self.EquipFrame = ns.UI.EquipFrame:Bind(self:CreateInsetFrame())
 
     self:SetScript('OnShow', self.OnShow)
@@ -164,6 +164,6 @@ end
 
 function PaperDoll:UpdateInset()
     local checked = ns.Addon.db.profile.showModel
-    self.ModalFrame:SetShown(checked)
+    self.ModelFrame:SetShown(checked)
     self.EquipFrame:SetShown(not checked)
 end

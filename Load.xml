@@ -15,13 +15,12 @@
     <Script file="Core\Hook.lua" />
     <Script file="Core\Talent.lua" />
     <Script file="Core\Ala.lua" />
-    <Script file="Core\TipScaner.lua" />
 
     <Script file="UI\BaseItem.lua" />
     <Script file="UI\SlotItem.lua" />
     <Script file="UI\EquipItem.lua" />
     <Script file="UI\EquipFrame.lua" />
-    <Script file="UI\ModalFrame.lua" />
+    <Script file="UI\ModelFrame.lua" />
     <Script file="UI\PaperDoll.lua" />
     <Script file="UI\InspectFrame.lua" />
     <Script file="UI\TalentFrame.lua" />
