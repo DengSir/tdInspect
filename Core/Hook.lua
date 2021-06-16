@@ -125,12 +125,15 @@ hooksecurefunc('UnitPopup_OnUpdate', function()
         return
     end
 
-    if UnitIsConnected(dropdown.unit) then
-        return
+    if not UnitIsConnected(dropdown.unit) then
+        local i = FindDropdownItem(DropDownList1, INSPECT)
+        UIDropDownMenu_DisableButton(1, i)
     end
 
-    local i = FindDropdownItem(DropDownList1, INSPECT)
-    UIDropDownMenu_DisableButton(1, i)
+    if UnitIsDeadOrGhost(dropdown.unit) then
+        local i = FindDropdownItem(DropDownList1, INSPECT)
+        UIDropDownMenu_EnableButton(1, i)
+    end
 end)
 
 function InspectUnit(unit)

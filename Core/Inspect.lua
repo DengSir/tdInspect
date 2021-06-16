@@ -226,7 +226,7 @@ function Inspect:Query(unit, name)
     --@end-non-classic@]]
     local queryEquip = false
 
-    if unit and CheckInteractDistance(unit, 1) and CanInspect(unit) then
+    if unit and CheckInteractDistance(unit, 1) and CanInspect(unit) and not UnitIsDeadOrGhost(unit) then
         NotifyInspect(unit)
     else
         queryEquip = true
