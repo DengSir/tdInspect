@@ -10,7 +10,7 @@ local _
 local pairs, ipairs = pairs, ipairs
 
 local GetSpellInfo = GetSpellInfo
-local ShowUIPanel = ShowUIPanel
+local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
 
 ns.UI = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')

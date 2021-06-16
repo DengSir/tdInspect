@@ -4,3 +4,6 @@
 [submodule "Libs/LibTooltipExtra-1.0"]
 	path = Libs/LibTooltipExtra-1.0
 	url = https://github.com/DengSir/LibTooltipExtra-1.0.git
+[submodule "Libs/LibShowUIPanel-1.0"]
+	path = Libs/LibShowUIPanel-1.0
+	url = https://github.com/DengSir/LibShowUIPanel-1.0.git
