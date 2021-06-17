@@ -2,7 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/18/2020, 1:22:16 PM
-
+--
 ---@type ns
 local ns = select(2, ...)
 
@@ -29,7 +29,7 @@ function PaperDoll:Constructor()
 
     self.buttons = {}
 
-    for _, button in ipairs{
+    for _, button in ipairs {
         InspectHeadSlot, InspectNeckSlot, InspectShoulderSlot, InspectBackSlot, InspectChestSlot, InspectShirtSlot,
         InspectTabardSlot, InspectWristSlot, InspectHandsSlot, InspectWaistSlot, InspectLegsSlot, InspectFeetSlot,
         InspectFinger0Slot, InspectFinger1Slot, InspectTrinket0Slot, InspectTrinket1Slot, InspectMainHandSlot,
@@ -149,7 +149,10 @@ function PaperDoll:UpdateInfo()
                                     ns.strcolor(class, GetClassColor(classFileName)))
 
     if raceFileName then
-        self.RaceBackground:SetAtlas('transmog-background-race-' .. raceFileName:lower())
+        if raceFileName == 'Scourge' then
+            raceFileName = 'Undead'
+        end
+        self.RaceBackground:SetAtlas('transmog-background-race-' .. raceFileName)
     else
         self.RaceBackground:SetAtlas(UnitFactionGroup('player') == 'Alliance' and 'transmog-background-race-draenei' or
                                          'transmog-background-race-bloodelf')
