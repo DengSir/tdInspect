@@ -15,6 +15,10 @@ local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
 ns.UI = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
 
+_G.BINDING_HEADER_TDINSPECT = 'tdInspect'
+_G.BINDING_NAME_TDINSPECT_VIEW_TARGET = ns.L['Inspect target']
+_G.BINDING_NAME_TDINSPECT_VIEW_MOUSEOVER = ns.L['Inspect mouseover']
+
 ---@type tdInspectAddon
 local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0', 'AceEvent-3.0')
 ns.Addon = Addon
