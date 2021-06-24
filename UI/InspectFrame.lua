@@ -85,6 +85,7 @@ function InspectFrame:OnShow()
 end
 
 function InspectFrame:OnHide()
+    self.unitName = nil
     self:UnregisterAllEvents()
     Inspect:Clear()
     self:SetTab(1)
@@ -146,9 +147,10 @@ end
 
 function InspectFrame:UpdatePortrait()
     if self.unit then
+        self.unitName = ns.UnitName(self.unit)
         self.Portrait:SetTexCoord(0, 1, 0, 1)
         SetPortraitTexture(self.Portrait, self.unit)
-    else
+    elseif not self.unitName or self.unitName ~= Inspect.unitName then
         local class = Inspect:GetUnitClassFileName()
         if class then
             self.Portrait:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
