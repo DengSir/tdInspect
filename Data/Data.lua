@@ -20,6 +20,16 @@ function ns.TalentMake()
     ns.TalentMake = nil
 
     local CURRENT
+    local LOCAL_INDEX = {}
+
+    local function DefineLocalIndexs(...)
+        for i = 1, select('#', ...) do
+            local locale = select(i, ...)
+            if locale then
+                LOCAL_INDEX[locale] = i
+            end
+        end
+    end
 
     local function CreateClass(classFileName)
         CURRENT = {}
@@ -30,9 +40,9 @@ function ns.TalentMake()
         tinsert(CURRENT, {background = background, numTalents = numTalents, talents = {}})
     end
 
-    local function CreateTalentInfo(row, column, maxRank)
+    local function CreateTalentInfo(row, column, maxRank, id)
         local tab = CURRENT[#CURRENT]
-        tinsert(tab.talents, {row = row, column = column, maxRank = maxRank})
+        tinsert(tab.talents, {row = row, column = column, maxRank = maxRank, id = id})
     end
 
     local function FillTalentRanks(ranks)
@@ -50,15 +60,15 @@ function ns.TalentMake()
         tinsert(talent.prereqs, {row = row, column = column, reqIndex = reqIndex})
     end
 
-    local function SetTabName(locale, name)
+    local function SetTabName(...)
         local tab = CURRENT[#CURRENT]
-        if tab.name and locale ~= GetLocale() then
-            return
-        end
-        tab.name = name
+        local locale = GetLocale()
+        local index = LOCAL_INDEX[locale] or LOCAL_INDEX.enUS
+        tab.name = select(index, ...)
     end
 
     setfenv(2, {
+        D = DefineLocalIndexs,
         C = CreateClass,
         T = CreateTab,
         I = CreateTalentInfo,

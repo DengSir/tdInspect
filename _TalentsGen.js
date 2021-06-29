@@ -11,15 +11,16 @@ const got = require("got");
 const util = require("util");
 
 const LOCALES = [
-    ["enUS", 0],
-    ["deDE", 3],
-    ["esES", 6],
-    ["frFR", 2],
-    ["itIT", 9],
-    ["koKR", 1],
-    ["ptBR", 8],
-    ["ruRU", 7],
-    ["zhCN", 4],
+    [0, "enUS"],
+    [1, "koKR"],
+    [2, "frFR"],
+    [3, "deDE"],
+    [4, "zhCN"],
+    [5],
+    [6, "esES"],
+    [7, "ruRU"],
+    [8, "ptBR"],
+    [9, "itIT"],
 ];
 
 // const TALENTS = "https://classic.wowhead.com/data/talents-classic";
@@ -101,16 +102,18 @@ function getTalentLocales(body) {
     return JSON.parse(m[1]);
 }
 
-async function genTalents(version, output) {
+async function genTalents(version, output, hasId) {
     const ClassTalents = getClassTalents((await got(util.format(LOCALE, version))).body);
     const Talents = getTalentData((await got(util.format(TALENTS, version))).body);
     const Locales = {};
 
-    for (const [locale, id] of LOCALES) {
-        Locales[locale] = getTalentLocales(
-            // (await got(`https://wow.zamimg.com/js/locale/classic.${locale.toLowerCase()}.js`)).body
-            (await got(util.format(GLOBAL, version, id))).body
-        );
+    for (const [id, locale] of LOCALES) {
+        if (locale) {
+            Locales[locale] = getTalentLocales(
+                // (await got(`https://wow.zamimg.com/js/locale/classic.${locale.toLowerCase()}.js`)).body
+                (await got(util.format(GLOBAL, version, id))).body
+            );
+        }
     }
 
     console.log(`Generate ${version}`);
@@ -119,6 +122,9 @@ async function genTalents(version, output) {
 
     file.write(`-- GENERATE BY _TalentGen.js
 select(2,...).TalentMake()`);
+
+    const indexs = LOCALES.map(([, locale]) => (locale ? `'${locale}'` : "nil"));
+    file.write(`D(${indexs})`);
 
     for (const [cls, tabIds] of Object.entries(ClassTalents)) {
         console.log(`For ${cls}`);
@@ -130,12 +136,16 @@ select(2,...).TalentMake()`);
 
             file.write(`T('${BACKGROUNDS[tabId]}',${talents.length})`);
 
-            for (const [locale] of LOCALES) {
-                file.write(`N('${locale}','${Locales[locale][tabId]}')`);
-            }
+            const names = LOCALES.map(([, locale]) => (locale ? `'${Locales[locale][tabId]}'` : "nil")).join(",");
+
+            file.write(`N(${names})`);
 
             for (const talent of talents) {
-                file.write(`I(${talent.row + 1},${talent.col + 1},${talent.ranks.length})`);
+                if (hasId) {
+                    file.write(`I(${talent.row + 1},${talent.col + 1},${talent.ranks.length},${talent.id})`);
+                } else {
+                    file.write(`I(${talent.row + 1},${talent.col + 1},${talent.ranks.length})`);
+                }
                 file.write(`R{${talent.ranks.join(",")}}`);
 
                 if (talent.requires) {
@@ -152,8 +162,8 @@ select(2,...).TalentMake()`);
 }
 
 async function main() {
-    await genTalents("classic", "Data/Talents.lua");
-    await genTalents("tbc", "Data/Talents.BCC.lua");
+    await genTalents("classic", "Data/Talents.lua", false);
+    await genTalents("tbc", "Data/Talents.BCC.lua", true);
 }
 
 main();
