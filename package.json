@@ -4,7 +4,8 @@
   "description": "",
   "main": "DataGen.js",
   "scripts": {
-    "test": "echo not implemented"
+    "test": "echo not implemented",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/DengSir/tdInspect#readme",
   "devDependencies": {
+    "conventional-changelog-cli": "^2.1.1",
     "got": "^11.8.2",
     "xmldom": "^0.6.0"
   },
