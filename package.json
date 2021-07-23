@@ -24,6 +24,7 @@
   },
   "wow": {
     "name": "tdInspect",
+    "curse_id": 500065,
     "builds": {
       "classic": "11307",
       "bcc": "20501"
