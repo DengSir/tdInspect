@@ -25,6 +25,7 @@
   "wow": {
     "name": "tdInspect",
     "curse_id": 500065,
+    "changelog": "CHANGELOG.md",
     "builds": {
       "classic": "11400",
       "bcc": "20502"
