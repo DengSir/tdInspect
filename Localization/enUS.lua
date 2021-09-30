@@ -7,7 +7,7 @@ end
 
 -- @debug@
 -- @import@
-L['Show Modal'] = true
+L['Show Model'] = true
 L['Last update:'] = true
 L['Inspect target'] = true
 L['Inspect mouseover'] = true

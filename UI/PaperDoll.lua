@@ -73,7 +73,7 @@ function PaperDoll:Constructor()
         ToggleButton:GetFontString():SetPoint('LEFT', ToggleButton, 'RIGHT', 0, 0)
         ToggleButton:SetNormalFontObject('GameFontNormalSmall')
         ToggleButton:SetHighlightFontObject('GameFontHighlightSmall')
-        ToggleButton:SetText(L['Show Modal'])
+        ToggleButton:SetText(L['Show Model'])
 
         ToggleButton:SetScript('OnClick', function(ToggleButton)
             ns.Addon.db.profile.showModel = not not ToggleButton:GetChecked()
