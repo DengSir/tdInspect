@@ -42,6 +42,7 @@ local Inspect = ns.Addon:NewModule('Inspect', 'AceEvent-3.0', 'AceComm-3.0')
 function Inspect:OnInitialize()
     self.unitName = nil
     self.db = ns.Addon.db.global.userCache
+    self.waitingItems = {}
 end
 
 function Inspect:OnEnable()
@@ -55,6 +56,7 @@ function Inspect:OnEnable()
         return Deal(sender, Serializer:Deserialize(msg))
     end
 
+    self:RegisterEvent('GET_ITEM_INFO_RECEIVED')
     self:RegisterEvent('INSPECT_READY')
     self:RegisterComm(ALA_PREFIX, 'OnAlaCommand')
     self:RegisterComm(PROTO_PREFIX, OnComm)
@@ -63,6 +65,7 @@ end
 function Inspect:SetUnit(unit, name)
     self.unit = unit
     self.unitName = unit and ns.UnitName(unit) or ns.GetFullName(name)
+    wipe(self.waitingItems)
 
     INSPECTED_UNIT = unit
     if InspectFrame then
@@ -94,7 +97,6 @@ function Inspect:GetItemLink(slot)
     local link
     if self.unit then
         link = GetInventoryItemLink(self.unit, slot)
-
     end
     if not link and self.unitName then
         local db = self.db[self.unitName]
@@ -302,6 +304,9 @@ function Inspect:INSPECT_READY(_, guid)
                 local id = GetInventoryItemID(self.unit, slot)
                 if id then
                     link = 'item:' .. id
+
+                    self.waitingItems[id] = self.waitingItems[id] or {}
+                    tinsert(self.waitingItems[id], slot)
                 end
             end
 
@@ -403,4 +408,33 @@ function Inspect:GROUP_ROSTER_UPDATE()
         self:SetUnit(nil, self.unitName)
         self:SendMessage('INSPECT_TARGET_CHANGED')
     end
+end
+
+function Inspect:GET_ITEM_INFO_RECEIVED(_, id, ok)
+    if not ok then
+        return
+    end
+
+    if not self.unit then
+        return
+    end
+
+    if not self.waitingItems[id] then
+        return
+    end
+
+    local guid = UnitGUID(self.unit)
+    local name = ns.GetFullName(select(6, GetPlayerInfoByGUID(guid)))
+    local db = self:BuildCharacterDb(name)
+
+    for _, slot in ipairs(self.waitingItems[id]) do
+        local link = GetInventoryItemLink(self.unit, slot)
+        if link then
+            link = link:match('(item:[%-0-9:]+)')
+        end
+
+        db[slot] = link
+    end
+
+    self:SendMessage('INSPECT_READY', self.unit, name)
 end
