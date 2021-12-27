@@ -8,10 +8,14 @@ local ns = select(2, ...)
 ns.Talents = {}
 ns.ItemSets = {}
 
-local T = ns.memorize(function(v)
-    local t = {strsplit('/', v)}
+local strsplittable = strsplittable or function(delimiter, str, pieces)
+    return {strsplit(delimiter, str, pieces)}
+end
+
+local T = ns.memorize(function(val)
+    local t = strsplittable('/', val)
     for i, v in ipairs(t) do
-        t[i] = tonumber(v)
+        t[i] = tonumber(v) or v
     end
     return t
 end)
@@ -22,12 +26,9 @@ function ns.TalentMake()
     local CURRENT
     local LOCAL_INDEX = {}
 
-    local function DefineLocalIndexs(...)
-        for i = 1, select('#', ...) do
-            local locale = select(i, ...)
-            if locale then
-                LOCAL_INDEX[locale] = i
-            end
+    local function DefineLocalIndexs(val)
+        for i, locale in ipairs(strsplittable('/', val)) do
+            LOCAL_INDEX[locale] = i
         end
     end
 
@@ -60,11 +61,11 @@ function ns.TalentMake()
         tinsert(talent.prereqs, {row = row, column = column, reqIndex = reqIndex})
     end
 
-    local function SetTabName(...)
+    local function SetTabName(names)
         local tab = CURRENT[#CURRENT]
         local locale = GetLocale()
         local index = LOCAL_INDEX[locale] or LOCAL_INDEX.enUS
-        tab.name = select(index, ...)
+        tab.name = strsplittable('/', names)[index]
     end
 
     setfenv(2, {

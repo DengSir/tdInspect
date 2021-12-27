@@ -21,7 +21,7 @@ const LOCALES = [
     [7, "ruRU"],
     [8, "ptBR"],
     [9, "itIT"],
-];
+].filter(([, locale]) => locale);
 
 // const TALENTS = "https://classic.wowhead.com/data/talents-classic";
 // const LOCALE = "https://wow.zamimg.com/js/locale/classic.enus.js";
@@ -86,9 +86,9 @@ function getClassTalents(body) {
     const d = eval(m[1]);
     const item = d[2][3];
 
-    return Object.fromEntries(
-        item.map(([clsId, clsName, , t]) => [clsName, t.map(([talentId]) => Number.parseInt(talentId))])
-    );
+    return item
+        .map(([clsId, clsName, , t]) => ({ clsId, clsName, tabs: t.map(([talentId]) => Number.parseInt(talentId)) }))
+        .sort((a, b) => a.clsId - b.clsId);
 }
 
 // function getTalentLocales(body) {
@@ -97,13 +97,23 @@ function getClassTalents(body) {
 // }
 
 function getTalentLocales(body) {
-    const m = body.match(/WH\.Wow\.PlayerClass\.Specialization\.names', ([^;\)]+)/);
+    const regexes = [
+        /WH\.Wow\.PlayerClass\.Specialization\.names', ([^;\)]+)/,
+        /wow\.playerClass\.specialization\.names', ([^;\)]+)/,
+    ];
 
-    return JSON.parse(m[1]);
+    for (const reg of regexes) {
+        const m = body.match(reg);
+
+        if (m && m[1]) {
+            return JSON.parse(m[1]);
+        }
+    }
 }
 
 async function genTalents(version, output, hasId) {
     const ClassTalents = getClassTalents((await got(util.format(LOCALE, version))).body);
+
     const Talents = getTalentData((await got(util.format(TALENTS, version))).body);
     const Locales = {};
 
@@ -120,25 +130,26 @@ async function genTalents(version, output, hasId) {
 
     const file = fs.createWriteStream(output);
 
-    file.write(`-- GENERATE BY _TalentGen.js
+    file.write(`---@diagnostic disable: undefined-global
+-- GENERATE BY _TalentGen.js
 select(2,...).TalentMake()`);
 
-    const indexs = LOCALES.map(([, locale]) => (locale ? `'${locale}'` : "nil"));
-    file.write(`D(${indexs})`);
+    const indexes = LOCALES.map(([, locale]) => locale);
+    file.write(`D'${indexes.join("/")}'`);
 
-    for (const [cls, tabIds] of Object.entries(ClassTalents)) {
-        console.log(`For ${cls}`);
+    for (const { clsName, tabs } of ClassTalents) {
+        console.log(`For ${clsName}`);
 
-        file.write(`C'${cls.toUpperCase()}'`);
+        file.write(`C'${clsName.toUpperCase()}'`);
 
-        for (const tabId of tabIds) {
+        for (const tabId of tabs) {
             const talents = Object.values(Talents[tabId]).sort((a, b) => a.row * 10 + a.col - b.row * 10 - b.col);
 
             file.write(`T('${BACKGROUNDS[tabId]}',${talents.length})`);
 
-            const names = LOCALES.map(([, locale]) => (locale ? `'${Locales[locale][tabId]}'` : "nil")).join(",");
+            const names = LOCALES.map(([, locale]) => Locales[locale][tabId]).join("/");
 
-            file.write(`N(${names})`);
+            file.write(`N'${names}'`);
 
             for (const talent of talents) {
                 if (hasId) {

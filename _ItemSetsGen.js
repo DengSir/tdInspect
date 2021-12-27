@@ -73,7 +73,8 @@ async function genItemSets(version, output) {
     if (m) {
         const itemSets = JSON.parse(m[1])
             .filter(({ pieces }) => pieces)
-            .map(({ id, pieces }) => [id, pieces]);
+            .map(({ id, pieces }) => ({ setId: id, items: pieces.sort() }))
+            .sort((a, b) => a.setId - b.setId);
 
         const total = itemSets.length;
 
@@ -81,16 +82,18 @@ async function genItemSets(version, output) {
 
         console.log(`Generate ${version}`);
 
-        file.write(`-- GENERATE BY _ItemSetGen.js
+        file.write(`---@diagnostic disable: undefined-global
+-- GENERATE BY _ItemSetGen.js
 select(2,...).ItemSetMake()`);
 
-        for (const [index, v] of itemSets.entries()) {
-            const [setId, items] = v;
+        let index = 0;
+
+        for (const { setId, items } of itemSets) {
             let bouns;
 
             file.write(`S(${setId})`);
 
-            for (const [i, itemId] of items.entries()) {
+            for (const itemId of items) {
                 const doc = await getItemPage(version, itemId);
 
                 if (!bouns) {
@@ -104,6 +107,7 @@ select(2,...).ItemSetMake()`);
                 file.write(`I(${slot},${itemId})`);
             }
 
+            index++;
             console.log(`${index}/${total}`);
         }
 

@@ -277,7 +277,7 @@ local function PackEquip()
     for i = 1, 18 do
         local link = GetInventoryItemLink('player', i)
         if link then
-            equips[i] = link:match('item:([%d:]+)'):gsub(':+$', '')
+            equips[i] = link:match('item:([%-%d:]+)'):gsub(':+$', '')
         end
     end
     return equips
