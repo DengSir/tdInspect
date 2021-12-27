@@ -7,7 +7,7 @@ local huge = math.huge
 local rshift = bit.rshift
 local ripairs = ripairs or ipairs_reverse
 
----@type tdInspectTalentFrame
+---@class UI.TalentFrame: Object, ScrollFrame, AceEvent-3.0
 local TalentFrame = ns.Addon:NewClass('UI.TalentFrame', 'ScrollFrame')
 
 local MAX_TALENT_TABS = 3

@@ -2,6 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/18/2020, 1:10:21 PM
+--
 ---@type ns
 local ns = select(2, ...)
 
@@ -26,7 +27,7 @@ local GameTooltip = GameTooltip
 
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
----@type tdInspectInspectFrame
+---@class UI.InspectFrame: Object, Frame, AceEvent-3.0
 local InspectFrame = ns.Addon:NewClass('UI.InspectFrame', 'Frame')
 
 function InspectFrame:Constructor()

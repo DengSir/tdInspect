@@ -2,7 +2,8 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/25/2020, 4:43:38 PM
----@type ns
+--
+---@class ns
 local ns = select(2, ...)
 
 ns.Talents = {}

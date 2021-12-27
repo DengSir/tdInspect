@@ -2,6 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/18/2020, 1:28:25 PM
+--
 ---@type ns
 local ns = select(2, ...)
 
@@ -22,7 +23,7 @@ local GameTooltip = GameTooltip
 
 local Inspect = ns.Inspect
 
----@type tdInspectSlotItem
+---@class UI.SlotItem: UI.BaseItem
 local SlotItem = ns.Addon:NewClass('UI.SlotItem', ns.UI.BaseItem)
 
 function SlotItem:Constructor()

@@ -2,6 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/21/2020, 11:22:55 AM
+--
 ---@type ns
 local ns = select(2, ...)
 
@@ -9,7 +10,7 @@ local tonumber = tonumber
 
 local GetNumTalentTabs = GetNumTalentTabs
 
----@type tdInspectTalent
+---@class Talent: Object
 local Talent = ns.Addon:NewClass('Talent')
 
 function Talent:Constructor(class, data)

@@ -12,7 +12,6 @@ local select = select
 local CloseDropDownMenus = CloseDropDownMenus
 local UnitIsUnit = UnitIsUnit
 local Ambiguate = Ambiguate
-local CheckInteractDistance = CheckInteractDistance
 
 local WHISPER = WHISPER
 local BUTTON_HEIGHT = UIDROPDOWNMENU_BUTTON_HEIGHT

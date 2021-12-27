@@ -20,7 +20,7 @@ local PLAYER_LEVEL = PLAYER_LEVEL
 local L = ns.L
 local Inspect = ns.Inspect
 
----@type tdInspectPaperDoll
+---@class UI.PaperDoll: Object, Frame, AceEvent-3.0
 local PaperDoll = ns.Addon:NewClass('UI.PaperDoll', 'Frame')
 
 function PaperDoll:Constructor()

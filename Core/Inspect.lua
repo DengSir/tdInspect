@@ -2,6 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/17/2020, 11:08:38 PM
+--
 ---@type ns
 local ns = select(2, ...)
 
@@ -20,7 +21,6 @@ local GetNumTalents = GetNumTalents
 local GetNumTalentTabs = GetNumTalentTabs
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetTalentInfo = GetTalentInfo
-local LoadAddOn = LoadAddOn
 local NotifyInspect = NotifyInspect
 local UnitClass = UnitClass
 local UnitClassBase = UnitClassBase
@@ -36,7 +36,7 @@ local PROTO_PREFIX = 'tdInspect'
 
 local Serializer = LibStub('AceSerializer-3.0')
 
----@type tdInspectInspect
+---@class Inspect: AceAddon-3.0, AceEvent-3.0, AceComm-3.0
 local Inspect = ns.Addon:NewModule('Inspect', 'AceEvent-3.0', 'AceComm-3.0')
 
 function Inspect:OnInitialize()
