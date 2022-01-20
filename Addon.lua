@@ -5,12 +5,9 @@
 --
 ---@class ns
 ---@field Inspect Inspect
+---@field Talent Talent
 local ns = select(2, ...)
 
-local _
-local pairs, ipairs = pairs, ipairs
-
-local GetSpellInfo = GetSpellInfo
 local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
 
 ns.UI = {}
