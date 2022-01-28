@@ -30,7 +30,7 @@
     "changelog": "CHANGELOG.md",
     "builds": {
       "classic": "11400",
-      "bcc": "20502"
+      "bcc": "20503"
     }
   }
 }
