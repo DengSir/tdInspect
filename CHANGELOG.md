@@ -1,3 +1,12 @@
+## [1.0.8](https://github.com/DengSir/tdInspect/compare/v1.0.7...v1.0.8) (2022-01-28)
+
+
+### Bug Fixes
+
+* pvp item sets ([6d0381e](https://github.com/DengSir/tdInspect/commit/6d0381ec96d02ccfca7144f090f1bc72c1733ee8))
+
+
+
 ## [1.0.7](https://github.com/DengSir/tdInspect/compare/v1.0.6...v1.0.7) (2021-09-30)
 
 
