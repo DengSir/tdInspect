@@ -28,7 +28,7 @@ local UnitGUID = UnitGUID
 local UnitLevel = UnitLevel
 local UnitRace = UnitRace
 
-local HideUIPanel = HideUIPanel
+local HideUIPanel = LibStub('LibShowUIPanel').HideUIPanel
 
 local ALA_PREFIX = 'ATEADD'
 local ALA_CMD_LEN = 6

@@ -10,6 +10,7 @@ const got = require("got");
 const util = require("util");
 const xmldom = require("xmldom");
 const fs = require("fs");
+const { mapLimit } = require("async");
 
 const ITEM_SETS = "https://%s.wowhead.com/item-sets";
 const ITEM = "https://%s.wowhead.com/item=%s?xml";
@@ -76,8 +77,6 @@ async function genItemSets(version, output) {
             .map(({ id, pieces }) => ({ setId: id, items: pieces.sort() }))
             .sort((a, b) => a.setId - b.setId);
 
-        const total = itemSets.length;
-
         const file = fs.createWriteStream(output);
 
         console.log(`Generate ${version}`);
@@ -87,28 +86,32 @@ async function genItemSets(version, output) {
 select(2,...).ItemSetMake()`);
 
         let index = 0;
+        const items = [...new Set(itemSets.map(({ items }) => items).flat())];
+        const total = items.length;
+        const itemDocs = new Map(
+            await mapLimit(items, 100, async (itemId) => {
+                const doc = await getItemPage(version, itemId);
+                index++;
+                console.log(`Fetch ${index}/${total}`);
+                return [itemId, doc];
+            })
+        );
 
         for (const { setId, items } of itemSets) {
-            let bouns;
+            const bouns = getItemBouns(itemDocs.get(items[0]));
 
             file.write(`S(${setId})`);
+            file.write(`B'${bouns}'`);
 
             for (const itemId of items) {
-                const doc = await getItemPage(version, itemId);
-
-                if (!bouns) {
-                    bouns = getItemBouns(doc);
-
-                    file.write(`B'${bouns}'`);
+                const doc = itemDocs.get(itemId);
+                if (!doc) {
+                    throw Error(`not found ${itemId}`);
                 }
 
                 const slot = getItemSlot(doc);
-
                 file.write(`I(${slot},${itemId})`);
             }
-
-            index++;
-            console.log(`${index}/${total}`);
         }
 
         file.end("", "utf-8");

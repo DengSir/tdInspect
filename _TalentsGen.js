@@ -144,11 +144,9 @@ select(2,...).TalentMake()`);
 
         for (const tabId of tabs) {
             const talents = Object.values(Talents[tabId]).sort((a, b) => a.row * 10 + a.col - b.row * 10 - b.col);
-
-            file.write(`T('${BACKGROUNDS[tabId]}',${talents.length})`);
-
             const names = LOCALES.map(([, locale]) => Locales[locale][tabId]).join("/");
 
+            file.write(`T('${BACKGROUNDS[tabId]}',${talents.length})`);
             file.write(`N'${names}'`);
 
             for (const talent of talents) {
@@ -173,8 +171,8 @@ select(2,...).TalentMake()`);
 }
 
 async function main() {
-    await genTalents("classic", "Data/Talents.lua", false);
     await genTalents("tbc", "Data/Talents.BCC.lua", true);
+    await genTalents("classic", "Data/Talents.lua", false);
 }
 
 main();

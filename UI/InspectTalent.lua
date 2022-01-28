@@ -114,7 +114,6 @@ function InspectTalent:SetTab(id)
 end
 
 function InspectTalent:UpdateInfo()
-    ---@type tdInspectTalent
     local talent = ns.Talent:New(Inspect:GetUnitClassFileName(), Inspect:GetUnitTalent())
     local summaries = {}
 

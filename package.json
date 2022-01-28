@@ -5,7 +5,8 @@
   "main": "DataGen.js",
   "scripts": {
     "test": "echo not implemented",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "data": "node _TalentsGen.js && node _ItemSetsGen.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/DengSir/tdInspect#readme",
   "devDependencies": {
+    "async": "^3.2.3",
     "conventional-changelog-cli": "^2.1.1",
     "got": "^11.8.2",
     "xmldom": "^0.6.0"
