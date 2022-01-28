@@ -138,13 +138,13 @@ function Inspect:GetEquippedSetItems(id)
                 end
 
                 local isBaseItem = slotItems[equipLoc][itemId]
-
                 if not isBaseItem then
                     local baseItemId = next(slotItems[equipLoc])
                     baseName = GetItemInfo(baseItemId)
                     if baseName then
                         overrideNames[baseName] = name
                     end
+                    items[name] = (items[name] or 0) + 1
                 end
 
                 count = count + 1
