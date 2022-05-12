@@ -1,3 +1,12 @@
+## [1.0.10](https://github.com/DengSir/tdInspect/compare/v1.0.9...v1.0.10) (2022-05-12)
+
+
+### Features
+
+* support new ala ([c44cf00](https://github.com/DengSir/tdInspect/commit/c44cf00e797ecf40395312c64201ec0c76bb6a69))
+
+
+
 ## [1.0.9](https://github.com/DengSir/tdInspect/compare/v1.0.8...v1.0.9) (2022-02-06)
 
 
