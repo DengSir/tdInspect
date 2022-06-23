@@ -29,36 +29,6 @@ const TALENTS = "https://%s.wowhead.com/data/talents-classic";
 const LOCALE = "https://%s.wowhead.com/menus";
 const GLOBAL = "https://%s.wowhead.com/data/global?locale=%d";
 
-const BACKGROUNDS = {
-    ["283"]: "DruidBalance",
-    ["281"]: "DruidFeralCombat",
-    ["282"]: "DruidRestoration",
-    ["361"]: "HunterBeastMastery",
-    ["363"]: "HunterMarksmanship",
-    ["362"]: "HunterSurvival",
-    ["81"]: "MageArcane",
-    ["41"]: "MageFire",
-    ["61"]: "MageFrost",
-    ["382"]: "PaladinHoly",
-    ["383"]: "PaladinProtection",
-    ["381"]: "PaladinCombat",
-    ["201"]: "PriestDiscipline",
-    ["202"]: "PriestHoly",
-    ["203"]: "PriestShadow",
-    ["182"]: "RogueAssassination",
-    ["181"]: "RogueCombat",
-    ["183"]: "RogueSubtlety",
-    ["261"]: "ShamanElementalCombat",
-    ["263"]: "ShamanEnhancement",
-    ["262"]: "ShamanRestoration",
-    ["302"]: "WarlockCurses",
-    ["303"]: "WarlockSummoning",
-    ["301"]: "WarlockDestruction",
-    ["161"]: "WarriorArms",
-    ["164"]: "WarriorFury",
-    ["163"]: "WarriorProtection",
-};
-
 function getTalentData(body) {
     const m = body.match(/WH\.Wow\.TalentCalcClassic\.data\s*=\s*({[^;]+});/);
     const data = JSON.parse(m[1]).talents;
@@ -146,7 +116,7 @@ select(2,...).TalentMake()`);
             const talents = Object.values(Talents[tabId]).sort((a, b) => a.row * 10 + a.col - b.row * 10 - b.col);
             const names = LOCALES.map(([, locale]) => Locales[locale][tabId]).join("/");
 
-            file.write(`T('${BACKGROUNDS[tabId]}',${talents.length})`);
+            file.write(`T(${tabId},${talents.length})`);
             file.write(`N'${names}'`);
 
             for (const talent of talents) {
