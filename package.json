@@ -21,7 +21,7 @@
   "devDependencies": {
     "async": "^3.2.3",
     "conventional-changelog-cli": "^2.1.1",
-    "got": "^11.8.2",
+    "got": "^11.8.5",
     "xmldom": "^0.6.0"
   },
   "wow": {
