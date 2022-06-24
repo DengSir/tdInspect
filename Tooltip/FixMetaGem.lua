@@ -49,7 +49,7 @@ local function IsConditionOk(line, gems)
     end
 end
 
-local function Line(line, ok)
+local function FixColor(line, ok)
     if ok then
         return (line:gsub('|cff%x%x%x%x%x%x', '|cffffffff'))
     else
@@ -108,7 +108,7 @@ function ns.FixMetaGem(tip, link)
             tinsert(lines, {text = line})
         else
             local ok = IsConditionOk(line, gems)
-            tinsert(lines, {condition = true, text = Line(line, ok)})
+            tinsert(lines, {condition = true, text = FixColor(line, ok)})
             if not ok then
                 valid = false
             end
@@ -119,7 +119,7 @@ function ns.FixMetaGem(tip, link)
         if info.condition then
             lines[i] = info.text
         else
-            lines[i] = Line(info.text, valid)
+            lines[i] = FixColor(info.text, valid)
         end
     end
 

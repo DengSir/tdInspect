@@ -3,6 +3,35 @@
         "node_modules": true
     },
     "Lua.diagnostics.disable": [
+        "missing-parameter"
     ],
-    "Lua.runtime.version": "Lua 5.1"
+    "Lua.runtime.version": "Lua 5.1",
+    "Lua.diagnostics.globals": [
+        "ENCHANT_CONDITION_REQUIRES",
+        "RED_GEM",
+        "YELLOW_GEM",
+        "BLUE_GEM",
+        "ENCHANT_CONDITION_MORE_VALUE",
+        "ENCHANT_CONDITION_MORE_COMPARE",
+        "ITEM_SET_BONUS_GRAY",
+        "ITEM_SET_BONUS",
+        "HEADSLOT",
+        "NECKSLOT",
+        "SHOULDERSLOT",
+        "BACKSLOT",
+        "CHESTSLOT",
+        "WRISTSLOT",
+        "HANDSSLOT",
+        "WAISTSLOT",
+        "LEGSSLOT",
+        "FEETSLOT",
+        "FINGER0SLOT",
+        "FINGER1SLOT",
+        "TRINKET0SLOT",
+        "TRINKET1SLOT",
+        "MAINHANDSLOT",
+        "SECONDARYHANDSLOT",
+        "RANGEDSLOT",
+        "INSPECT"
+    ]
 }
