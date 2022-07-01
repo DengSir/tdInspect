@@ -25,11 +25,11 @@ local GEM_CONDITIONS = {
     [P(ENCHANT_CONDITION_MORE_VALUE)] = function(gems, count, gem)
         count = tonumber(count)
         gem = GEM_LOCALE_ENUM[gem]
-        return gems[gem] >= count
+        return (gems[gem] or 0) >= count
     end,
     [P(ENCHANT_CONDITION_MORE_COMPARE)] = function(gems, gem1, gem2)
         gem1, gem2 = GEM_LOCALE_ENUM[gem1], GEM_LOCALE_ENUM[gem2]
-        return gems[gem1] > gems[gem2]
+        return (gems[gem1] or 0) > (gems[gem2] or 0)
     end,
 }
 
