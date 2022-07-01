@@ -1,3 +1,12 @@
+## [1.0.11](https://github.com/DengSir/tdInspect/compare/v1.0.10...v1.0.11) (2022-07-01)
+
+
+### Features
+
+* fix meta gem in tooltip ([62500cd](https://github.com/DengSir/tdInspect/commit/62500cdb6b5ce3d7bf42c0edc03998b1bcd2000e))
+
+
+
 ## [1.0.10](https://github.com/DengSir/tdInspect/compare/v1.0.9...v1.0.10) (2022-05-12)
 
 
