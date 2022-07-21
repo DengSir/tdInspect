@@ -146,7 +146,7 @@ function PaperDoll:UpdateInfo()
     local lastUpdate = Inspect:GetLastUpdate()
 
     self.LevelText:SetFormattedText(PLAYER_LEVEL, level or '??', race or '',
-                                    ns.strcolor(class, GetClassColor(classFileName)))
+                                    class and ns.strcolor(class, GetClassColor(classFileName)) or '')
 
     if raceFileName then
         if raceFileName == 'Scourge' then

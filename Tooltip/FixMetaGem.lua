@@ -22,31 +22,49 @@ local GEM_LOCALE_ENUM = {
 }
 
 local GEM_CONDITIONS = {
-    [P(ENCHANT_CONDITION_MORE_VALUE)] = function(gems, count, gem)
+    [P(ENCHANT_CONDITION_MORE_VALUE)] = function(count, gem)
         count = tonumber(count)
         gem = GEM_LOCALE_ENUM[gem]
-        return (gems[gem] or 0) >= count
+
+        return function(gems)
+            return (gems[gem] or 0) >= count
+        end
     end,
-    [P(ENCHANT_CONDITION_MORE_COMPARE)] = function(gems, gem1, gem2)
+    [P(ENCHANT_CONDITION_MORE_COMPARE)] = function(gem1, gem2)
         gem1, gem2 = GEM_LOCALE_ENUM[gem1], GEM_LOCALE_ENUM[gem2]
-        return (gems[gem1] or 0) > (gems[gem2] or 0)
+
+        return function(gems)
+            return (gems[gem1] or 0) > (gems[gem2] or 0)
+        end
     end,
 }
 
-local function RunCondition(gems, cond, a1, ...)
+local function GenCondition(gen, a1, ...)
     if not a1 then
         return
     end
-    return cond(gems, a1, ...)
+    return gen(a1, ...)
 end
 
-local function IsConditionOk(line, gems)
-    for k, cond in pairs(GEM_CONDITIONS) do
-        local r = RunCondition(gems, cond, line:match(k))
-        if r ~= nil then
-            return r
+local function CheckCondition(line)
+    for k, v in pairs(GEM_CONDITIONS) do
+        local cond = GenCondition(v, line:match(k))
+        if cond then
+            return cond
         end
     end
+    return nop
+end
+
+local conditions = setmetatable({}, {
+    __index = function(t, k)
+        t[k] = CheckCondition(k)
+        return t[k]
+    end,
+})
+
+local function IsConditionOk(line, gems)
+    return conditions[line](gems)
 end
 
 local function FixColor(line, ok)

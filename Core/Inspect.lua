@@ -446,10 +446,12 @@ function Inspect:PLAYER_TARGET_CHANGED()
 end
 
 function Inspect:GROUP_ROSTER_UPDATE()
-    if self.unit and self.unitName ~= ns.UnitName(self.unit) then
-        self:SetUnit(nil, self.unitName)
-        self:SendMessage('INSPECT_TARGET_CHANGED')
-    end
+    C_Timer.After(0, function()
+        if self.unit and self.unitName ~= ns.UnitName(self.unit) then
+            self:SetUnit(nil, self.unitName)
+            self:SendMessage('INSPECT_TARGET_CHANGED')
+        end
+    end)
 end
 
 function Inspect:GET_ITEM_INFO_RECEIVED(_, id, ok)
