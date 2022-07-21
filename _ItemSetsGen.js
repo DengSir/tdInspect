@@ -12,8 +12,12 @@ const xmldom = require("xmldom");
 const fs = require("fs");
 const { mapLimit } = require("async");
 
-const ITEM_SETS = "https://%s.wowhead.com/item-sets";
-const ITEM = "https://%s.wowhead.com/item=%s?xml";
+const ITEM_SETS = {
+    4: "https://classic.wowhead.com/item-sets",
+    5: "https://tbc.wowhead.com/item-sets",
+    8: "https://www.wowhead.com/wotlk/item-sets",
+};
+const ITEM = "https://www.wowhead.com/item=%s?xml&dataEnv=%d";
 
 const SLOTS = new Map([
     [0, "INVTYPE_NON_EQUIP"],
@@ -47,14 +51,27 @@ const SLOTS = new Map([
     [28, "INVTYPE_RELIC"],
 ]);
 
+function toDataEnv(version) {
+    if (version === "classic") {
+        return 4;
+    } else if (version === "tbc") {
+        return 5;
+    } else if (version === "wotlk") {
+        return 8;
+    }
+}
+
 async function getItemPage(version, itemId) {
-    return new xmldom.DOMParser().parseFromString((await got(util.format(ITEM, version, itemId))).body);
+    return new xmldom.DOMParser().parseFromString((await got(util.format(ITEM, itemId, version))).body);
 }
 
 function getItemBouns(doc) {
-    const data = doc.getElementsByTagName("htmlTooltip")[0].childNodes[0].nodeValue;
-
-    return [...data.matchAll(/\((\d+)\)\s*Set\s*:/g)].map(([_, n]) => Number.parseInt(n)).join("/");
+    try {
+        const data = doc.getElementsByTagName("htmlTooltip")[0].childNodes[0].nodeValue;
+        return [...data.matchAll(/\((\d+)\)\s*Set\s*:/g)].map(([_, n]) => Number.parseInt(n)).join("/");
+    } catch (error) {
+        return;
+    }
 }
 
 function getItemSlot(doc) {
@@ -69,7 +86,7 @@ function getItemSlot(doc) {
 }
 
 async function genItemSets(version, output) {
-    const body = (await got(util.format(ITEM_SETS, version))).body;
+    const body = (await got(ITEM_SETS[version])).body;
     const m = body.match(/var itemSets\s*=\s*([^;]+)/);
     if (m) {
         const itemSets = JSON.parse(m[1])
@@ -79,7 +96,7 @@ async function genItemSets(version, output) {
 
         const file = fs.createWriteStream(output);
 
-        console.log(`Generate ${version}`);
+        console.log(`Generate ${output}`);
 
         file.write(`---@diagnostic disable: undefined-global
 -- GENERATE BY _ItemSetGen.js
@@ -99,6 +116,10 @@ select(2,...).ItemSetMake()`);
 
         for (const { setId, items } of itemSets) {
             const bouns = getItemBouns(itemDocs.get(items[0]));
+            if (!bouns) {
+                console.log(items[0]);
+                continue;
+            }
 
             file.write(`S(${setId})`);
             file.write(`B'${bouns}'`);
@@ -119,8 +140,9 @@ select(2,...).ItemSetMake()`);
 }
 
 async function main() {
-    await genItemSets("tbc", "Data/ItemSet.BCC.lua");
-    await genItemSets("classic", "Data/ItemSet.lua");
+    await genItemSets(8, "Data/ItemSet.WLK.lua");
+    await genItemSets(5, "Data/ItemSet.BCC.lua");
+    await genItemSets(4, "Data/ItemSet.lua");
 }
 
 main();
