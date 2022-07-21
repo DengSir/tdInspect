@@ -25,9 +25,9 @@ const LOCALES = [
 
 // const TALENTS = "https://classic.wowhead.com/data/talents-classic";
 // const LOCALE = "https://wow.zamimg.com/js/locale/classic.enus.js";
-const TALENTS = "https://%s.wowhead.com/data/talents-classic";
-const LOCALE = "https://%s.wowhead.com/menus";
-const GLOBAL = "https://%s.wowhead.com/data/global?locale=%d";
+const TALENTS = "https://www.wowhead.com/data/talents-classic?dataEnv=%d";
+const LOCALE = "https://nether.wowhead.com/menus?dataEnv=%d";
+const GLOBAL = "https://nether.wowhead.com/data/global?dataEnv=%d&locale=%d";
 
 function getTalentData(body) {
     const m = body.match(/WH\.Wow\.TalentCalcClassic\.data\s*=\s*({[^;]+});/);
@@ -96,7 +96,7 @@ async function genTalents(version, output, hasId) {
         }
     }
 
-    console.log(`Generate ${version}`);
+    console.log(`Generate ${output}`);
 
     const file = fs.createWriteStream(output);
 
@@ -141,8 +141,9 @@ select(2,...).TalentMake()`);
 }
 
 async function main() {
-    await genTalents("tbc", "Data/Talents.BCC.lua", true);
-    await genTalents("classic", "Data/Talents.lua", false);
+    await genTalents(8, "Data/Talents.WLK.lua", true);
+    await genTalents(5, "Data/Talents.BCC.lua", true);
+    await genTalents(4, "Data/Talents.lua", false);
 }
 
 main();
