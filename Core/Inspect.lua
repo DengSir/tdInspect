@@ -126,6 +126,9 @@ local GEM_COLORS = {
     [Enum.ItemGemSubclass.Orange] = {Enum.ItemGemSubclass.Red, Enum.ItemGemSubclass.Yellow},
     [Enum.ItemGemSubclass.Purple] = {Enum.ItemGemSubclass.Red, Enum.ItemGemSubclass.Blue},
     [Enum.ItemGemSubclass.Green] = {Enum.ItemGemSubclass.Yellow, Enum.ItemGemSubclass.Blue},
+    [Enum.ItemGemSubclass.Prismatic] = {
+        Enum.ItemGemSubclass.Red, Enum.ItemGemSubclass.Yellow, Enum.ItemGemSubclass.Blue,
+    },
 }
 
 local function CheckGem(out, itemId)

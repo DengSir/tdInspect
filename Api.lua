@@ -100,9 +100,9 @@ function ns.FixInspectItemTooltip(tip)
     tip = LibStub('LibTooltipExtra-1.0'):New(tip)
 
     ns.FixItemSets(tip, id)
-    -- @non-classic@
+    --[[@non-classic@
     ns.FixMetaGem(tip, link)
-    -- @end-non-classic@
+    --@end-non-classic@]]
 
     tip:Show()
 end
