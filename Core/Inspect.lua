@@ -361,7 +361,9 @@ function Inspect:INSPECT_READY(_, guid)
         db.class = select(3, UnitClass(self.unit))
         db.race = select(3, UnitRace(self.unit))
         db.level = UnitLevel(self.unit)
+        --[[@non-classic@
         db.talent = PackTalent(true)
+        --@end-non-classic@]]
 
         self:SendMessage('INSPECT_READY', self.unit, name)
     end
