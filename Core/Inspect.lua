@@ -119,6 +119,7 @@ function Inspect:IsItemEquipped(itemId)
     end
 end
 
+-- @non-classic@
 local GEM_COLORS = {
     [Enum.ItemGemSubclass.Red] = {Enum.ItemGemSubclass.Red},
     [Enum.ItemGemSubclass.Yellow] = {Enum.ItemGemSubclass.Yellow},
@@ -163,6 +164,7 @@ function Inspect:GetEquippedGemCounts()
     end
     return out
 end
+-- @end-non-classic@
 
 function Inspect:GetEquippedSetItems(id)
     local count = 0
@@ -265,12 +267,13 @@ function Inspect:Query(unit, name)
 
     self:SetUnit(unit, name)
 
+    local queryTalent
     -- @classic@
-    local queryTalent = true
+    queryTalent = true
     -- @end-classic@
-    --[[@non-classic@
-    local queryTalent = false
-    --@end-non-classic@]]
+    -- @non-classic@
+    queryTalent = false
+    -- @end-non-classic@
     local queryEquip = false
 
     if unit and CheckInteractDistance(unit, 1) and CanInspect(unit) and not UnitIsDeadOrGhost(unit) then
@@ -361,9 +364,9 @@ function Inspect:INSPECT_READY(_, guid)
         db.class = select(3, UnitClass(self.unit))
         db.race = select(3, UnitRace(self.unit))
         db.level = UnitLevel(self.unit)
-        --[[@non-classic@
+        -- @non-classic@
         db.talent = PackTalent(true)
-        --@end-non-classic@]]
+        -- @end-non-classic@
 
         self:SendMessage('INSPECT_READY', self.unit, name)
     end

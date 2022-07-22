@@ -58,7 +58,7 @@ function InspectFrame:Constructor()
     -- @classic@
     self:AddTab(TALENT, self.TalentFrame)
     -- @end-classic@
-    --[[@non-classic@
+    -- @non-classic@
     InspectTalentFrame:Hide()
     InspectTalentFrame.Show = function()
         self.TalentFrame:Show()
@@ -69,7 +69,7 @@ function InspectFrame:Constructor()
     InspectTalentFrame.SetShown = function(_, shown)
         self.TalentFrame:SetShown(shown)
     end
-    --@end-non-classic@]]
+    -- @end-non-classic@
 
     self.Portrait:SetSize(64, 64)
 end
