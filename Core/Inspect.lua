@@ -313,9 +313,34 @@ end
 local function PackTalent(inspect)
     local talents = {}
     for i = 1, GetNumTalentTabs(inspect) do
+        print(i, j, GetNumTalents(i, inspect))
         for j = 1, GetNumTalents(i, inspect) do
+            print((select(5, GetTalentInfo(i, j, inspect))))
             tinsert(talents, tostring(select(5, GetTalentInfo(i, j, inspect)) or 0))
         end
+    end
+    return (tconcat(talents):gsub('0+$', ''))
+end
+
+local function PackTalent(inspect)
+    local talents = {}
+    for i = 1, GetNumTalentTabs(inspect) do
+        for j = 1, GetNumTalents(i, inspect) do
+            local name, _, tier, column, count = GetTalentInfo(i, j, inspect)
+            tinsert(talents, {count = tostring(count or 0), tab = i, tier = tier, column = column})
+        end
+    end
+    sort(talents, function(a, b)
+        if a.tab ~= b.tab then
+            return a.tab < b.tab
+        end
+        if a.tier ~= b.tier then
+            return a.tier < b.tier
+        end
+        return a.column < b.column
+    end)
+    for i, v in ipairs(talents) do
+        talents[i] = v.count
     end
     return (tconcat(talents):gsub('0+$', ''))
 end

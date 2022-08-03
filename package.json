@@ -30,7 +30,8 @@
     "changelog": "CHANGELOG.md",
     "builds": {
       "classic": "11400",
-      "bcc": "20504"
+      "bcc": "20504",
+      "lkc": "30400"
     }
   }
 }

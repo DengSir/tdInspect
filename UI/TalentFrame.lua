@@ -11,7 +11,7 @@ local ripairs = ripairs or ipairs_reverse
 local TalentFrame = ns.Addon:NewClass('UI.TalentFrame', 'ScrollFrame')
 
 local MAX_TALENT_TABS = 3
-local MAX_NUM_TALENT_TIERS = 10
+local MAX_NUM_TALENT_TIERS = 15
 local NUM_TALENT_COLUMNS = 4
 local MAX_NUM_TALENTS = 40
 local PLAYER_TALENTS_PER_TIER = 5
@@ -197,6 +197,15 @@ function TalentFrame:ShowTooltip(button)
         end
     end
 
+    GameTooltip:Show()
+end
+
+function TalentFrame:ShowTooltip(button)
+    if not button.link then
+        return
+    end
+    GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
+    GameTooltip:SetHyperlink(button.link)
     GameTooltip:Show()
 end
 
