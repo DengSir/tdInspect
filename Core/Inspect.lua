@@ -310,6 +310,7 @@ function Inspect:BuildCharacterDb(name)
     return self.db[name]
 end
 
+-- @build<3@
 local function PackTalent(inspect)
     local talents = {}
     for i = 1, GetNumTalentTabs(inspect) do
@@ -321,29 +322,34 @@ local function PackTalent(inspect)
     end
     return (tconcat(talents):gsub('0+$', ''))
 end
+-- @end-build<3@
+-- @build>3@
+local function compare(a, b)
+    if a.tab ~= b.tab then
+        return a.tab < b.tab
+    end
+    if a.tier ~= b.tier then
+        return a.tier < b.tier
+    end
+    return a.column < b.column
+end
 
 local function PackTalent(inspect)
     local talents = {}
     for i = 1, GetNumTalentTabs(inspect) do
         for j = 1, GetNumTalents(i, inspect) do
-            local name, _, tier, column, count = GetTalentInfo(i, j, inspect)
+            local _, _, tier, column, count = GetTalentInfo(i, j, inspect)
             tinsert(talents, {count = tostring(count or 0), tab = i, tier = tier, column = column})
         end
     end
-    sort(talents, function(a, b)
-        if a.tab ~= b.tab then
-            return a.tab < b.tab
-        end
-        if a.tier ~= b.tier then
-            return a.tier < b.tier
-        end
-        return a.column < b.column
-    end)
+    sort(talents, compare)
+
     for i, v in ipairs(talents) do
         talents[i] = v.count
     end
     return (tconcat(talents):gsub('0+$', ''))
 end
+-- @end-build>3@
 
 local function PackEquip()
     local equips = {}
@@ -389,9 +395,9 @@ function Inspect:INSPECT_READY(_, guid)
         db.class = select(3, UnitClass(self.unit))
         db.race = select(3, UnitRace(self.unit))
         db.level = UnitLevel(self.unit)
-        -- @non-classic@
+        -- @build>2@
         db.talent = PackTalent(true)
-        -- @end-non-classic@
+        -- @end-build>2@
 
         self:SendMessage('INSPECT_READY', self.unit, name)
     end

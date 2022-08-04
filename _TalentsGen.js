@@ -9,6 +9,22 @@
 const fs = require("fs");
 const got = require("got");
 const util = require("util");
+const HttpsProxyAgent = require("hpagent").HttpsProxyAgent;
+
+function get(url) {
+    return got(url, {
+        agent: {
+            https: new HttpsProxyAgent({
+                keepAlive: true,
+                keepAliveMsecs: 1000,
+                maxSockets: 256,
+                maxFreeSockets: 256,
+                scheduling: "lifo",
+                proxy: "http://localhost:8787",
+            }),
+        },
+    });
+}
 
 const LOCALES = [
     [0, "enUS"],
@@ -82,17 +98,14 @@ function getTalentLocales(body) {
 }
 
 async function genTalents(version, output, hasId) {
-    const ClassTalents = getClassTalents((await got(util.format(LOCALE, version))).body);
+    const ClassTalents = getClassTalents((await get(util.format(LOCALE, version))).body);
 
-    const Talents = getTalentData((await got(util.format(TALENTS, version))).body);
+    const Talents = getTalentData((await get(util.format(TALENTS, version))).body);
     const Locales = {};
 
     for (const [id, locale] of LOCALES) {
         if (locale) {
-            Locales[locale] = getTalentLocales(
-                // (await got(`https://wow.zamimg.com/js/locale/classic.${locale.toLowerCase()}.js`)).body
-                (await got(util.format(GLOBAL, version, id))).body
-            );
+            Locales[locale] = getTalentLocales((await get(util.format(GLOBAL, version, id))).body);
         }
     }
 
@@ -110,7 +123,7 @@ select(2,...).TalentMake()`);
     for (const { clsName, tabs } of ClassTalents) {
         console.log(`For ${clsName}`);
 
-        file.write(`C'${clsName.toUpperCase()}'`);
+        file.write(`C'${clsName.toUpperCase().replace(/ /g, "")}'`);
 
         for (const tabId of tabs) {
             const talents = Object.values(Talents[tabId]).sort((a, b) => a.row * 10 + a.col - b.row * 10 - b.col);

@@ -34,4 +34,7 @@ ns.TALENT_BACKGROUNDS = {
     [161] = 'WarriorArms',
     [164] = 'WarriorFury',
     [163] = 'WarriorProtection',
+    [398] = 'DeathKnightBlood',
+    [399] = 'DeathKnightFrost',
+    [400] = 'DeathKnightUnholy',
 }

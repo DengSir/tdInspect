@@ -149,6 +149,7 @@ local TOOLTIP_TALENT_RANK = HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(TOOLTIP_TAL
 local TOOLTIP_TALENT_PREREQ = RED_FONT_COLOR:WrapTextInColorCode(TOOLTIP_TALENT_PREREQ)
 local TOOLTIP_TALENT_TIER_POINTS = RED_FONT_COLOR:WrapTextInColorCode(TOOLTIP_TALENT_TIER_POINTS)
 
+-- @build<3@
 function TalentFrame:ShowTooltip(button)
     local id = button:GetID()
     local name, _, row, _, rank, maxRank = self.talent:GetTalentInfo(self.tabIndex, id)
@@ -199,15 +200,33 @@ function TalentFrame:ShowTooltip(button)
 
     GameTooltip:Show()
 end
+-- @end-build<3@
 
+-- @build>3@
 function TalentFrame:ShowTooltip(button)
     if not button.link then
         return
     end
     GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
     GameTooltip:SetHyperlink(button.link)
+
+    local id = button:GetID()
+    local name, _, row, _, rank, maxRank = self.talent:GetTalentInfo(self.tabIndex, id)
+    if rank == 0 and row > 1 then
+        local tabName, _, pointsSpent = self.talent:GetTabInfo(self.tabIndex)
+        local requirePointsSpent = (row - 1) * 5
+
+        if pointsSpent < requirePointsSpent then
+            local prereqs = self.talent:GetTalentPrereqs(self.tabIndex, id)
+            local line = prereqs and 4 or 3
+
+            GameTooltip:AppendLineFront(line, format(TOOLTIP_TALENT_TIER_POINTS, (row - 1) * 5, tabName))
+        end
+    end
+
     GameTooltip:Show()
 end
+-- @end-build>3@
 
 function TalentFrame:GetTalentButton(i)
     if not self.buttons[i] then
