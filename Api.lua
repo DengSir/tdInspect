@@ -81,7 +81,7 @@ function ns.GetFullName(name, realm)
     end
 
     if not realm or realm == '' then
-        realm = GetRealmName()
+        realm = GetNormalizedRealmName()
     end
     return name .. '-' .. realm
 end

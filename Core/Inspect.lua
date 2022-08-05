@@ -256,6 +256,36 @@ function Inspect:GetLastUpdate()
     return self:GetDBValue('timestamp')
 end
 
+function Inspect:CanBlizzardInspect(unit)
+    if not unit then
+        return false
+    end
+
+    if UnitIsDeadOrGhost(unit) then
+        return false
+    end
+
+    if not CheckInteractDistance(unit, 1) then
+        return false
+    end
+
+    if not CanInspect(unit) then
+        return false
+    end
+
+    return true
+end
+
+function Inspect:CanOurInspect(unit)
+    if unit then
+        if UnitFactionGroup(unit) ~= UnitFactionGroup('player') then
+            return false
+        end
+    end
+
+    return true
+end
+
 function Inspect:Query(unit, name)
     if unit and not UnitIsPlayer(unit) then
         return
@@ -267,18 +297,17 @@ function Inspect:Query(unit, name)
 
     self:SetUnit(unit, name)
 
-    local queryTalent
-    -- @classic@
-    queryTalent = true
-    -- @end-classic@
-    -- @non-classic@
-    queryTalent = false
-    -- @end-non-classic@
+    local queryTalent = false
     local queryEquip = false
 
-    if unit and CheckInteractDistance(unit, 1) and CanInspect(unit) and not UnitIsDeadOrGhost(unit) then
+    if self:CanBlizzardInspect(unit) then
         NotifyInspect(unit)
-    else
+
+        -- @classic@
+        queryTalent = true
+        -- @end-classic@
+
+    elseif self:CanOurInspect(unit) then
         queryEquip = true
         queryTalent = true
     end

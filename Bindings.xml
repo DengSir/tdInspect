@@ -4,14 +4,12 @@
     </Binding>
     <Binding name="TDINSPECT_VIEW_MOUSEOVER" category="ADDONS">
         local unit = select(2, GameTooltip:GetUnit())
-        print(unit)
         if not UnitExists(unit) then
             unit = 'mouseover'
         end
         if not UnitExists(unit) then
             unit = 'target'
         end
-        print(unit)
         InspectUnit(unit)
     </Binding>
 </Bindings>
