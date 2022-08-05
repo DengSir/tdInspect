@@ -13,6 +13,10 @@ local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
 ns.UI = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
 
+ns.VERSION = tonumber((GetAddOnMetadata('tdInspect', 'Version'):gsub('(%d+)%.?', function(x)
+    return format('%02d', tonumber(x))
+end))) or 0
+
 _G.BINDING_HEADER_TDINSPECT = 'tdInspect'
 _G.BINDING_NAME_TDINSPECT_VIEW_TARGET = ns.L['Inspect target']
 _G.BINDING_NAME_TDINSPECT_VIEW_MOUSEOVER = ns.L['Inspect mouseover']
@@ -34,6 +38,10 @@ function Addon:OnInitialize()
 
     ---@type tdInspectProfile
     self.db = LibStub('AceDB-3.0'):New('TDDB_INSPECT2', profile, true)
+
+    if not self.db.global.version or self.db.global.version < 20000 then
+        wipe(self.db.global.userCache)
+    end
 end
 
 function Addon:OnEnable()
