@@ -8,8 +8,6 @@ local ns = select(2, ...)
 
 local tonumber = tonumber
 
-local GetNumTalentTabs = GetNumTalentTabs
-
 ---@class Talent: Object
 local Talent = ns.Addon:NewClass('Talent')
 
@@ -24,7 +22,7 @@ function Talent:ParseTalent(data)
     data = data:gsub('[^%d]+', '')
 
     local index = 1
-    for i = 1, GetNumTalentTabs() do
+    for i = 1, self:GetNumTalentTabs() do
         self.talents[i] = {}
 
         local pointsSpent = 0
@@ -39,9 +37,13 @@ function Talent:ParseTalent(data)
     end
 end
 
-function Talent:_GetTalent(tab, index)
+function Talent:GetTalentData(tab, index)
     local tabData = self.data[tab]
     return tabData and tabData.talents[index]
+end
+
+function Talent:GetNumTalentTabs()
+    return #self.data
 end
 
 function Talent:GetTabInfo(tab)
@@ -57,7 +59,7 @@ function Talent:GetNumTalents(tab)
 end
 
 function Talent:GetTalentInfo(tab, index)
-    local talent = self:_GetTalent(tab, index)
+    local talent = self:GetTalentData(tab, index)
     if talent then
         return talent.name, --
         talent.icon, --
@@ -69,21 +71,21 @@ function Talent:GetTalentInfo(tab, index)
 end
 
 function Talent:GetTalentLink(tab, index)
-    local talent = self:_GetTalent(tab, index)
+    local talent = self:GetTalentData(tab, index)
     if talent and talent.id then
         return format('|cff4e96f7|Htalent:%d:%d|h[%s]|h|r', talent.id, self.talents[tab][index] - 1, talent.name)
     end
 end
 
 function Talent:GetTalentPrereqs(tab, index)
-    local talent = self:_GetTalent(tab, index)
+    local talent = self:GetTalentData(tab, index)
     if talent then
         return talent.prereqs
     end
 end
 
 function Talent:GetTalentRankSpell(tab, index, rank)
-    local talent = self:_GetTalent(tab, index)
+    local talent = self:GetTalentData(tab, index)
     if talent then
         if rank == 0 then
             rank = 1

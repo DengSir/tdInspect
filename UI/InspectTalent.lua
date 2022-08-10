@@ -117,7 +117,7 @@ function InspectTalent:UpdateInfo()
     local talent = ns.Talent:New(Inspect:GetUnitClassFileName(), Inspect:GetUnitTalent())
     local summaries = {}
 
-    for i = 1, GetNumTalentTabs() do
+    for i = 1, talent:GetNumTalentTabs() do
         local name, _, pointsSpent = talent:GetTabInfo(i)
         if name then
             local tab = self.Tabs[i]
