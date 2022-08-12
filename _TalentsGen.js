@@ -9,22 +9,24 @@
 const fs = require("fs");
 const got = require("got");
 const util = require("util");
-const HttpsProxyAgent = require("hpagent").HttpsProxyAgent;
+// const HttpsProxyAgent = require("hpagent").HttpsProxyAgent;
 
-function get(url) {
-    return got(url, {
-        agent: {
-            https: new HttpsProxyAgent({
-                keepAlive: true,
-                keepAliveMsecs: 1000,
-                maxSockets: 256,
-                maxFreeSockets: 256,
-                scheduling: "lifo",
-                proxy: "http://localhost:8787",
-            }),
-        },
-    });
-}
+// function get(url) {
+//     return got(url, {
+//         agent: {
+//             https: new HttpsProxyAgent({
+//                 keepAlive: true,
+//                 keepAliveMsecs: 1000,
+//                 maxSockets: 256,
+//                 maxFreeSockets: 256,
+//                 scheduling: "lifo",
+//                 proxy: "http://localhost:8787",
+//             }),
+//         },
+//     });
+// }
+
+const get = got;
 
 const LOCALES = [
     [0, "enUS"],
@@ -46,7 +48,8 @@ const LOCALE = "https://nether.wowhead.com/menus?dataEnv=%d";
 const GLOBAL = "https://nether.wowhead.com/data/global?dataEnv=%d&locale=%d";
 
 function getTalentData(body) {
-    const m = body.match(/WH\.Wow\.TalentCalcClassic\.data\s*=\s*({[^;]+});/);
+    // const m = body.match(/WH\.Wow\.TalentCalcClassic\.data\s*=\s*({[^;]+});/);
+    const m = body.match(/wow\.talentCalcClassic\..+\.data",\s*({[^;]+})\);/);
     const data = JSON.parse(m[1]).talents;
     return data;
 }

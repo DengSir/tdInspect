@@ -8,9 +8,27 @@
 
 const got = require("got");
 const util = require("util");
-const xmldom = require("xmldom");
+const xmldom = require("@xmldom/xmldom");
 const fs = require("fs");
 const { mapLimit } = require("async");
+// const HttpsProxyAgent = require("hpagent").HttpsProxyAgent;
+
+// function get(url) {
+//     return got(url, {
+//         agent: {
+//             https: new HttpsProxyAgent({
+//                 keepAlive: true,
+//                 keepAliveMsecs: 1000,
+//                 maxSockets: 256,
+//                 maxFreeSockets: 256,
+//                 scheduling: "lifo",
+//                 proxy: "http://localhost:8787",
+//             }),
+//         },
+//     });
+// }
+
+const get = got;
 
 const ITEM_SETS = {
     4: "https://classic.wowhead.com/item-sets",
@@ -51,18 +69,8 @@ const SLOTS = new Map([
     [28, "INVTYPE_RELIC"],
 ]);
 
-function toDataEnv(version) {
-    if (version === "classic") {
-        return 4;
-    } else if (version === "tbc") {
-        return 5;
-    } else if (version === "wotlk") {
-        return 8;
-    }
-}
-
 async function getItemPage(version, itemId) {
-    return new xmldom.DOMParser().parseFromString((await got(util.format(ITEM, itemId, version))).body);
+    return new xmldom.DOMParser().parseFromString((await get(util.format(ITEM, itemId, version))).body);
 }
 
 function getItemBouns(doc) {
@@ -86,7 +94,7 @@ function getItemSlot(doc) {
 }
 
 async function genItemSets(version, output) {
-    const body = (await got(ITEM_SETS[version])).body;
+    const body = (await get(ITEM_SETS[version])).body;
     const m = body.match(/var itemSets\s*=\s*([^;]+)/);
     if (m) {
         const itemSets = JSON.parse(m[1])

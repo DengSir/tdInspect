@@ -19,11 +19,10 @@
   },
   "homepage": "https://github.com/DengSir/tdInspect#readme",
   "devDependencies": {
+    "@xmldom/xmldom": "^0.8.2",
     "async": "^3.2.3",
-    "conventional-changelog-cli": "^2.1.1",
     "got": "^11.8.5",
-    "hpagent": "^1.0.0",
-    "xmldom": "^0.6.0"
+    "hpagent": "^1.0.0"
   },
   "wow": {
     "name": "tdInspect",
