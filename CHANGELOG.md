@@ -1,3 +1,19 @@
+# [2.0.0](https://github.com/DengSir/tdInspect/compare/v1.0.11...v2.0.0) (2022-08-12)
+
+
+### Bug Fixes
+
+* for classic ([4892b30](https://github.com/DengSir/tdInspect/commit/4892b30f8b34686a1c128655c15dcf0348bfe23c))
+* prismatic gem ([058a2f1](https://github.com/DengSir/tdInspect/commit/058a2f14bc96187d301bbeaabbf091b2a9dd4e03))
+
+
+### Features
+
+* for wotlk ([aeffe44](https://github.com/DengSir/tdInspect/commit/aeffe44bbd2df63343d1a18110c7bca26ca50103))
+* for wotlk ([22b5ad2](https://github.com/DengSir/tdInspect/commit/22b5ad206dc808deae48f4254cb6bc9208c56d4b))
+
+
+
 ## [1.0.11](https://github.com/DengSir/tdInspect/compare/v1.0.10...v1.0.11) (2022-07-01)
 
 
