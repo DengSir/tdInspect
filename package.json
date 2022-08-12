@@ -30,8 +30,6 @@
     "curse_id": 500065,
     "changelog": "CHANGELOG.md",
     "builds": {
-      "classic": "11400",
-      "bcc": "20504",
       "lkc": "30400"
     }
   }
