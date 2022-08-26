@@ -7,26 +7,8 @@
  */
 
 const fs = require("fs");
-const got = require("got");
 const util = require("util");
-// const HttpsProxyAgent = require("hpagent").HttpsProxyAgent;
-
-// function get(url) {
-//     return got(url, {
-//         agent: {
-//             https: new HttpsProxyAgent({
-//                 keepAlive: true,
-//                 keepAliveMsecs: 1000,
-//                 maxSockets: 256,
-//                 maxFreeSockets: 256,
-//                 scheduling: "lifo",
-//                 proxy: "http://localhost:8787",
-//             }),
-//         },
-//     });
-// }
-
-const get = got;
+const get = require("./get");
 
 const LOCALES = [
     [0, "enUS"],

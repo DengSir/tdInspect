@@ -6,29 +6,12 @@
  * @Date   : 6/3/2021, 3:26:39 PM
  */
 
-const got = require("got");
 const util = require("util");
 const xmldom = require("@xmldom/xmldom");
 const fs = require("fs");
+const get = require("./get");
 const { mapLimit } = require("async");
-// const HttpsProxyAgent = require("hpagent").HttpsProxyAgent;
-
-// function get(url) {
-//     return got(url, {
-//         agent: {
-//             https: new HttpsProxyAgent({
-//                 keepAlive: true,
-//                 keepAliveMsecs: 1000,
-//                 maxSockets: 256,
-//                 maxFreeSockets: 256,
-//                 scheduling: "lifo",
-//                 proxy: "http://localhost:8787",
-//             }),
-//         },
-//     });
-// }
-
-const get = got;
+const ProgressBar = require("progress");
 
 const ITEM_SETS = {
     4: "https://classic.wowhead.com/item-sets",
@@ -113,11 +96,12 @@ select(2,...).ItemSetMake()`);
         let index = 0;
         const items = [...new Set(itemSets.map(({ items }) => items).flat())];
         const total = items.length;
+        const bar = new ProgressBar(`:percent :current/:total :bar `, { total: total });
         const itemDocs = new Map(
             await mapLimit(items, 100, async (itemId) => {
                 const doc = await getItemPage(version, itemId);
                 index++;
-                console.log(`Fetch ${index}/${total}`);
+                bar.tick();
                 return [itemId, doc];
             })
         );
