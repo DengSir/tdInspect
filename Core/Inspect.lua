@@ -176,7 +176,7 @@ function Inspect:GetEquippedSetItems(id)
         local link = self:GetItemLink(slot)
         if link then
             local name, _, _, _, _, _, _, _, equipLoc, _, _, _, _, _, _, setId = GetItemInfo(link)
-            if setId and setId == id then
+            if name and setId and setId == id then
                 local baseName
                 local itemId = ns.ItemLinkToId(link)
 
