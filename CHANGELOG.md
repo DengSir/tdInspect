@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/DengSir/tdInspect/compare/v2.0.0...v2.0.1) (2022-09-02)
+
+
+### Features
+
+* support death night ([7fc1100](https://github.com/DengSir/tdInspect/commit/7fc11006f5c70c17b6642f7544ca76577525e135))
+
+
+
 # [2.0.0](https://github.com/DengSir/tdInspect/compare/v1.0.11...v2.0.0) (2022-08-12)
 
 
