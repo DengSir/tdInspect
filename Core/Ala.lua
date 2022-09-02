@@ -50,13 +50,11 @@ function Ala:Decode(code)
     local data = ''
     local revCodeTable = REV_CODE_TABLE
     local classIndex = revCodeTable[strsub(code, 1, 1)]
-    print(classIndex)
     if not classIndex then
         return nil
     end
 
     local class = INDEX_TO_CLASS[classIndex]
-    print(class)
     if not class then
         return nil
     end
