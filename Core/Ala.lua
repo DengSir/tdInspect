@@ -5,7 +5,6 @@
 --
 -- Code from https://github.com/alexqu0822/alaTalentEmu/blob/master/alaShared/core.lua
 --
-
 ---@class ns
 local ns = select(2, ...)
 
@@ -24,6 +23,9 @@ local INDEX_TO_CLASS = {
     7, -- SHAMAN
     9, -- WARLOCK
     1, -- WARRIOR
+    6, -- DEATHKNIGHT
+    10, -- MONK
+    12, -- DEAMONHUNTER
 }
 
 do
@@ -48,11 +50,13 @@ function Ala:Decode(code)
     local data = ''
     local revCodeTable = REV_CODE_TABLE
     local classIndex = revCodeTable[strsub(code, 1, 1)]
+    print(classIndex)
     if not classIndex then
         return nil
     end
 
     local class = INDEX_TO_CLASS[classIndex]
+    print(class)
     if not class then
         return nil
     end
