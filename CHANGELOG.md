@@ -1,3 +1,12 @@
+## [2.0.3](https://github.com/DengSir/tdInspect/compare/v2.0.2...v2.0.3) (2022-09-11)
+
+
+### Bug Fixes
+
+* talent ([b133f6b](https://github.com/DengSir/tdInspect/commit/b133f6b3a2ece2104671df8f15b9252031875a05))
+
+
+
 ## [2.0.2](https://github.com/DengSir/tdInspect/compare/v2.0.1...v2.0.2) (2022-09-02)
 
 
