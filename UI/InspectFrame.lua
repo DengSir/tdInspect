@@ -70,6 +70,9 @@ function InspectFrame:Constructor()
         self.TalentFrame:SetShown(shown)
     end
     -- @end-non-classic@
+    -- @build>3@
+    self:AddTab(GLYPHS, ns.UI.GlyphFrame:Bind(self:CreateTabFrame()))
+    -- @end-build>3@
 
     self.Portrait:SetSize(64, 64)
 end

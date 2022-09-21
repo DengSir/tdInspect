@@ -3,7 +3,13 @@
         "node_modules": true
     },
     "Lua.diagnostics.disable": [
-        "missing-parameter"
+        "missing-parameter",
+        "param-type-mismatch",
+        "undefined-global",
+        "assign-type-mismatch",
+        "redundant-parameter",
+        "cast-local-type",
+        "need-check-nil"
     ],
     "Lua.runtime.version": "Lua 5.1",
     "Lua.diagnostics.globals": [

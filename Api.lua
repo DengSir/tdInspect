@@ -6,15 +6,10 @@
 ---@class ns
 local ns = select(2, ...)
 
-local ipairs = ipairs
 local tonumber = tonumber
 local format = string.format
 
-local GetItemInfo = GetItemInfo
-local GetRealmName = GetRealmName
 local UnitFullName = UnitFullName
-
-local SPELL_PASSIVE = SPELL_PASSIVE
 
 local function memorize(func)
     local cache = {}
