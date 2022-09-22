@@ -431,6 +431,34 @@ function Inspect:INSPECT_READY(_, guid)
     end
 end
 
+function Inspect:UpdateCharacter(sender, data)
+    local name = ns.GetFullName(sender)
+    local db = self:BuildCharacterDb(name)
+
+    if data.class then
+        db.class = data.class
+    end
+    if data.level then
+        db.level = data.level
+    end
+    if data.talent then
+        db.talent = data.talent
+    end
+    if data.equips then
+        for k, v in pairs(data.equips) do
+            db[k] = v or nil
+        end
+    end
+
+    if name == self.unitName then
+        self:SendMessage('INSPECT_READY', nil, name)
+
+        if data.talent then
+            self:SendMessage('INSPECT_TALENT_READY', nil, name)
+        end
+    end
+end
+
 function Inspect:OnComm(cmd, sender, ...)
     if cmd == 'Q' then
         local queryTalent, queryEquip = ...
@@ -467,42 +495,11 @@ function Inspect:OnComm(cmd, sender, ...)
 end
 
 function Inspect:OnAlaCommand(_, msg, channel, sender)
-    local cmd = msg:sub(1, ALA_CMD_LEN)
-    if cmd == '_r_equ' or cmd == '_repeq' or cmd == '_r_eq3' then
-        local sep = msg:sub(ALA_CMD_LEN + 1, ALA_CMD_LEN + 1)
-        local data = {strsplit(sep, msg:sub(ALA_CMD_LEN + 2))}
-
-        local name = ns.GetFullName(sender)
-        local db = self:BuildCharacterDb(name)
-
-        for i = 1, #data, 2 do
-            local slot, link = tonumber(data[i]), data[i + 1]
-            if slot and link ~= 'item:-1' and link:find('item:(%d+)') then
-                db[slot] = link
-            end
-        end
-
-        if name == self.unitName then
-            self:SendMessage('INSPECT_READY', nil, name)
-        end
-
-    elseif cmd == '_r_tal' or cmd == '_reply' then
-        local code = msg:sub(ALA_CMD_LEN + 1)
-        code = strsplit('#', code)
-
-        local class, talent, level = ns.Ala:Decode(code)
-
-        local name = ns.GetFullName(sender)
-        local db = self:BuildCharacterDb(name)
-
-        db.class = class
-        db.level = level
-        db.talent = talent
-
-        if name == self.unitName then
-            self:SendMessage('INSPECT_TALENT_READY', nil, name)
-        end
+    local data = ns.Ala:RecvComm(msg, channel, sender)
+    if not data then
+        return
     end
+    self:UpdateCharacter(sender, data)
 end
 
 function Inspect:PLAYER_TARGET_CHANGED()
