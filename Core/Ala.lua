@@ -195,9 +195,9 @@ function Ala:DecodeGlyph(code)
                 local v = DecodeNumber(val[1])
                 local enabled = v % 8
                 local glyphType = (v - enabled) / 8
-                local glyphSpell = DecodeNumber(val[2])
+                local spellId = DecodeNumber(val[2])
                 local icon = DecodeNumber(val[3])
-                data[i] = {enabled, icon, nil, glyphSpell}
+                data[i] = {icon, nil, spellId}
             end
         end
         return data

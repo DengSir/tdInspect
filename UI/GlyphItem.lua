@@ -6,14 +6,47 @@
 ---@type ns
 local ns = select(2, ...)
 
+local GLYPH_MAJOR = 1
+local GLYPH_MINOR = 2
+
 local GLYPH_SLOTS = {
     [0] = {coords = {0.78125, 0.91015625, 0.69921875, 0.828125}},
-    [1] = {coords = {0, 0.12890625, 0.87109375, 1}, points = {'CENTER', -15, 140}, glyphType = 1},
-    [2] = {coords = {0.130859375, 0.259765625, 0.87109375, 1}, points = {'CENTER', -14, -103}, glyphType = 2},
-    [3] = {coords = {0.392578125, 0.521484375, 0.87109375, 1}, points = {'TOPLEFT', 28, -133}, glyphType = 2},
-    [4] = {coords = {0.5234375, 0.65234375, 0.87109375, 1}, points = {'BOTTOMRIGHT', -56, 168}, glyphType = 1},
-    [5] = {coords = {0.26171875, 0.390625, 0.87109375, 1}, points = {'TOPRIGHT', -56, -133}, glyphType = 2},
-    [6] = {coords = {0.654296875, 0.783203125, 0.87109375, 1}, points = {'BOTTOMLEFT', 26, 168}, glyphType = 1},
+    [1] = {
+        coords = {0, 0.12890625, 0.87109375, 1},
+        points = {'CENTER', -15, 140},
+        glyphType = GLYPH_MAJOR,
+        lockedTip = GLYPH_SLOT_TOOLTIP3:gsub('50', '15'),
+    },
+    [2] = {
+        coords = {0.130859375, 0.259765625, 0.87109375, 1},
+        points = {'CENTER', -14, -103},
+        glyphType = GLYPH_MINOR,
+        lockedTip = GLYPH_SLOT_TOOLTIP3:gsub('50', '15'),
+    },
+    [3] = {
+        coords = {0.392578125, 0.521484375, 0.87109375, 1},
+        points = {'TOPLEFT', 28, -133},
+        glyphType = GLYPH_MINOR,
+        lockedTip = GLYPH_SLOT_TOOLTIP3,
+    },
+    [4] = {
+        coords = {0.5234375, 0.65234375, 0.87109375, 1},
+        points = {'BOTTOMRIGHT', -56, 168},
+        glyphType = GLYPH_MAJOR,
+        lockedTip = GLYPH_SLOT_TOOLTIP4,
+    },
+    [5] = {
+        coords = {0.26171875, 0.390625, 0.87109375, 1},
+        points = {'TOPRIGHT', -56, -133},
+        glyphType = GLYPH_MINOR,
+        lockedTip = GLYPH_SLOT_TOOLTIP5,
+    },
+    [6] = {
+        coords = {0.654296875, 0.783203125, 0.87109375, 1},
+        points = {'BOTTOMLEFT', 26, 168},
+        glyphType = GLYPH_MAJOR,
+        lockedTip = GLYPH_SLOT_TOOLTIP6,
+    },
 }
 
 ---@class UI.GlyphItem: Object, Button, AceEvent-3.0
@@ -46,7 +79,7 @@ function GlyphItem:Constructor(_, id)
     Icon:SetSize(53, 53)
     Icon:SetPoint('CENTER')
 
-    if slotData.glyphType == 1 then
+    if slotData.glyphType == GLYPH_MAJOR then
         Highlight:SetSize(108, 108)
         Highlight:SetTexCoord(0.740234375, 0.953125, 0.484375, 0.697265625)
         Background:SetSize(70, 70)
@@ -69,6 +102,8 @@ function GlyphItem:Constructor(_, id)
 
     self.id = id
     self.glyphType = slotData.glyphType
+    self.glyphTypeTooltip = self.glyphType == GLYPH_MAJOR and MAJOR_GLYPH or MINOR_GLYPH
+
     self.Highlight = Highlight
     self.Setting = Setting
     self.Ring = Ring
@@ -77,20 +112,39 @@ function GlyphItem:Constructor(_, id)
 end
 
 function GlyphItem:OnEnter()
-    if self.link or self.spellId then
-        GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+    self.UpdateTooltip = nil
+
+    GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+
+    if not self.enabled then
+        GameTooltip:SetText(GLYPH_LOCKED, RED_FONT_COLOR:GetRGB())
+        GameTooltip:AddLine(self.glyphTypeTooltip, BRIGHTBLUE_FONT_COLOR:GetRGB())
+        GameTooltip:AddLine(GLYPH_SLOTS[self.id].lockedTip)
+    elseif self.link or self.spellId then
         if self.link then
             GameTooltip:SetHyperlink(self.link)
         elseif self.spellId then
-            GameTooltip:SetSpellByID(self.spellId)
+            local name = GetSpellInfo(self.spellId)
+            local description = GetSpellDescription(self.spellId)
+            if not description or description == '' then
+                self.UpdateTooltip = self.OnEnter
+            end
+            GameTooltip:SetText(name, 1, 1, 1)
+            GameTooltip:AddLine(self.glyphTypeTooltip, BRIGHTBLUE_FONT_COLOR:GetRGB())
+            GameTooltip:AddLine(description, nil, nil, nil, true)
+            GameTooltip:Show()
         end
-        GameTooltip:Show()
+    else
+        GameTooltip:SetText(GLYPH_INACTIVE, GRAY_FONT_COLOR:GetRGB())
+        GameTooltip:AddLine(self.glyphTypeTooltip, BRIGHTBLUE_FONT_COLOR:GetRGB())
     end
+    GameTooltip:Show()
 end
 
 function GlyphItem:UpdateInfo(enabled, icon, link, spellId)
     self.link = link
     self.spellId = spellId
+    self.enabled = enabled
 
     if not enabled then
         self.Background:Hide()
@@ -120,14 +174,14 @@ function GlyphItem:UpdateInfo(enabled, icon, link, spellId)
             self.Background:SetTexCoord(unpack(GLYPH_SLOTS[self.id].coords))
         end
 
-        if self.glyphType == 1 then
+        if self.glyphType == GLYPH_MAJOR then
             self.Setting:SetTexCoord(0.740234375, 0.953125, 0.484375, 0.697265625)
         else
             self.Setting:SetTexCoord(0.765625, 0.927734375, 0.15625, 0.31640625)
         end
     end
 
-    if self.glyphType == 1 then
+    if self.glyphType == GLYPH_MAJOR then
         self.Setting:SetSize(108, 108)
     else
         self.Setting:SetSize(86, 86)

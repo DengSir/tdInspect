@@ -7,10 +7,9 @@
 local ns = select(2, ...)
 
 local ipairs, pairs, time = ipairs, pairs, time
-local strsplit, tostring = strsplit, tostring
+local tostring = tostring
 local tinsert, tconcat = table.insert, table.concat
 local select = select
-local tonumber = tonumber
 
 local CanInspect = CanInspect
 local CheckInteractDistance = CheckInteractDistance
@@ -75,9 +74,7 @@ function Inspect:OnInitialize()
                 return nil
             end
 
-            dump(self.db.glyphs)
-
-            local glyph = ns.Glyph:New(self.db.glyphs[i])
+            local glyph = ns.Glyph:New(self.db.glyphs[i], self.db.level)
             t[i] = glyph
             return glyph
         end,
@@ -306,19 +303,18 @@ function Inspect:CanBlizzardInspect(unit)
     if not unit then
         return false
     end
-
+    if UnitIsDeadOrGhost('player') then
+        return false
+    end
     if UnitIsDeadOrGhost(unit) then
         return false
     end
-
     if not CheckInteractDistance(unit, 1) then
         return false
     end
-
     if not CanInspect(unit) then
         return false
     end
-
     return true
 end
 
@@ -328,7 +324,6 @@ function Inspect:CanOurInspect(unit)
             return false
         end
     end
-
     return true
 end
 
@@ -453,13 +448,17 @@ local function PackGlyph(group)
         local enabled, glyphType, spellId, icon = GetGlyphSocketInfo(i, group)
         local link = GetGlyphLink(i, group)
 
-        if link then
+        if icon then
             link = link:match('glyph:([%d:]+)')
-        end
 
-        tinsert(data, {enabled, icon, link})
+            print(icon, link)
+
+            data[i] = format('%d:%s', icon, link)
+        else
+            data[i] = ''
+        end
     end
-    return data
+    return table.concat(data, ',')
 end
 
 local function PackGlyph2()
@@ -497,7 +496,8 @@ function Inspect:INSPECT_READY(_, guid)
                 end
             end
 
-            db[slot] = link
+            db.equips = db.equips or {}
+            db.equips[slot] = link
         end
 
         db.class = select(3, UnitClass(self.unit))
@@ -542,9 +542,18 @@ function Inspect:UpdateCharacter(sender, data)
         db.activeGroup = data.activeGroup
     end
 
+    print('----------------------------------', sender)
     dump(db)
 
     self:TryFireMessage(nil, name, db)
+end
+
+local function UnpackGlyph(code)
+    if code == '' then
+        return
+    end
+    local icon, link = strsplit(':', code, 2)
+    return tonumber(icon), 'glyph:' .. link
 end
 
 function Inspect:OnComm(cmd, sender, ...)
@@ -627,12 +636,15 @@ function Inspect:OnComm(cmd, sender, ...)
         end
 
         if glyphs then
-            db.glyphs = glyphs
-            for _, v in pairs(db.glyphs) do
-                for _, glyph in pairs(v) do
-                    if glyph[3] then
-                        glyph[3] = 'glyph:' .. glyph[3]
-                    end
+            db.glyphs = {}
+            for groupId, glyphsData in pairs(glyphs) do
+                db.glyphs[groupId] = {}
+
+                local d = strsplittable(',', glyphsData)
+                for id, code in ipairs(d) do
+                    local icon, link = UnpackGlyph(code)
+
+                    db.glyphs[groupId][id] = {icon, link}
                 end
             end
         end
@@ -701,7 +713,8 @@ function Inspect:GET_ITEM_INFO_RECEIVED(_, id, ok)
             link = link:match('(item:[%-0-9:]+)')
         end
 
-        db[slot] = link
+        db.equips = db.equips or {}
+        db.equips[slot] = link
     end
 
     self:SendMessage('INSPECT_READY', self.unit, name)

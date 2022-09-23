@@ -9,14 +9,16 @@ local ns = select(2, ...)
 ---@class Glyph: Object
 local Glyph = ns.Addon:NewClass('Glyph')
 
-function Glyph:Constructor(data)
+function Glyph:Constructor(data, level)
+    self.level = level
     self.data = data
 end
 
 function Glyph:GetGlyphSocketInfo(i)
+    local enabled = self.level >= ns.GLYPH_LEVELS[i]
     local socket = self.data and self.data[i]
     if not socket then
-        return
+        return enabled
     end
-    return socket[1], socket[2], socket[3], socket[4]
+    return enabled, socket[1], socket[2], socket[3]
 end
