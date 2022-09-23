@@ -49,7 +49,8 @@ end
 function Talent:GetTabInfo(tab)
     local tabData = self.data[tab]
     if tabData then
-        return tabData.name, ns.TALENT_BACKGROUNDS[tabData.tabId], self.talents[tab].pointsSpent
+        return tabData.name, ns.TALENT_BACKGROUNDS[tabData.tabId], self.talents[tab].pointsSpent,
+               ns.TALENT_ICONS[tabData.tabId]
     end
 end
 

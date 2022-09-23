@@ -31,8 +31,8 @@ local UnitRace = UnitRace
 local HideUIPanel = LibStub('LibShowUIPanel-1.0').HideUIPanel
 
 local ALA_PREFIX = 'ATEADD'
-local ALA_CMD_LEN = 6
 local PROTO_PREFIX = 'tdInspect'
+local PROTO_VERSION = 2
 
 local Serializer = LibStub('AceSerializer-3.0')
 
@@ -41,8 +41,47 @@ local Inspect = ns.Addon:NewModule('Inspect', 'AceEvent-3.0', 'AceComm-3.0')
 
 function Inspect:OnInitialize()
     self.unitName = nil
-    self.db = ns.Addon.db.global.userCache
     self.waitingItems = {}
+    self.userCache = ns.Addon.db.global.userCache
+
+    self.db = setmetatable({}, {
+        __index = function(_, k)
+            return self.userCache[self.unitName] and self.userCache[self.unitName][k]
+        end,
+        __newindex = function(_, k, v)
+            self.userCache[self.unitName] = self.userCache[self.unitName] or {}
+            self.userCache[self.unitName][k] = v
+        end,
+    })
+    ---@type Talent[]
+    self.talents = setmetatable({}, {
+        __index = function(t, i)
+            assert(i == 1 or i == 2)
+
+            if not self.db.talents then
+                return nil
+            end
+
+            local talent = ns.Talent:New(ns.GetClassFileName(self.db.class), self.db.talents[i])
+            t[i] = talent
+            return talent
+        end,
+    })
+    ---@type Glyph
+    self.glyphs = setmetatable({}, {
+        __index = function(t, i)
+            assert(i == 1 or i == 2)
+            if not self.db.glyphs then
+                return nil
+            end
+
+            dump(self.db.glyphs)
+
+            local glyph = ns.Glyph:New(self.db.glyphs[i])
+            t[i] = glyph
+            return glyph
+        end,
+    })
 end
 
 function Inspect:OnEnable()
@@ -86,6 +125,8 @@ function Inspect:Clear()
     ClearInspectPlayer()
     self.unitName = nil
     self.unit = nil
+    wipe(self.talents)
+    wipe(self.glyphs)
 
     INSPECTED_UNIT = nil
     if InspectFrame then
@@ -98,11 +139,8 @@ function Inspect:GetItemLink(slot)
     if self.unit then
         link = GetInventoryItemLink(self.unit, slot)
     end
-    if not link and self.unitName then
-        local db = self.db[self.unitName]
-        if db then
-            link = db[slot]
-        end
+    if not link and self.unitName and self.db.equips then
+        link = self.db.equips[slot]
     end
     return link
 end
@@ -203,16 +241,11 @@ function Inspect:GetEquippedSetItems(id)
     return count, items, overrideNames
 end
 
-function Inspect:GetDBValue(key)
-    local db = self.db[self.unitName]
-    return db and db[key]
-end
-
 function Inspect:GetUnitClassFileName()
     if self.unit then
         return UnitClassBase(self.unit)
     else
-        return ns.GetClassFileName(self:GetDBValue('class'))
+        return ns.GetClassFileName(self.db.class)
     end
 end
 
@@ -220,7 +253,7 @@ function Inspect:GetUnitClass()
     if self.unit then
         return (UnitClass(self.unit))
     else
-        return ns.GetClassLocale(self:GetDBValue('class'))
+        return ns.GetClassLocale(self.db.class)
     end
 end
 
@@ -228,7 +261,7 @@ function Inspect:GetUnitRaceFileName()
     if self.unit then
         return (select(2, UnitRace(self.unit)))
     else
-        return ns.GetRaceFileName(self:GetDBValue('race'))
+        return ns.GetRaceFileName(self.db.race)
     end
 end
 
@@ -236,7 +269,7 @@ function Inspect:GetUnitRace()
     if self.unit then
         return (UnitRace(self.unit))
     else
-        return ns.GetRaceLocale(self:GetDBValue('race'))
+        return ns.GetRaceLocale(self.db.race)
     end
 end
 
@@ -244,16 +277,29 @@ function Inspect:GetUnitLevel()
     if self.unit then
         return UnitLevel(self.unit)
     else
-        return self:GetDBValue('level')
+        return self.db.level
     end
 end
 
-function Inspect:GetUnitTalent()
-    return self:GetDBValue('talent')
+function Inspect:GetNumTalentGroups()
+    return self.db.numGroups or 0
+end
+
+function Inspect:GetActiveTalentGroup()
+    return self.db.activeGroup
+end
+
+function Inspect:GetUnitTalent(group)
+    return self.talents[group or self:GetActiveTalentGroup()]
+end
+
+---@return Glyph
+function Inspect:GetUnitGlyph(group)
+    return self.glyphs[group or self:GetActiveTalentGroup()]
 end
 
 function Inspect:GetLastUpdate()
-    return self:GetDBValue('timestamp')
+    return self.db.timestamp
 end
 
 function Inspect:CanBlizzardInspect(unit)
@@ -299,6 +345,7 @@ function Inspect:Query(unit, name)
 
     local queryTalent = false
     local queryEquip = false
+    local queryGlyph = false
 
     if self:CanBlizzardInspect(unit) then
         NotifyInspect(unit)
@@ -306,37 +353,36 @@ function Inspect:Query(unit, name)
         -- @classic@
         queryTalent = true
         -- @end-classic@
+        -- @build>3@
+        queryGlyph = true
+        -- @end-build>3@
 
     elseif self:CanOurInspect(unit) then
         queryEquip = true
         queryTalent = true
+        queryGlyph = true
     end
 
-    if queryTalent or queryEquip then
-        self:SendCommMessage(PROTO_PREFIX, Serializer:Serialize('Q', queryTalent, queryEquip), 'WHISPER', self.unitName)
-    end
-
-    if queryTalent then
-        self:SendCommMessage(ALA_PREFIX, '_q_tal', 'WHISPER', self.unitName)
-    end
-
-    if queryEquip then
-        self:SendCommMessage(ALA_PREFIX, '_q_equ', 'WHISPER', self.unitName)
+    if queryEquip or queryTalent or queryGlyph then
+        self:SendCommMessage(PROTO_PREFIX,
+                             Serializer:Serialize('Q', queryTalent, queryEquip, PROTO_VERSION, queryGlyph), 'WHISPER',
+                             self.unitName)
+        self:SendCommMessage(ALA_PREFIX, ns.Ala:PackQuery(queryEquip, queryTalent, queryGlyph), 'WHISPER', self.unitName)
     end
 
     self:CheckQuery()
 end
 
 function Inspect:CheckQuery()
-    if self.db[self.unitName] then
-        self:SendMessage('INSPECT_READY', self.unit, self.unitName)
+    if self.userCache[self.unitName] then
+        self:TryFireMessage(self.unit, self.unitName, self.userCache[self.unitName])
     end
 end
 
 function Inspect:BuildCharacterDb(name)
-    self.db[name] = self.db[name] or {}
-    self.db[name].timestamp = time()
-    return self.db[name]
+    self.userCache[name] = self.userCache[name] or {}
+    self.userCache[name].timestamp = time()
+    return self.userCache[name]
 end
 
 -- @build<3@
@@ -361,23 +407,33 @@ local function compare(a, b)
     return a.column < b.column
 end
 
-local function PackTalent(inspect)
-    local talents = {}
-    local group = GetActiveTalentGroup(inspect)
+local function PackTalent(inspect, group)
+    local data = {}
+    if not inspect then
+        group = group or GetActiveTalentGroup(inspect)
+    end
     for i = 1, GetNumTalentTabs(inspect) do
         for j = 1, GetNumTalents(i, inspect) do
             local _, _, tier, column, count = GetTalentInfo(i, j, inspect, nil, group)
-            tinsert(talents, {count = tostring(count or 0), tab = i, tier = tier, column = column})
+            tinsert(data, {count = tostring(count or 0), tab = i, tier = tier, column = column})
         end
     end
-    sort(talents, compare)
+    sort(data, compare)
 
-    for i, v in ipairs(talents) do
-        talents[i] = v.count
+    for i, v in ipairs(data) do
+        data[i] = v.count
     end
-    return (tconcat(talents):gsub('0+$', ''))
+    return (tconcat(data):gsub('0+$', ''))
 end
 -- @end-build>3@
+
+local function PackTalent2(inspect)
+    local talents = {}
+    for group = 1, GetNumTalentGroups(inspect) do
+        tinsert(talents, PackTalent(inspect, group))
+    end
+    return talents
+end
 
 local function PackEquip()
     local equips = {}
@@ -388,6 +444,30 @@ local function PackEquip()
         end
     end
     return equips
+end
+
+local function PackGlyph(group)
+    local data = {}
+    group = group or 1
+    for i = 1, 6 do
+        local enabled, glyphType, spellId, icon = GetGlyphSocketInfo(i, group)
+        local link = GetGlyphLink(i, group)
+
+        if link then
+            link = link:match('glyph:([%d:]+)')
+        end
+
+        tinsert(data, {enabled, icon, link})
+    end
+    return data
+end
+
+local function PackGlyph2()
+    local glyphs = {}
+    for group = 1, GetNumTalentGroups() do
+        tinsert(glyphs, PackGlyph(group))
+    end
+    return glyphs
 end
 
 function Inspect:INSPECT_READY(_, guid)
@@ -411,7 +491,7 @@ function Inspect:INSPECT_READY(_, guid)
                 local id = GetInventoryItemID(self.unit, slot)
                 if id then
                     link = 'item:' .. id
-
+                    GetItemInfo(id)
                     self.waitingItems[id] = self.waitingItems[id] or {}
                     tinsert(self.waitingItems[id], slot)
                 end
@@ -423,11 +503,13 @@ function Inspect:INSPECT_READY(_, guid)
         db.class = select(3, UnitClass(self.unit))
         db.race = select(3, UnitRace(self.unit))
         db.level = UnitLevel(self.unit)
+        db.numGroups = GetNumTalentGroups(true)
+        db.activeGroup = GetActiveTalentGroup(true)
         -- @build>2@
-        db.talent = PackTalent(true)
+        db.talents = PackTalent2(true)
         -- @end-build>2@
 
-        self:SendMessage('INSPECT_READY', self.unit, name)
+        self:TryFireMessage(self.unit, name, db)
     end
 end
 
@@ -441,56 +523,133 @@ function Inspect:UpdateCharacter(sender, data)
     if data.level then
         db.level = data.level
     end
-    if data.talent then
-        db.talent = data.talent
-    end
     if data.equips then
+        db.equips = {}
         for k, v in pairs(data.equips) do
-            db[k] = v or nil
+            db.equips[k] = v or nil
         end
     end
-
-    if name == self.unitName then
-        self:SendMessage('INSPECT_READY', nil, name)
-
-        if data.talent then
-            self:SendMessage('INSPECT_TALENT_READY', nil, name)
-        end
+    if data.talents then
+        db.talents = data.talents
     end
+    if data.glyphs then
+        db.glyphs = data.glyphs
+    end
+    if data.numGroups then
+        db.numGroups = data.numGroups
+    end
+    if data.activeGroup then
+        db.activeGroup = data.activeGroup
+    end
+
+    dump(db)
+
+    self:TryFireMessage(nil, name, db)
 end
 
 function Inspect:OnComm(cmd, sender, ...)
     if cmd == 'Q' then
-        local queryTalent, queryEquip = ...
-        local talent = queryTalent and PackTalent() or nil
-        local equip = queryEquip and PackEquip() or nil
-        local class = select(3, UnitClass('player'))
-        local race = select(3, UnitRace('player'))
-        local level = UnitLevel('player')
-        local msg = Serializer:Serialize('R', class, race, level, talent, equip)
+        local queryTalent, queryEquip, protoVersion, queryGlyph = ...
+        if not protoVersion or protoVersion == 1 then
+            local talent = queryTalent and PackTalent() or nil
+            local equips = queryEquip and PackEquip() or nil
+            local class = select(3, UnitClass('player'))
+            local race = select(3, UnitRace('player'))
+            local level = UnitLevel('player')
+            local msg = Serializer:Serialize('R', class, race, level, talent, equips)
 
-        self:SendCommMessage(PROTO_PREFIX, msg, 'WHISPER', sender)
+            self:SendCommMessage(PROTO_PREFIX, msg, 'WHISPER', sender)
+        elseif protoVersion >= 2 then
+            local numGroups = GetNumTalentGroups()
+            local activeGroup = GetActiveTalentGroup()
+            local equips = queryEquip and PackEquip() or nil
+            local talents = queryTalent and PackTalent2() or nil
+            local glyphs = queryGlyph and PackGlyph2() or nil
+            local class = select(3, UnitClass('player'))
+            local race = select(3, UnitRace('player'))
+            local level = UnitLevel('player')
+            local msg = Serializer:Serialize('R2', protoVersion, class, race, level, equips, numGroups, activeGroup,
+                                             talents, glyphs)
+
+            self:SendCommMessage(PROTO_PREFIX, msg, 'WHISPER', sender)
+        end
+
     elseif cmd == 'R' then
         local class, race, level, talent, equips = ...
 
-        local db = self:BuildCharacterDb(sender)
+        local name = ns.GetFullName(sender)
+        local db = self:BuildCharacterDb(name)
+
         db.class = class
         db.race = race
         db.level = level
 
         if talent then
-            db.talent = talent
-        end
-        if equips then
-            for k, v in pairs(equips) do
-                db[k] = 'item:' .. v
+            db.numGroups = 1
+            db.activeGroup = 1
+
+            if talent then
+                db.talents = {talent}
             end
         end
 
-        if sender == self.unitName then
-            self:SendMessage('INSPECT_READY', nil, sender)
-            self:SendMessage('INSPECT_TALENT_READY', nil, sender)
+        if equips then
+            db.equips = {}
+            for k, v in pairs(equips) do
+                db.equips[k] = 'item:' .. v
+            end
         end
+
+        self:TryFireMessage(nil, name, db)
+    elseif cmd == 'R2' then
+        local protoVersion, class, race, level, equips, numGroups, activeGroup, talents, glyphs = ...
+        local name = ns.GetFullName(sender)
+        local db = self:BuildCharacterDb(name)
+
+        db.class = class
+        db.race = race
+        db.level = level
+
+        if talents or glyphs then
+            db.numGroups = numGroups
+            db.activeGroup = activeGroup
+        end
+
+        if talents then
+            db.talents = talents
+        end
+
+        if equips then
+            db.equips = {}
+            for k, v in pairs(equips) do
+                db.equips[k] = 'item:' .. v
+            end
+        end
+
+        if glyphs then
+            db.glyphs = glyphs
+            for _, v in pairs(db.glyphs) do
+                for _, glyph in pairs(v) do
+                    if glyph[3] then
+                        glyph[3] = 'glyph:' .. glyph[3]
+                    end
+                end
+            end
+        end
+
+        self:TryFireMessage(nil, name, db)
+    end
+end
+
+function Inspect:TryFireMessage(unit, name, db)
+    if name ~= self.unitName then
+        return
+    end
+
+    self:SendMessage('INSPECT_READY', unit, name)
+
+    if db and db.talents then
+        self:SendMessage('INSPECT_TALENT_READY', unit, name)
     end
 end
 
@@ -499,6 +658,7 @@ function Inspect:OnAlaCommand(_, msg, channel, sender)
     if not data then
         return
     end
+
     self:UpdateCharacter(sender, data)
 end
 

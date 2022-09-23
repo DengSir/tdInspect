@@ -15,6 +15,7 @@ ns.Ala = Ala
 
 local CMD_LEN_V1 = 6
 local CLIENT_MAJOR = floor(select(4, GetBuildInfo()) / 10000)
+local LIB_MAJOR = 2
 
 local __base64, __debase64 = {}, {}
 do
@@ -184,18 +185,19 @@ end
 
 function Ala:DecodeGlyph(code)
     local list = strsplittable('+', code)
+    print(code, list)
     if list[2] ~= nil then
         local data = {}
-        for index = 1, 6 do
-            local str = list[index + 1]
+        for i = 1, 6 do
+            local str = list[i + 1]
             if str ~= '' then
-                local val = {strsplit(':', str)}
+                local val = strsplittable(':', str)
                 local v = DecodeNumber(val[1])
                 local enabled = v % 8
                 local glyphType = (v - enabled) / 8
                 local glyphSpell = DecodeNumber(val[2])
                 local icon = DecodeNumber(val[3])
-                data[index] = {enabled, glyphType, glyphSpell, icon}
+                data[i] = {enabled, icon, nil, glyphSpell}
             end
         end
         return data
@@ -242,7 +244,25 @@ function Ala:RecvCommV1(msg)
     end
 end
 
+local _RecvBuffer = {}
+
 function Ala:RecvPacket(msg, sender)
+    local num = __debase64[strsub(msg, 5, 5)] + __debase64[strsub(msg, 6, 6)] * 64;
+    local index = __debase64[strsub(msg, 7, 7)] + __debase64[strsub(msg, 8, 8)] * 64;
+    local buffer = _RecvBuffer[sender] or {}
+    _RecvBuffer[sender] = buffer
+    -- Buffer[receiver] = Buffer[receiver] or {};
+    -- Buffer = Buffer[receiver];
+    -- buffer[sender] = buffer[sender] or {};
+    -- buffer = buffer[sender];
+    buffer[index] = strsub(msg, 9);
+    for i = 1, num do
+        if not buffer[i] then
+            return
+        end
+    end
+    _RecvBuffer[sender] = nil
+    return table.concat(buffer)
 end
 
 function Ala:RecvTalentV2Step2(code)
@@ -433,4 +453,9 @@ function Ala:RecvComm(msg, channel, sender)
     elseif p == '!' then
         return self:RecvCommV2(msg, sender)
     end
+end
+
+local COMM_QUERY_PREFIX = '!Q' .. __base64[CLIENT_MAJOR] .. __base64[LIB_MAJOR]
+function Ala:PackQuery(queryEquip, queryTalent, queryGlyph)
+    return COMM_QUERY_PREFIX .. (queryTalent and 'T' or '') .. (queryGlyph and 'G' or '') .. (queryEquip and 'E' or '')
 end

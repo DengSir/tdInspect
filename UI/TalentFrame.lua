@@ -698,3 +698,10 @@ function TalentFrame:SetTalent(talent)
     self.talent = talent
     self:Refresh()
 end
+
+function TalentFrame:SetActive(active)
+    self.TopLeft:SetDesaturated(not active)
+    self.TopRight:SetDesaturated(not active)
+    self.BottomLeft:SetDesaturated(not active)
+    self.BottomRight:SetDesaturated(not active)
+end
