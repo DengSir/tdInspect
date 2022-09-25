@@ -34,6 +34,7 @@ local PROTO_PREFIX = 'tdInspect'
 local PROTO_VERSION = 2
 
 local Serializer = LibStub('AceSerializer-3.0')
+local Encoder = ns.Encoder
 
 ---@class Inspect: AceAddon-3.0, AceEvent-3.0, AceComm-3.0
 local Inspect = ns.Addon:NewModule('Inspect', 'AceEvent-3.0', 'AceComm-3.0')
@@ -303,6 +304,11 @@ function Inspect:CanBlizzardInspect(unit)
     if not unit then
         return false
     end
+    -- @debug@
+    if UnitIsUnit(unit, 'player') then
+        return false
+    end
+    -- @end-debug@
     if UnitIsDeadOrGhost('player') then
         return false
     end
@@ -380,95 +386,6 @@ function Inspect:BuildCharacterDb(name)
     return self.userCache[name]
 end
 
--- @build<3@
-local function PackTalent(inspect)
-    local talents = {}
-    for i = 1, GetNumTalentTabs(inspect) do
-        for j = 1, GetNumTalents(i, inspect) do
-            tinsert(talents, tostring(select(5, GetTalentInfo(i, j, inspect)) or 0))
-        end
-    end
-    return (tconcat(talents):gsub('0+$', ''))
-end
--- @end-build<3@
--- @build>3@
-local function compare(a, b)
-    if a.tab ~= b.tab then
-        return a.tab < b.tab
-    end
-    if a.tier ~= b.tier then
-        return a.tier < b.tier
-    end
-    return a.column < b.column
-end
-
-local function PackTalent(inspect, group)
-    local data = {}
-    if not inspect then
-        group = group or GetActiveTalentGroup(inspect)
-    end
-    for i = 1, GetNumTalentTabs(inspect) do
-        for j = 1, GetNumTalents(i, inspect) do
-            local _, _, tier, column, count = GetTalentInfo(i, j, inspect, nil, group)
-            tinsert(data, {count = tostring(count or 0), tab = i, tier = tier, column = column})
-        end
-    end
-    sort(data, compare)
-
-    for i, v in ipairs(data) do
-        data[i] = v.count
-    end
-    return (tconcat(data):gsub('0+$', ''))
-end
--- @end-build>3@
-
-local function PackTalent2(inspect)
-    local talents = {}
-    for group = 1, GetNumTalentGroups(inspect) do
-        tinsert(talents, PackTalent(inspect, group))
-    end
-    return talents
-end
-
-local function PackEquip()
-    local equips = {}
-    for i = 1, 18 do
-        local link = GetInventoryItemLink('player', i)
-        if link then
-            equips[i] = link:match('item:([%-%d:]+)'):gsub(':+$', '')
-        end
-    end
-    return equips
-end
-
-local function PackGlyph(group)
-    local data = {}
-    group = group or 1
-    for i = 1, 6 do
-        local enabled, glyphType, spellId, icon = GetGlyphSocketInfo(i, group)
-        local link = GetGlyphLink(i, group)
-
-        if icon then
-            link = link:match('glyph:([%d:]+)')
-
-            print(icon, link)
-
-            data[i] = format('%d:%s', icon, link)
-        else
-            data[i] = ''
-        end
-    end
-    return table.concat(data, ',')
-end
-
-local function PackGlyph2()
-    local glyphs = {}
-    for group = 1, GetNumTalentGroups() do
-        tinsert(glyphs, PackGlyph(group))
-    end
-    return glyphs
-end
-
 function Inspect:INSPECT_READY(_, guid)
     if not self.unit then
         return
@@ -506,7 +423,7 @@ function Inspect:INSPECT_READY(_, guid)
         db.numGroups = GetNumTalentGroups(true)
         db.activeGroup = GetActiveTalentGroup(true)
         -- @build>2@
-        db.talents = PackTalent2(true)
+        db.talents = Encoder:PackTalents(true)
         -- @end-build>2@
 
         self:TryFireMessage(self.unit, name, db)
@@ -524,10 +441,14 @@ function Inspect:UpdateCharacter(sender, data)
         db.level = data.level
     end
     if data.equips then
-        db.equips = {}
+        db.equips = db.equips or {}
         for k, v in pairs(data.equips) do
             db.equips[k] = v or nil
         end
+    end
+    if data.talents or data.glyphs then
+        db.numGroups = data.numGroups
+        db.activeGroup = data.activeGroup
     end
     if data.talents then
         db.talents = data.talents
@@ -535,33 +456,16 @@ function Inspect:UpdateCharacter(sender, data)
     if data.glyphs then
         db.glyphs = data.glyphs
     end
-    if data.numGroups then
-        db.numGroups = data.numGroups
-    end
-    if data.activeGroup then
-        db.activeGroup = data.activeGroup
-    end
-
-    print('----------------------------------', sender)
-    dump(db)
 
     self:TryFireMessage(nil, name, db)
-end
-
-local function UnpackGlyph(code)
-    if code == '' then
-        return
-    end
-    local icon, link = strsplit(':', code, 2)
-    return tonumber(icon), 'glyph:' .. link
 end
 
 function Inspect:OnComm(cmd, sender, ...)
     if cmd == 'Q' then
         local queryTalent, queryEquip, protoVersion, queryGlyph = ...
         if not protoVersion or protoVersion == 1 then
-            local talent = queryTalent and PackTalent() or nil
-            local equips = queryEquip and PackEquip() or nil
+            local talent = queryTalent and Encoder:PackTalent(nil, GetActiveTalentGroup(), true) or nil
+            local equips = queryEquip and Encoder:PackEquips(true) or nil
             local class = select(3, UnitClass('player'))
             local race = select(3, UnitRace('player'))
             local level = UnitLevel('player')
@@ -571,9 +475,9 @@ function Inspect:OnComm(cmd, sender, ...)
         elseif protoVersion >= 2 then
             local numGroups = GetNumTalentGroups()
             local activeGroup = GetActiveTalentGroup()
-            local equips = queryEquip and PackEquip() or nil
-            local talents = queryTalent and PackTalent2() or nil
-            local glyphs = queryGlyph and PackGlyph2() or nil
+            local equips = queryEquip and Encoder:PackEquips() or nil
+            local talents = queryTalent and Encoder:PackTalents() or nil
+            local glyphs = queryGlyph and Encoder:PackGlyphs() or nil
             local class = select(3, UnitClass('player'))
             local race = select(3, UnitRace('player'))
             local level = UnitLevel('player')
@@ -603,9 +507,13 @@ function Inspect:OnComm(cmd, sender, ...)
         end
 
         if equips then
-            db.equips = {}
+            db.equips = db.equips or {}
             for k, v in pairs(equips) do
-                db.equips[k] = 'item:' .. v
+                if v ~= '' then
+                    db.equips[k] = 'item:' .. v
+                else
+                    db.equips[k] = nil
+                end
             end
         end
 
@@ -625,28 +533,15 @@ function Inspect:OnComm(cmd, sender, ...)
         end
 
         if talents then
-            db.talents = talents
+            db.talents = Encoder:UnpackTalents(talents)
         end
 
         if equips then
-            db.equips = {}
-            for k, v in pairs(equips) do
-                db.equips[k] = 'item:' .. v
-            end
+            db.equips = Encoder:UnpackEquips(equips)
         end
 
         if glyphs then
-            db.glyphs = {}
-            for groupId, glyphsData in pairs(glyphs) do
-                db.glyphs[groupId] = {}
-
-                local d = strsplittable(',', glyphsData)
-                for id, code in ipairs(d) do
-                    local icon, link = UnpackGlyph(code)
-
-                    db.glyphs[groupId][id] = {icon, link}
-                end
-            end
+            db.glyphs = Encoder:UnpackGlyphs(glyphs)
         end
 
         self:TryFireMessage(nil, name, db)

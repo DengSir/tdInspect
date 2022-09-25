@@ -13,9 +13,6 @@ local strsub = string.sub
 local Ala = {}
 ns.Ala = Ala
 
-local CMD_LEN_V1 = 6
-local CLIENT_MAJOR = floor(select(4, GetBuildInfo()) / 10000)
-local LIB_MAJOR = 2
 
 local __base64, __debase64 = {}, {}
 do
@@ -49,6 +46,11 @@ local __classList = {
     10, -- MONK
     12, -- DEAMONHUNTER
 }
+
+local CMD_LEN_V1 = 6
+local CLIENT_MAJOR = floor(select(4, GetBuildInfo()) / 10000)
+local LIB_MAJOR = 2
+local COMM_QUERY_PREFIX = '!Q' .. __base64[CLIENT_MAJOR] .. __base64[LIB_MAJOR]
 
 local __zero = setmetatable({[0] = '', [1] = '0'}, {
     __index = function(t, i)
@@ -185,19 +187,20 @@ end
 
 function Ala:DecodeGlyph(code)
     local list = strsplittable('+', code)
-    print(code, list)
     if list[2] ~= nil then
         local data = {}
         for i = 1, 6 do
             local str = list[i + 1]
             if str ~= '' then
                 local val = strsplittable(':', str)
-                local v = DecodeNumber(val[1])
-                local enabled = v % 8
-                local glyphType = (v - enabled) / 8
+                -- local v = DecodeNumber(val[1])
+                -- local enabled = v % 8
+                -- local glyphType = (v - enabled) / 8
                 local spellId = DecodeNumber(val[2])
-                local icon = DecodeNumber(val[3])
-                data[i] = {icon, nil, spellId}
+                -- local icon = DecodeNumber(val[3])
+                local glyphId = ns.GetGlyphIdBySpellId(spellId)
+                assert(not spellId or glyphId)
+                data[i] = glyphId or nil
             end
         end
         return data
@@ -455,7 +458,6 @@ function Ala:RecvComm(msg, channel, sender)
     end
 end
 
-local COMM_QUERY_PREFIX = '!Q' .. __base64[CLIENT_MAJOR] .. __base64[LIB_MAJOR]
 function Ala:PackQuery(queryEquip, queryTalent, queryGlyph)
     return COMM_QUERY_PREFIX .. (queryTalent and 'T' or '') .. (queryGlyph and 'G' or '') .. (queryEquip and 'E' or '')
 end

@@ -13,7 +13,9 @@
     <Script file="Data\ItemSet.BCC.lua" build="bcc" />
     <Script file="Data\ItemSet.WLK.lua" build="lkc" />
     <Script file="Data\Data.lua" />
+    <Script file="Data\Glyph.lua" />
 
+    <Script file="Core\Encoder.lua" />
     <Script file="Core\Inspect.lua" />
     <Script file="Core\Hook.lua" />
     <Script file="Core\Talent.lua" />

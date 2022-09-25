@@ -6,6 +6,7 @@
 ## Title: tdInspect
 ## Author: Dencer
 ## Version: @project-version@
-## SavedVariables: TDDB_INSPECT
+## OptionalDeps: LibCompress
+## SavedVariables: TDDB_INSPECT2
 
 Load.xml

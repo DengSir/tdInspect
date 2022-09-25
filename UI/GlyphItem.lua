@@ -97,6 +97,7 @@ function GlyphItem:Constructor(_, id)
         Icon:SetVertexColor(0, 0.25, 1)
     end
 
+    self:SetScript('OnClick', self.OnClick)
     self:SetScript('OnEnter', self.OnEnter)
     self:SetScript('OnLeave', GameTooltip_Hide)
 
@@ -116,24 +117,14 @@ function GlyphItem:OnEnter()
 
     GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 
+    local link = self.glyph:GetGlyphLink(self.id)
+
     if not self.enabled then
         GameTooltip:SetText(GLYPH_LOCKED, RED_FONT_COLOR:GetRGB())
         GameTooltip:AddLine(self.glyphTypeTooltip, BRIGHTBLUE_FONT_COLOR:GetRGB())
         GameTooltip:AddLine(GLYPH_SLOTS[self.id].lockedTip)
-    elseif self.link or self.spellId then
-        if self.link then
-            GameTooltip:SetHyperlink(self.link)
-        elseif self.spellId then
-            local name = GetSpellInfo(self.spellId)
-            local description = GetSpellDescription(self.spellId)
-            if not description or description == '' then
-                self.UpdateTooltip = self.OnEnter
-            end
-            GameTooltip:SetText(name, 1, 1, 1)
-            GameTooltip:AddLine(self.glyphTypeTooltip, BRIGHTBLUE_FONT_COLOR:GetRGB())
-            GameTooltip:AddLine(description, nil, nil, nil, true)
-            GameTooltip:Show()
-        end
+    elseif link then
+        GameTooltip:SetHyperlink(link)
     else
         GameTooltip:SetText(GLYPH_INACTIVE, GRAY_FONT_COLOR:GetRGB())
         GameTooltip:AddLine(self.glyphTypeTooltip, BRIGHTBLUE_FONT_COLOR:GetRGB())
@@ -141,9 +132,17 @@ function GlyphItem:OnEnter()
     GameTooltip:Show()
 end
 
-function GlyphItem:UpdateInfo(enabled, icon, link, spellId)
-    self.link = link
-    self.spellId = spellId
+function GlyphItem:OnClick()
+    local link = self.glyph:GetGlyphLink(self.id)
+    if link then
+        HandleModifiedItemClick(link)
+    end
+end
+
+function GlyphItem:UpdateInfo(glyph)
+    local enabled, _, spellId, icon = glyph:GetGlyphSocketInfo(self.id)
+
+    self.glyph = glyph
     self.enabled = enabled
 
     if not enabled then
@@ -160,7 +159,7 @@ function GlyphItem:UpdateInfo(enabled, icon, link, spellId)
         self.Background:Show()
         self.Ring:Show()
 
-        if not link and not spellId then
+        if not spellId then
             self.Icon:Hide()
             self.Highlight:SetAlpha(0.4 * 0.6)
             self.Setting:SetAlpha(0.6)

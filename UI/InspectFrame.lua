@@ -148,7 +148,7 @@ function InspectFrame:SetTalentGroup(id)
 
     self.groupId = id
     for _, tab in ipairs(self.groupTabs) do
-        tab:SetChecked(tab.id == id)
+        tab.ct:SetShown(tab.id == id)
     end
 
     self.TalentFrame:SetTalentGroup(id)
@@ -156,7 +156,7 @@ function InspectFrame:SetTalentGroup(id)
 end
 
 function InspectFrame:AddTalentGroupTab(id)
-    local button = CreateFrame('CheckButton', nil, self)
+    local button = CreateFrame('Button', nil, self)
     button:SetSize(32, 32)
 
     local bg = button:CreateTexture(nil, 'BACKGROUND')
@@ -167,12 +167,17 @@ function InspectFrame:AddTalentGroupTab(id)
     local nt = button:CreateTexture(nil, 'ARTWORK')
     nt:SetAllPoints(true)
 
+    local ct = button:CreateTexture(nil, 'OVERLAY')
+    ct:SetAllPoints(true)
+    ct:SetTexture([[Interface\Buttons\CheckButtonHilight]])
+    ct:SetBlendMode('ADD')
+    ct:Hide()
+
+    button.ct = ct
     button.nt = nt
     button.id = id
 
     button:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]], 'ADD')
-    button:SetCheckedTexture([[Interface\Buttons\CheckButtonHilight]])
-    button:GetCheckedTexture():SetBlendMode('ADD')
 
     button:SetScript('OnClick', SpecOnClick)
     button:SetScript('OnEnter', SpecOnEnter)
@@ -310,8 +315,6 @@ function InspectFrame:UpdateTalentGroups()
     local numGroups = Inspect:GetNumTalentGroups()
     local activeGroup = Inspect:GetActiveTalentGroup()
     local showGroupTabs = numGroups > 1 and (self.selectedTab == 3 or self.selectedTab == 4)
-
-    print(showGroupTabs, numGroups, activeGroup, self.selectedTab)
 
     for _, tab in ipairs(self.groupTabs) do
         tab:SetShown(showGroupTabs)

@@ -42,7 +42,7 @@ function GlyphFrame:UpdateInfo()
     local glyph = ns.Inspect:GetUnitGlyph(self.groupId or activeGroup)
 
     for i = 1, 6 do
-        self.buttons[i]:UpdateInfo(glyph:GetGlyphSocketInfo(i))
+        self.buttons[i]:UpdateInfo(glyph)
     end
 
     self.Background:SetDesaturated(self.groupId ~= ns.Inspect:GetActiveTalentGroup())
