@@ -1,3 +1,13 @@
+# [2.1.0](https://github.com/DengSir/tdInspect/compare/v2.0.3...v2.1.0) (2022-09-25)
+
+
+### Features
+
+* compress proto ([13bfc59](https://github.com/DengSir/tdInspect/commit/13bfc597c00e1beac60a82aae682b67e47cb5da8))
+* glyphs ([5aeb486](https://github.com/DengSir/tdInspect/commit/5aeb486cb7b5dd1d136b3a195bc8ba85988eaee5))
+
+
+
 ## [2.0.3](https://github.com/DengSir/tdInspect/compare/v2.0.2...v2.0.3) (2022-09-11)
 
 
