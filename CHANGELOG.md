@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/DengSir/tdInspect/compare/v2.1.0...v2.1.1) (2022-09-26)
+
+
+### Bug Fixes
+
+* meta gem ([e169865](https://github.com/DengSir/tdInspect/commit/e16986509435033b4b22560173929ee2b53d743e))
+
+
+
 # [2.1.0](https://github.com/DengSir/tdInspect/compare/v2.0.3...v2.1.0) (2022-09-25)
 
 
