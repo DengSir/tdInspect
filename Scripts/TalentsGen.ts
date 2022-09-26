@@ -5,21 +5,19 @@
  * @Date   : 2022/9/26 14:22:02
  */
 
-import { fetchData } from './util.ts';
+import { ProjectId, WowToolsClient } from './util.ts';
 
-interface ProjectData {
-    version: string;
-    dataEnv: number;
+interface Config {
     hasId: boolean;
     hasIcon: boolean;
 }
 
-const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
-const PROJECTS: { [key: number]: ProjectData } = {
-    [2]: { version: '1.14.3.44834', dataEnv: 4, hasId: false, hasIcon: false },
-    [5]: { version: '2.5.4.44833', dataEnv: 5, hasId: true, hasIcon: false },
-    [11]: { version: '3.4.0.45770', dataEnv: 8, hasId: true, hasIcon: true },
+const PROJECTS: { [key: number]: Config } = {
+    [ProjectId.Classic]: { hasId: false, hasIcon: false },
+    [ProjectId.BCC]: { hasId: true, hasIcon: false },
+    [ProjectId.WLK]: { hasId: true, hasIcon: true },
 };
+
 const LOCALES: [n: number, l: string, resolve?: string][] = [
     [0, 'enUS'],
     [1, 'koKR'],
@@ -34,18 +32,16 @@ const LOCALES: [n: number, l: string, resolve?: string][] = [
 ];
 
 class App {
-    private project: ProjectData;
+    private prj: Config;
+    private cli: WowToolsClient;
 
     constructor(projectId: number) {
-        this.project = PROJECTS[projectId];
-    }
-
-    fetchData(name: string, locale = 'enUS') {
-        return fetchData(WOW_TOOLS, { name, locale, build: this.project.version });
+        this.prj = PROJECTS[projectId];
+        this.cli = new WowToolsClient(projectId);
     }
 
     async getClasses() {
-        const csv = await this.fetchData('chrclasses');
+        const csv = await this.cli.fetchTable('chrclasses');
         return csv.map((x) => ({
             id: Number.parseInt(x[5]),
             fileName: x[1],
@@ -54,12 +50,12 @@ class App {
     }
 
     async getTalentTabNames(locale: string) {
-        const csv = await this.fetchData('talenttab', locale);
+        const csv = await this.cli.fetchTable('talenttab', locale);
         return new Map(csv.map(([id, name]) => [Number.parseInt(id), name]));
     }
 
     async getTalentTabs() {
-        const csv = await this.fetchData('talenttab');
+        const csv = await this.cli.fetchTable('talenttab');
         const names = new Map(
             await Promise.all(
                 LOCALES.map(
@@ -79,7 +75,7 @@ class App {
     }
 
     async getTalents() {
-        const csv = await this.fetchData('talent');
+        const csv = await this.cli.fetchTable('talent');
 
         return csv
             .map((x) => ({
@@ -147,7 +143,7 @@ select(2,...).TalentMake()`
             for (const tab of cls.tabs) {
                 {
                     write(`T(${tab.id},${tab.talents.length},'${tab.bg}'`);
-                    if (this.project.hasIcon) {
+                    if (this.prj.hasIcon) {
                         write(`,${tab.icon}`);
                     }
                     write(')');
@@ -158,7 +154,7 @@ select(2,...).TalentMake()`
                 for (const talent of tab.talents) {
                     {
                         write(`I(${talent.tier + 1},${talent.col + 1},${talent.spells.length}`);
-                        if (this.project.hasId) {
+                        if (this.prj.hasId) {
                             write(`,${talent.id}`);
                         }
                         write(')');
@@ -184,9 +180,9 @@ select(2,...).TalentMake()`
 }
 
 async function main() {
-    await new App(11).run('Data/Talents.WLK.lua');
-    await new App(5).run('Data/Talents.BCC.lua');
-    await new App(2).run('Data/Talents.lua');
+    await new App(ProjectId.WLK).run('Data/Talents.WLK.lua');
+    await new App(ProjectId.BCC).run('Data/Talents.BCC.lua');
+    await new App(ProjectId.Classic).run('Data/Talents.lua');
 }
 
 main();

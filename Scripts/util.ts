@@ -5,20 +5,52 @@
  * @Date   : 2022/9/26 18:55:36
  */
 
-export function decodeCSV(data: string) {
-    const rows = data.split(/[\r\n]+/).filter((x) => x);
-    // const headers = rows[0].split(',');
-    rows.splice(0, 1);
-    return rows.map((x) => x.split(','));
+export enum ProjectId {
+    Classic = 2,
+    BCC = 5,
+    WLK = 11,
 }
 
-export async function fetchData(url: string, searchs: { [k: string]: string }) {
-    const u = new URL(url);
-    for (const [k, v] of Object.entries(searchs)) {
-        u.searchParams.append(k, v);
+interface ProjectData {
+    version: string;
+    dataEnv: number;
+}
+
+const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
+
+const PROJECTS = new Map([
+    [ProjectId.Classic, { version: '1.14.3.44834', dataEnv: 4 }],
+    [ProjectId.BCC, { version: '2.5.4.44833', dataEnv: 5 }],
+    [ProjectId.WLK, { version: '3.4.0.45770', dataEnv: 8 }],
+]);
+
+export class WowToolsClient {
+    private pro: ProjectData;
+
+    constructor(projectId: ProjectId) {
+        const data = PROJECTS.get(projectId);
+        if (!data) {
+            throw Error('');
+        }
+
+        this.pro = data;
     }
 
-    const resp = await fetch(u);
-    const body = await resp.text();
-    return decodeCSV(body);
+    decodeCSV(data: string) {
+        const rows = data.split(/[\r\n]+/).filter((x) => x);
+        // const headers = rows[0].split(',');
+        rows.splice(0, 1);
+        return rows.map((x) => x.split(','));
+    }
+
+    async fetchTable(name: string, locale = 'enUS') {
+        const url = new URL(WOW_TOOLS);
+        url.searchParams.append('name', name);
+        url.searchParams.append('build', this.pro.version);
+        url.searchParams.append('locale', locale);
+
+        const resp = await fetch(url);
+        const body = await resp.text();
+        return this.decodeCSV(body);
+    }
 }

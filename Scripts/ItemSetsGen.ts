@@ -5,33 +5,17 @@
  * @Date   : 2022/9/26 18:47:21
  */
 
-import { fetchData } from './util.ts';
+import { ProjectId, WowToolsClient } from './util.ts';
 
-interface ProjectData {
-    version: string;
-    dataEnv: number;
-    hasId: boolean;
-    hasIcon: boolean;
-}
-const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
-const PROJECTS: { [key: number]: ProjectData } = {
-    [2]: { version: '1.14.3.44834', dataEnv: 4, hasId: false, hasIcon: false },
-    [5]: { version: '2.5.4.44833', dataEnv: 5, hasId: true, hasIcon: false },
-    [11]: { version: '3.4.0.45770', dataEnv: 8, hasId: true, hasIcon: true },
-};
 class App {
-    private project: ProjectData;
+    private cli: WowToolsClient;
 
     constructor(projectId: number) {
-        this.project = PROJECTS[projectId];
-    }
-
-    fetchData(name: string, locale = 'enUS') {
-        return fetchData(WOW_TOOLS, { name, locale, build: this.project.version });
+        this.cli = new WowToolsClient(projectId);
     }
 
     async getItemSetSpells() {
-        const csv = await this.fetchData('itemsetspell');
+        const csv = await this.cli.fetchTable('itemsetspell');
         return csv.map((x) => ({
             setId: Number.parseInt(x[4]),
             threshold: Number.parseInt(x[3]),
@@ -39,7 +23,7 @@ class App {
     }
 
     async getItemSets() {
-        const csv = await this.fetchData('itemset');
+        const csv = await this.cli.fetchTable('itemset');
         return csv
             .map((x) => ({
                 id: Number.parseInt(x[0]),
@@ -54,7 +38,7 @@ class App {
     }
 
     async getItemSlots() {
-        const csv = await this.fetchData('item');
+        const csv = await this.cli.fetchTable('item');
         return new Map(csv.map((x) => [Number.parseInt(x[0]), Number.parseInt(x[4])]));
     }
 
@@ -81,9 +65,7 @@ select(2,...).ItemSetMake()`);
 
         for (const i of data) {
             write(`S(${i.id})`);
-            write('\n');
             write(`B'${i.threshold.join('/')}'`);
-            write('\n');
 
             for (const item of i.items) {
                 const slot = itemSlots.get(item);
@@ -92,7 +74,6 @@ select(2,...).ItemSetMake()`);
                 }
 
                 write(`I(${slot},${item})`);
-                write('\n');
             }
         }
 
@@ -101,7 +82,9 @@ select(2,...).ItemSetMake()`);
 }
 
 async function main() {
-    await new App(11).run('Data/ItemSet.WLK.lua');
+    await new App(ProjectId.WLK).run('Data/ItemSet.WLK.lua');
+    await new App(ProjectId.BCC).run('Data/ItemSet.BCC.lua');
+    await new App(ProjectId.Classic).run('Data/ItemSet.lua');
 }
 
 main();
