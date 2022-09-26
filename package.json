@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo not implemented",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
-    "data": "node _TalentsGen.js && node _ItemSetsGen.js"
+    "talent": "deno run --allow-all Scripts\\TalentsGen.ts"
   },
   "repository": {
     "type": "git",
