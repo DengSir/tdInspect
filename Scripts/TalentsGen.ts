@@ -5,6 +5,8 @@
  * @Date   : 2022/9/26 14:22:02
  */
 
+import { fetchData } from './util.ts';
+
 interface ProjectData {
     version: string;
     dataEnv: number;
@@ -38,31 +40,12 @@ class App {
         this.project = PROJECTS[projectId];
     }
 
-    decodeCSV(data: string) {
-        const rows = data.split(/[\r\n]+/).filter((x) => x);
-        // const headers = rows[0].split(',');
-        rows.splice(0, 1);
-        return rows.map((x) => x.split(','));
-    }
-
-    formatUrl(cdb: string, locale: string) {
-        const url = new URL(WOW_TOOLS);
-
-        url.searchParams.append('name', cdb);
-        url.searchParams.append('build', this.project.version);
-        url.searchParams.append('locale', locale);
-
-        return url;
-    }
-
-    async getData(cdb: string, locale = 'enUS') {
-        const resp = await fetch(this.formatUrl(cdb, locale), {});
-        const body = await resp.text();
-        return this.decodeCSV(body);
+    fetchData(name: string, locale = 'enUS') {
+        return fetchData(WOW_TOOLS, { name, locale, build: this.project.version });
     }
 
     async getClasses() {
-        const csv = await this.getData('chrclasses');
+        const csv = await this.fetchData('chrclasses');
         return csv.map((x) => ({
             id: Number.parseInt(x[5]),
             fileName: x[1],
@@ -71,12 +54,12 @@ class App {
     }
 
     async getTalentTabNames(locale: string) {
-        const csv = await this.getData('talenttab', locale);
+        const csv = await this.fetchData('talenttab', locale);
         return new Map(csv.map(([id, name]) => [Number.parseInt(id), name]));
     }
 
     async getTalentTabs() {
-        const csv = await this.getData('talenttab');
+        const csv = await this.fetchData('talenttab');
         const names = new Map(
             await Promise.all(
                 LOCALES.map(
@@ -96,7 +79,7 @@ class App {
     }
 
     async getTalents() {
-        const csv = await this.getData('talent');
+        const csv = await this.fetchData('talent');
 
         return csv
             .map((x) => ({

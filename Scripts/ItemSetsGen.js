@@ -107,6 +107,9 @@ select(2,...).ItemSetMake()`);
         );
 
         for (const { setId, items } of itemSets) {
+            if (setId < 0) {
+                continue;
+            }
             const bouns = getItemBouns(itemDocs.get(items[0]));
             if (!bouns) {
                 console.log(items[0]);
@@ -114,9 +117,11 @@ select(2,...).ItemSetMake()`);
             }
 
             file.write(`S(${setId})`);
+            file.write("\n");
             file.write(`B'${bouns}'`);
+            file.write("\n");
 
-            for (const itemId of items) {
+            for (const itemId of items.sort((a, b) => a - b)) {
                 const doc = itemDocs.get(itemId);
                 if (!doc) {
                     throw Error(`not found ${itemId}`);
@@ -124,6 +129,7 @@ select(2,...).ItemSetMake()`);
 
                 const slot = getItemSlot(doc);
                 file.write(`I(${slot},${itemId})`);
+                file.write("\n");
             }
         }
 
@@ -133,8 +139,8 @@ select(2,...).ItemSetMake()`);
 
 async function main() {
     await genItemSets(8, "Data/ItemSet.WLK.lua");
-    await genItemSets(5, "Data/ItemSet.BCC.lua");
-    await genItemSets(4, "Data/ItemSet.lua");
+    // await genItemSets(5, "Data/ItemSet.BCC.lua");
+    // await genItemSets(4, "Data/ItemSet.lua");
 }
 
 main();
