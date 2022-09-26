@@ -19,14 +19,6 @@
     "url": "https://github.com/DengSir/tdInspect/issues"
   },
   "homepage": "https://github.com/DengSir/tdInspect#readme",
-  "devDependencies": {
-    "@xmldom/xmldom": "^0.8.2",
-    "async": "^3.2.3",
-    "commander": "^9.4.0",
-    "got": "^11.8.5",
-    "hpagent": "^1.0.0",
-    "progress": "^2.0.3"
-  },
   "wow": {
     "name": "tdInspect",
     "curse_id": 500065,
