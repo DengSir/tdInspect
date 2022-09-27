@@ -181,7 +181,6 @@ select(2,...).TalentMake()`
 
 async function main() {
     await new App(ProjectId.WLK).run('Data/Talents.WLK.lua');
-    await new App(ProjectId.BCC).run('Data/Talents.BCC.lua');
     await new App(ProjectId.Classic).run('Data/Talents.lua');
 }
 

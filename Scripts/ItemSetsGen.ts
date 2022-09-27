@@ -83,7 +83,6 @@ select(2,...).ItemSetMake()`);
 
 async function main() {
     await new App(ProjectId.WLK).run('Data/ItemSet.WLK.lua');
-    await new App(ProjectId.BCC).run('Data/ItemSet.BCC.lua');
     await new App(ProjectId.Classic).run('Data/ItemSet.lua');
 }
 
