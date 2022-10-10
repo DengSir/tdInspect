@@ -68,9 +68,13 @@ select(2,...).ItemSetMake()`);
             write(`B'${i.threshold.join('/')}'`);
 
             for (const item of i.items) {
-                const slot = itemSlots.get(item);
+                let slot = itemSlots.get(item);
                 if (!slot) {
                     throw Error('not found slot');
+                }
+
+                if (slot === 20) {
+                    slot = 5;
                 }
 
                 write(`I(${slot},${item})`);
