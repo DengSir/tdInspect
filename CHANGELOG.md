@@ -1,3 +1,12 @@
+## [2.1.3](https://github.com/DengSir/tdInspect/compare/v2.1.2...v2.1.3) (2022-10-27)
+
+
+### Bug Fixes
+
+* tooltip ([59da5ad](https://github.com/DengSir/tdInspect/commit/59da5ad8db9bdf272625cd33529086ecac35774e))
+
+
+
 ## [2.1.2](https://github.com/DengSir/tdInspect/compare/v2.1.1...v2.1.2) (2022-10-10)
 
 
