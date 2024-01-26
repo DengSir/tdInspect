@@ -395,8 +395,8 @@ for glyphId, v in pairs(GLYPHS_DATA) do
         icon = v[3],
     }
 
-    if v.spellId > 0 then
-        SPELL_GLYPHS[v.spellId] = item
+    if item.spellId > 0 then
+        SPELL_GLYPHS[item.spellId] = item
     end
     GLYPHS[item.glyphId] = item
 end
