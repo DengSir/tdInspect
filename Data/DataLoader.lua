@@ -8,9 +8,12 @@ local ns = select(2, ...)
 
 ns.Talents = {}
 ns.ItemSets = {}
+ns.Glyphes = {}
+ns.SpellGlyphes = {}
+ns.GlyphSlots = {}
 
 local strsplittable = strsplittable or function(delimiter, str, pieces)
-    return {strsplit(delimiter, str, pieces)}
+    return { strsplit(delimiter, str, pieces) }
 end
 
 local T = ns.memorize(function(val)
@@ -39,12 +42,12 @@ function ns.TalentMake()
     end
 
     local function CreateTab(tabId, numTalents, bg, icon)
-        tinsert(CURRENT, {tabId = tabId, numTalents = numTalents, bg = bg, icon = icon, talents = {}})
+        tinsert(CURRENT, { tabId = tabId, numTalents = numTalents, bg = bg, icon = icon, talents = {} })
     end
 
     local function CreateTalentInfo(row, column, maxRank, id)
         local tab = CURRENT[#CURRENT]
-        tinsert(tab.talents, {row = row, column = column, maxRank = maxRank, id = id})
+        tinsert(tab.talents, { row = row, column = column, maxRank = maxRank, id = id })
     end
 
     local function FillTalentRanks(ranks)
@@ -59,7 +62,7 @@ function ns.TalentMake()
         local tab = CURRENT[#CURRENT]
         local talent = tab.talents[#tab.talents]
         talent.prereqs = talent.prereqs or {}
-        tinsert(talent.prereqs, {row = row, column = column, reqIndex = reqIndex})
+        tinsert(talent.prereqs, { row = row, column = column, reqIndex = reqIndex })
     end
 
     local function SetTabName(names)
@@ -118,7 +121,7 @@ function ns.ItemSetMake()
     local CURRENT
 
     local function CreateItemSet(setId)
-        local db = {slots = {}}
+        local db = { slots = {} }
         ns.ItemSets[setId] = db
         CURRENT = db
     end
@@ -137,5 +140,28 @@ function ns.ItemSetMake()
         S = CreateItemSet,
         B = SetItemSetBouns,
         I = SetItemSetSlotItem,
+    })
+end
+
+function ns.GlyphMake()
+    ns.GlyphMake = nil
+
+    local Data = function(glyphId, spellId, icon)
+        local d = { glyphId = glyphId, spellId = spellId, icon = icon }
+        if glyphId ~= 0 then
+            ns.Glyphes[glyphId] = d
+        end
+        if spellId ~= 0 then
+            ns.SpellGlyphes[spellId] = d
+        end
+    end
+
+    local function Slot(slot, id, level)
+        ns.GlyphSlots[slot] = { id = id, level = level }
+    end
+
+    setfenv(2, {
+        D = Data,
+        S = Slot,
     })
 end

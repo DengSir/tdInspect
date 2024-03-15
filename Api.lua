@@ -127,3 +127,21 @@ function ns.GetItemGems(link, out)
     -- end
     -- return out
 end
+
+function ns.GetGlyphIdBySpellId(spellId)
+    local d = ns.SpellGlyphes[spellId]
+    return d and d.glyphId
+end
+
+function ns.GetGlyphIcon(glyphId)
+    local d = ns.Glyphes[glyphId]
+    return d and d.icon
+end
+
+function ns.GetGlyphInfo(glyphId)
+    local d = ns.Glyphes[glyphId]
+    if not d then
+        return
+    end
+    return nil, d.spellId, d.icon
+end
