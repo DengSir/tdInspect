@@ -13,7 +13,6 @@ local strsub = string.sub
 local Ala = {}
 ns.Ala = Ala
 
-
 local __base64, __debase64 = {}, {}
 do
     for i = 0, 9 do
@@ -409,6 +408,29 @@ function Ala:RecvEquipmentV2(code)
     end
 end
 
+function Ala:RecvRune(code)
+    if strsub(code, 1, 2) ~= '!N' then
+        return false;
+    end
+    local clientMajor = __debase64[strsub(code, 3, 3)];
+    if clientMajor ~= CLIENT_MAJOR then
+        return
+    end
+
+    local runes = {}
+    local val = strsplittable('+', strsub(code, 5));
+    for i = 1, #val do
+        local slot, id, icon = strsplit(':', val[i]);
+        slot = slot and __debase64[slot] or nil;
+        id = id and DecodeNumber(id) or nil;
+        icon = icon and DecodeNumber(icon) or nil;
+        if slot ~= nil and id ~= nil then
+            runes[slot] = {slot = slot, spellId = id, icon = icon};
+        end
+    end
+    return {runes = runes}
+end
+
 local function merge(dst, src)
     if not dst then
         return src
@@ -441,6 +463,8 @@ function Ala:RecvCommV2(msg, sender)
             r = merge(r, self:RecvGlyphV2(code))
         elseif v2_ctrl_code == '!E' then
             r = merge(r, self:RecvEquipmentV2(code))
+        elseif v2_ctrl_code == '!N' then
+            r = merge(r, self:RecvRune(code))
         end
     end
     return r
@@ -458,6 +482,7 @@ function Ala:RecvComm(msg, channel, sender)
     end
 end
 
-function Ala:PackQuery(queryEquip, queryTalent, queryGlyph)
-    return COMM_QUERY_PREFIX .. (queryTalent and 'T' or '') .. (queryGlyph and 'G' or '') .. (queryEquip and 'E' or '')
+function Ala:PackQuery(queryEquip, queryTalent, queryGlyph, queryRune)
+    return COMM_QUERY_PREFIX .. (queryTalent and 'T' or '') .. (queryGlyph and 'G' or '') ..
+               ((queryEquip or queryRune) and 'E' or '')
 end

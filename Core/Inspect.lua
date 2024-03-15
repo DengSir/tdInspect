@@ -146,6 +146,9 @@ function Inspect:GetItemLink(slot)
 end
 
 function Inspect:GetItemRune(slot)
+    if not self.db.runes then
+        return
+    end
     if self.db.runes[slot] then
         return self.db.runes[slot]
     end
@@ -379,12 +382,14 @@ function Inspect:Query(unit, name)
         -- @end-build<2@
     end
 
+    queryRune = false
+
     if queryEquip or queryTalent or queryGlyph or queryRune then
-        print(queryRune)
         self:SendCommMessage(PROTO_PREFIX,
                              Serializer:Serialize('Q', queryTalent, queryEquip, PROTO_VERSION, queryGlyph, queryRune),
                              'WHISPER', self.unitName)
-        self:SendCommMessage(ALA_PREFIX, ns.Ala:PackQuery(queryEquip, queryTalent, queryGlyph), 'WHISPER', self.unitName)
+        self:SendCommMessage(ALA_PREFIX, ns.Ala:PackQuery(queryEquip, queryTalent, queryGlyph, queryRune), 'WHISPER',
+                             self.unitName)
     end
 
     self:CheckQuery()
@@ -478,6 +483,9 @@ function Inspect:UpdateCharacter(sender, data)
     if data.glyphs then
         db.glyphs = data.glyphs
     end
+    if data.runes then
+        db.runes = data.runes
+    end
 
     self:TryFireMessage(nil, name, db)
 end
@@ -509,7 +517,6 @@ function Inspect:OnComm(cmd, sender, ...)
             local class = select(3, UnitClass('player'))
             local race = select(3, UnitRace('player'))
             local level = UnitLevel('player')
-            print(queryRune, runes)
             local msg = Serializer:Serialize('R2', protoVersion, class, race, level, equips, numGroups, activeGroup,
                                              talents, glyphs, runes)
 
@@ -575,8 +582,6 @@ function Inspect:OnComm(cmd, sender, ...)
         if runes then
             db.runes = Encoder:UnpackRunes(runes)
         end
-
-        print(db.runes)
 
         self:TryFireMessage(nil, name, db)
     end

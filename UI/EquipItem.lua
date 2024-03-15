@@ -83,7 +83,8 @@ function EquipItem:Update()
 
     local rune = Inspect:GetItemRune(id)
     if rune then
-        self.RuneIcon:SetTexture(rune.icon)
+        local icon = rune.icon or select(3, GetSpellInfo(rune.spellId))
+        self.RuneIcon:SetTexture(icon)
         self.RuneIcon:Show()
     end
 

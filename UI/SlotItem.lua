@@ -72,7 +72,8 @@ function SlotItem:Update()
 
         local rune = Inspect:GetItemRune(self:GetID())
         if rune then
-            self.subicon:SetTexture(rune.icon)
+            local icon = rune.icon or select(3, GetSpellInfo(rune.spellId))
+            self.subicon:SetTexture(icon)
             self.subicon:Show()
         else
             self.subicon:Hide()

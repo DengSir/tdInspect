@@ -26,12 +26,12 @@ local MAJOR_SEP = '!'
 local MINOR_SEP = LINK_SEP
 
 function Encoder:EncodeInteger(v)
-    local s = {}
-    local n
     v = tonumber(v)
     if not v then
         return
     end
+    local s = {}
+    local n
     if v < 0 then
         s[1] = NEG
         v = -v
@@ -45,7 +45,7 @@ function Encoder:EncodeInteger(v)
 end
 
 function Encoder:DecodeInteger(code)
-    if code == '' then
+    if not code or code == '' then
         return
     end
     local isNeg = strsub(code, 1, 1) == NEG
@@ -157,10 +157,15 @@ function Encoder:UnpackGlyphs(code)
 end
 
 function Encoder:PackRune(i, info)
+    local spellId = info.learnedAbilitySpellIDs[info.level]
+    local icon = info.iconTexture
+    if icon == select(3, GetSpellInfo(spellId)) then
+        icon = nil
+    end
     return table.concat({
         self:EncodeInteger(i), --
-        self:EncodeInteger(info.learnedAbilitySpellIDs[info.level]), --
-        self:EncodeInteger(info.iconTexture), --
+        self:EncodeInteger(spellId), --
+        self:EncodeInteger(icon), --
     }, MINOR_SEP)
 end
 
@@ -170,7 +175,6 @@ function Encoder:PackRunes()
         local data = {}
         for i = 1, 18 do
             local info = C_Engraving.IsEquipmentSlotEngravable(i) and C_Engraving.GetRuneForEquipmentSlot(i)
-            print(info)
             if info then
                 tinsert(data, self:PackRune(i, info))
             end
@@ -182,12 +186,15 @@ end
 
 function Encoder:UnpackRune(code)
     local slot, spellId, icon = strsplit(MINOR_SEP, code)
-    return {slot = self:DecodeInteger(slot), spellId = self:DecodeInteger(spellId), icon = self:DecodeInteger(icon)}
+    return { --
+        slot = self:DecodeInteger(slot),
+        spellId = self:DecodeInteger(spellId),
+        icon = self:DecodeInteger(icon),
+    }
 end
 
 function Encoder:UnpackRunes(code)
     -- @build<2@
-    print(code)
     local data = strsplittable(MAJOR_SEP, code)
     local runes = {}
     for i, v in ipairs(data) do
