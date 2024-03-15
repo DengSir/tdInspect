@@ -38,6 +38,11 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
     Name:SetPoint('LEFT', Slot, 'RIGHT', 30, 0)
     Name:SetPoint('RIGHT')
 
+    local RuneIcon = self:CreateTexture(nil, 'OVERLAY')
+    RuneIcon:SetSize(16, 16)
+    RuneIcon:ClearAllPoints()
+    RuneIcon:SetPoint('RIGHT')
+
     local ht = self:CreateTexture(nil, 'HIGHLIGHT')
     ht:SetAllPoints(true)
     ht:SetColorTexture(0.5, 0.5, 0.5, 0.3)
@@ -51,6 +56,7 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
     self.Name = Name
     self.ItemLevel = ItemLevel
     self.Slot = Slot
+    self.RuneIcon = RuneIcon
 
     self:SetScript('OnLeave', GameTooltip_Hide)
     self:SetScript('OnEnter', self.OnEnter)
@@ -66,7 +72,7 @@ function EquipItem:OnEnter()
     if item then
         GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
         GameTooltip:SetHyperlink(item)
-        ns.FixInspectItemTooltip(GameTooltip)
+        ns.FixInspectItemTooltip(GameTooltip, self:GetID(), item)
     end
 end
 
@@ -74,6 +80,13 @@ function EquipItem:Update()
     self.itemId = nil
 
     local id = self:GetID()
+
+    local rune = Inspect:GetItemRune(id)
+    if rune then
+        self.RuneIcon:SetTexture(rune.icon)
+        self.RuneIcon:Show()
+    end
+
     local item = Inspect:GetItemLink(id)
     if item then
         local name, link, quality, itemLevel = GetItemInfo(item)

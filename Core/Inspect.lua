@@ -36,6 +36,8 @@ local PROTO_VERSION = 2
 local Serializer = LibStub('AceSerializer-3.0')
 local Encoder = ns.Encoder
 
+local C_Engraving = C_Engraving
+
 ---@class Inspect: AceAddon-3.0, AceEvent-3.0, AceComm-3.0
 local Inspect = ns.Addon:NewModule('Inspect', 'AceEvent-3.0', 'AceComm-3.0')
 
@@ -143,6 +145,12 @@ function Inspect:GetItemLink(slot)
     return link
 end
 
+function Inspect:GetItemRune(slot)
+    if self.db.runes[slot] then
+        return self.db.runes[slot]
+    end
+end
+
 function Inspect:IsItemEquipped(itemId)
     for slot = 1, 18 do
         local link = self:GetItemLink(slot)
@@ -155,7 +163,7 @@ function Inspect:IsItemEquipped(itemId)
     end
 end
 
--- @non-classic@
+-- @non-build>2@
 local GEM_COLORS = {
     [Enum.ItemGemSubclass.Red] = {Enum.ItemGemSubclass.Red},
     [Enum.ItemGemSubclass.Yellow] = {Enum.ItemGemSubclass.Yellow},
@@ -200,7 +208,8 @@ function Inspect:GetEquippedGemCounts()
     end
     return out
 end
--- @end-non-classic@
+
+-- @end-build>2@
 
 function Inspect:GetEquippedSetItems(id)
     local count = 0
@@ -347,27 +356,34 @@ function Inspect:Query(unit, name)
     local queryTalent = false
     local queryEquip = false
     local queryGlyph = false
+    local queryRune = false
 
     if self:CanBlizzardInspect(unit) then
         NotifyInspect(unit)
 
-        -- @classic@
+        -- @build<2@
         queryTalent = true
-        -- @end-classic@
+        queryRune = C_Engraving.IsEngravingEnabled()
+        -- @end-build<2@
         -- @build>3@
         queryGlyph = true
         -- @end-build>3@
-
     elseif self:CanOurInspect(unit) then
         queryEquip = true
         queryTalent = true
+        -- @build>3@
         queryGlyph = true
+        -- @end-build>3@
+        -- @build<2@
+        queryRune = C_Engraving.IsEngravingEnabled()
+        -- @end-build<2@
     end
 
-    if queryEquip or queryTalent or queryGlyph then
+    if queryEquip or queryTalent or queryGlyph or queryRune then
+        print(queryRune)
         self:SendCommMessage(PROTO_PREFIX,
-                             Serializer:Serialize('Q', queryTalent, queryEquip, PROTO_VERSION, queryGlyph), 'WHISPER',
-                             self.unitName)
+                             Serializer:Serialize('Q', queryTalent, queryEquip, PROTO_VERSION, queryGlyph, queryRune),
+                             'WHISPER', self.unitName)
         self:SendCommMessage(ALA_PREFIX, ns.Ala:PackQuery(queryEquip, queryTalent, queryGlyph), 'WHISPER', self.unitName)
     end
 
@@ -468,7 +484,7 @@ end
 
 function Inspect:OnComm(cmd, sender, ...)
     if cmd == 'Q' then
-        local queryTalent, queryEquip, protoVersion, queryGlyph = ...
+        local queryTalent, queryEquip, protoVersion, queryGlyph, queryRune = ...
         if not protoVersion or protoVersion == 1 then
             -- @build>3@
             local talent = queryTalent and Encoder:PackTalent(nil, GetActiveTalentGroup(), true) or nil
@@ -489,15 +505,16 @@ function Inspect:OnComm(cmd, sender, ...)
             local equips = queryEquip and Encoder:PackEquips() or nil
             local talents = queryTalent and Encoder:PackTalents() or nil
             local glyphs = queryGlyph and Encoder:PackGlyphs() or nil
+            local runes = queryRune and Encoder:PackRunes() or nil
             local class = select(3, UnitClass('player'))
             local race = select(3, UnitRace('player'))
             local level = UnitLevel('player')
+            print(queryRune, runes)
             local msg = Serializer:Serialize('R2', protoVersion, class, race, level, equips, numGroups, activeGroup,
-                                             talents, glyphs)
+                                             talents, glyphs, runes)
 
             self:SendCommMessage(PROTO_PREFIX, msg, 'WHISPER', sender)
         end
-
     elseif cmd == 'R' then
         local class, race, level, talent, equips = ...
 
@@ -530,7 +547,7 @@ function Inspect:OnComm(cmd, sender, ...)
 
         self:TryFireMessage(nil, name, db)
     elseif cmd == 'R2' then
-        local protoVersion, class, race, level, equips, numGroups, activeGroup, talents, glyphs = ...
+        local protoVersion, class, race, level, equips, numGroups, activeGroup, talents, glyphs, runes = ...
         local name = ns.GetFullName(sender)
         local db = self:BuildCharacterDb(name)
 
@@ -554,6 +571,12 @@ function Inspect:OnComm(cmd, sender, ...)
         if glyphs then
             db.glyphs = Encoder:UnpackGlyphs(glyphs)
         end
+
+        if runes then
+            db.runes = Encoder:UnpackRunes(runes)
+        end
+
+        print(db.runes)
 
         self:TryFireMessage(nil, name, db)
     end

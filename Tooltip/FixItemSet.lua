@@ -90,3 +90,13 @@ function ns.FixItemSets(tip, id)
         end
     end
 end
+
+function ns.FixRune(tip, slot, item)
+    local rune = ns.Inspect:GetItemRune(slot)
+    if rune then
+        local name = GetSpellInfo(rune.spellId)
+        if name then
+            tip:AddLine(name, 0, 1, 0)
+        end
+    end
+end

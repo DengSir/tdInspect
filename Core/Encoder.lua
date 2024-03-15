@@ -6,6 +6,8 @@
 ---@class ns
 local ns = select(2, ...)
 
+local C_Engraving = C_Engraving
+
 local band, rshift, lshift = bit.band, bit.rshift, bit.lshift
 local tconcat, tinsert = table.concat, table.insert
 local strsub, strbyte, strchar, strrep = string.sub, string.byte, string.char, string.rep
@@ -128,12 +130,14 @@ function Encoder:PackGlyph(group)
 end
 
 function Encoder:PackGlyphs()
+    -- @build>3@
     local data = {}
     for i = 1, GetNumTalentGroups() do
         data[i] = self:PackGlyph(i)
     end
     local r = tconcat(data, MAJOR_SEP)
     return r
+    -- @end-build>3@
 end
 
 function Encoder:UnpackGlyph(code)
@@ -150,6 +154,48 @@ function Encoder:UnpackGlyphs(code)
         data[i] = self:UnpackGlyph(v)
     end
     return data
+end
+
+function Encoder:PackRune(i, info)
+    return table.concat({
+        self:EncodeInteger(i), --
+        self:EncodeInteger(info.learnedAbilitySpellIDs[info.level]), --
+        self:EncodeInteger(info.iconTexture), --
+    }, MINOR_SEP)
+end
+
+function Encoder:PackRunes()
+    -- @build<2@
+    if C_Engraving.IsEngravingEnabled() then
+        local data = {}
+        for i = 1, 18 do
+            local info = C_Engraving.IsEquipmentSlotEngravable(i) and C_Engraving.GetRuneForEquipmentSlot(i)
+            print(info)
+            if info then
+                tinsert(data, self:PackRune(i, info))
+            end
+        end
+        return tconcat(data, MAJOR_SEP)
+    end
+    -- @end-build<2@
+end
+
+function Encoder:UnpackRune(code)
+    local slot, spellId, icon = strsplit(MINOR_SEP, code)
+    return {slot = self:DecodeInteger(slot), spellId = self:DecodeInteger(spellId), icon = self:DecodeInteger(icon)}
+end
+
+function Encoder:UnpackRunes(code)
+    -- @build<2@
+    print(code)
+    local data = strsplittable(MAJOR_SEP, code)
+    local runes = {}
+    for i, v in ipairs(data) do
+        local info = self:UnpackRune(v)
+        runes[info.slot] = info
+    end
+    return runes
+    -- @end-build<2@
 end
 
 local encodeTalent, decodeTalent
@@ -224,7 +270,6 @@ function Encoder:DecodeTalent(code)
     return (code:gsub('.', decodeTalent))
 end
 
--- @build>3@
 local function compare(a, b)
     if a.tab ~= b.tab then
         return a.tab < b.tab
@@ -234,7 +279,6 @@ local function compare(a, b)
     end
     return a.column < b.column
 end
--- @end-build>3@
 
 function Encoder:PackTalent(isInspect, group, noEncode)
     local data = {}

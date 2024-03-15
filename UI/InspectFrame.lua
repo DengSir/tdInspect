@@ -52,9 +52,9 @@ function InspectFrame:Constructor()
     self.Name = InspectNameText
     self.PaperDoll = ns.UI.PaperDoll:Bind(InspectPaperDollFrame)
     self.TalentFrame = ns.UI.InspectTalent:Bind(self:CreateTabFrame())
-    -- @classic@
+    -- @build<2@
     talentTab = self:AddTab(TALENT, self.TalentFrame)
-    -- @end-classic@
+    -- @end-build<2@
     -- @build>2@
     talentTab = tIndexOf(INSPECTFRAME_SUBFRAMES, 'InspectTalentFrame')
     InspectTalentFrame:Hide()
@@ -80,11 +80,11 @@ function InspectFrame:Constructor()
         [talentTab] = function()
             return Inspect:GetUnitClass() and Inspect:GetNumTalentGroups() > 0 and Inspect:GetUnitTalent()
         end,
-        --@build>3@
+        -- @build>3@
         [glyphTab] = function()
             return Inspect:GetNumTalentGroups() > 0 and Inspect:GetUnitGlyph()
         end,
-        --@end-build>3@
+        -- @end-build>3@
     }
 
     self.groupTabs = {}
@@ -155,9 +155,9 @@ function InspectFrame:SetTalentGroup(id)
     end
 
     self.TalentFrame:SetTalentGroup(id)
-    --@build>3@
+    -- @build>3@
     self.GlyphFrame:SetTalentGroup(id)
-    --@end-build>3@
+    -- @end-build>3@
 end
 
 function InspectFrame:AddTalentGroupTab(id)
