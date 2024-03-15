@@ -16,12 +16,10 @@ interface ProjectData {
     dataEnv: number;
 }
 
-const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
-
 const PROJECTS = new Map([
-    [ProjectId.Classic, { version: '1.14.3.44834', dataEnv: 4 }],
+    [ProjectId.Classic, { version: '1.15.1.53623', dataEnv: 4 }],
     [ProjectId.BCC, { version: '2.5.4.44833', dataEnv: 5 }],
-    [ProjectId.WLK, { version: '3.4.0.45770', dataEnv: 8 }],
+    [ProjectId.WLK, { version: '3.4.3.52237', dataEnv: 8 }],
 ]);
 
 export class WowToolsClient {
@@ -40,14 +38,14 @@ export class WowToolsClient {
         const rows = data.split(/[\r\n]+/).filter((x) => x);
         // const headers = rows[0].split(',');
         rows.splice(0, 1);
-        return rows.map((x) => x.split(','));
+        return rows.map((x) => x.split(',').map((x) => x.replace(/\"/g, '')));
     }
 
     async fetchTable(name: string, locale = 'enUS') {
-        const url = new URL(WOW_TOOLS);
-        url.searchParams.append('name', name);
-        url.searchParams.append('build', this.pro.version);
-        url.searchParams.append('locale', locale);
+        const url = new URL(`https://wago.tools/db2/${name}/csv?build=${this.pro.version}&locale=${locale}`);
+        // url.searchParams.append('name', name);
+        // url.searchParams.append('build', this.pro.version);
+        // url.searchParams.append('locale', locale);
 
         const resp = await fetch(url);
         const body = await resp.text();

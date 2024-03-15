@@ -24,7 +24,8 @@
     "curse_id": 500065,
     "changelog": "CHANGELOG.md",
     "builds": {
-      "lkc": "30403"
+      "lkc": "30403",
+      "classic": "11501"
     }
   }
 }

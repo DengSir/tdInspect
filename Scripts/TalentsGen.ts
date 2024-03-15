@@ -41,7 +41,7 @@ class App {
     }
 
     async getClasses() {
-        const csv = await this.cli.fetchTable('chrclasses');
+        const csv = await this.cli.fetchTable('ChrClasses');
         return csv.map((x) => ({
             id: Number.parseInt(x[5]),
             fileName: x[1],

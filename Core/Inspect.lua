@@ -426,7 +426,7 @@ function Inspect:INSPECT_READY(_, guid)
         -- @build>3@
         db.numGroups = GetNumTalentGroups(true)
         db.activeGroup = GetActiveTalentGroup(true)
-        -- @build>3@
+        -- @end-build>3@
         -- @build<3@
         db.numGroups = 1
         db.activeGroup = 1
