@@ -10,7 +10,8 @@
     <Script file="Data\Talents.WLK.lua" build="lkc" />
     <Script file="Data\ItemSet.lua" build="classic" />
     <Script file="Data\ItemSet.WLK.lua" build="lkc" />
-    <Script file="Data\Glyph.lua" />
+    <Script file="Data\Glyph.lua" build="lkc" />
+    <Script file="Data\GlyphData.lua" build="lkc" />
 
     <Script file="Core\Encoder.lua" />
     <Script file="Core\Inspect.lua" />

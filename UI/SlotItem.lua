@@ -70,6 +70,7 @@ function SlotItem:Update()
             self:UpdateBorder()
         end
 
+        -- @build<2@
         local rune = Inspect:GetItemRune(self:GetID())
         if rune then
             local icon = rune.icon or select(3, GetSpellInfo(rune.spellId))
@@ -78,10 +79,13 @@ function SlotItem:Update()
         else
             self.subicon:Hide()
         end
+        -- @end-build<2@
     else
         SetItemButtonTexture(self, self:GetEmptyIcon())
         self:UpdateBorder()
+        -- @build<2@
         self.subicon:Hide()
+        -- @end-build<2@
     end
 
     self.hasItem = item

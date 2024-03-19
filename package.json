@@ -7,7 +7,8 @@
     "test": "echo not implemented",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "talent": "deno run --allow-all Scripts/TalentsGen.ts",
-    "itemset": "deno run --allow-all Scripts/ItemSetsGen.ts"
+    "itemset": "deno run --allow-all Scripts/ItemSetsGen.ts",
+    "glyph": "deno run --allow-all Scripts/GlyphGen.ts"
   },
   "repository": {
     "type": "git",
