@@ -95,7 +95,7 @@ function ns.FixInspectItemTooltip(tip, slot, item)
 
     ns.FixItemSets(tip, id)
     -- @build<2@
-    ns.FixRune(tip, slot, item)
+    ns.FixRune(tip, slot, id)
     -- @end-build<2@
     -- @build>2@
     ns.FixMetaGem(tip, item)

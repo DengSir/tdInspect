@@ -81,6 +81,7 @@ function SlotItem:Update()
     else
         SetItemButtonTexture(self, self:GetEmptyIcon())
         self:UpdateBorder()
+        self.subicon:Hide()
     end
 
     self.hasItem = item

@@ -21,6 +21,7 @@
 
     <Script file="Tooltip\FixItemSet.lua" />
     <Script file="Tooltip\FixMetaGem.lua" />
+    <Script file="Tooltip\FixRune.lua" />
 
     <Script file="UI\BaseItem.lua" />
     <Script file="UI\SlotItem.lua" />

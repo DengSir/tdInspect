@@ -382,8 +382,6 @@ function Inspect:Query(unit, name)
         -- @end-build<2@
     end
 
-    queryRune = false
-
     if queryEquip or queryTalent or queryGlyph or queryRune then
         self:SendCommMessage(PROTO_PREFIX,
                              Serializer:Serialize('Q', queryTalent, queryEquip, PROTO_VERSION, queryGlyph, queryRune),
