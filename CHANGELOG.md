@@ -1,3 +1,19 @@
+## [2.1.6](https://github.com/DengSir/tdInspect/compare/v2.1.5...v2.1.6) (2024-03-19)
+
+
+### Bug Fixes
+
+* lkc ([a473f92](https://github.com/DengSir/tdInspect/commit/a473f924084165cc7dd41edf07f2bd5b023c14b3))
+
+
+### Features
+
+* support ala runes ([077587e](https://github.com/DengSir/tdInspect/commit/077587eb29d4e982710950b6ba6fcd090b791a74))
+* support runes ([bebd9fe](https://github.com/DengSir/tdInspect/commit/bebd9fed2399a2b706ed7ec5c33dad289bdf66dc))
+* update Ace3 ([b9dac9c](https://github.com/DengSir/tdInspect/commit/b9dac9c1e3ffb6e84657014f1276aa8210fb0cd3))
+
+
+
 ## [2.1.5](https://github.com/DengSir/tdInspect/compare/v2.1.4...v2.1.5) (2024-01-26)
 
 
