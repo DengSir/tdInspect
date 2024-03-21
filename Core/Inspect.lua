@@ -383,11 +383,20 @@ function Inspect:Query(unit, name)
     end
 
     if queryEquip or queryTalent or queryGlyph or queryRune then
+        if queryTalent then
+            self:SendCommMessage(ALA_PREFIX, '_q_tal', 'WHISPER', self.unitName)
+        end
+
+        if queryEquip then
+            self:SendCommMessage(ALA_PREFIX, '_q_equ', 'WHISPER', self.unitName)
+        end
+
+        self:SendCommMessage(ALA_PREFIX, ns.Ala:PackQuery(queryEquip, queryTalent, queryGlyph, queryRune), 'WHISPER',
+                             self.unitName)
+
         self:SendCommMessage(PROTO_PREFIX,
                              Serializer:Serialize('Q', queryTalent, queryEquip, PROTO_VERSION, queryGlyph, queryRune),
                              'WHISPER', self.unitName)
-        self:SendCommMessage(ALA_PREFIX, ns.Ala:PackQuery(queryEquip, queryTalent, queryGlyph, queryRune), 'WHISPER',
-                             self.unitName)
     end
 
     self:CheckQuery()
