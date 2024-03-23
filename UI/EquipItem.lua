@@ -25,11 +25,13 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
     Slot:SetWidth(38)
     Slot:SetPoint('LEFT')
     Slot:SetText(slotName)
+    self.Slot = Slot
 
     local ItemLevel = self:CreateFontString(nil, 'ARTWORK', 'TextStatusBarText')
     ItemLevel:SetFont(ItemLevel:GetFont(), 13, 'OUTLINE')
     ItemLevel:SetJustifyH('LEFT')
     ItemLevel:SetPoint('LEFT', Slot, 'RIGHT', 5, 0)
+    self.ItemLevel = ItemLevel
 
     local Name = self:CreateFontString(nil, 'ARTWORK', 'ChatFontNormal')
     Name:SetFont(Name:GetFont(), 13)
@@ -37,10 +39,14 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
     Name:SetJustifyH('LEFT')
     Name:SetPoint('LEFT', Slot, 'RIGHT', 30, 0)
     Name:SetPoint('RIGHT')
+    self.Name = Name
 
+    -- @build<2@
     local RuneIcon = self:CreateTexture(nil, 'OVERLAY')
     RuneIcon:SetSize(17, 17)
     RuneIcon:SetPoint('RIGHT')
+    self.RuneIcon = RuneIcon
+    -- @end-build<2@
 
     local ht = self:CreateTexture(nil, 'HIGHLIGHT')
     ht:SetAllPoints(true)
@@ -51,11 +57,6 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
         bg:SetAllPoints(true)
         bg:SetColorTexture(0.3, 0.3, 0.3, 0.3)
     end
-
-    self.Name = Name
-    self.ItemLevel = ItemLevel
-    self.Slot = Slot
-    self.RuneIcon = RuneIcon
 
     self:SetScript('OnLeave', GameTooltip_Hide)
     self:SetScript('OnEnter', self.OnEnter)
@@ -69,6 +70,7 @@ end
 function EquipItem:OnEnter()
     local item = Inspect:GetItemLink(self:GetID())
     if item then
+        -- @build<2@
         if self.RuneIcon:IsVisible() and self.RuneIcon:IsMouseOver() then
             local rune = Inspect:GetItemRune(self:GetID())
             if rune then
@@ -76,10 +78,13 @@ function EquipItem:OnEnter()
                 GameTooltip:SetSpellByID(rune.spellId)
             end
         else
+            -- @end-build<2@
             GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
             GameTooltip:SetHyperlink(item)
             ns.FixInspectItemTooltip(GameTooltip, self:GetID(), item)
+            -- @build<2@
         end
+        -- @end-build<2@
     end
 end
 
@@ -88,6 +93,7 @@ function EquipItem:Update()
 
     local id = self:GetID()
 
+    -- @build<2@
     local rune = Inspect:GetItemRune(id)
     if rune then
         local icon = rune.icon or select(3, GetSpellInfo(rune.spellId))
@@ -96,6 +102,7 @@ function EquipItem:Update()
     else
         self.RuneIcon:Hide()
     end
+    -- @end-build<2@
 
     local item = Inspect:GetItemLink(id)
     if item then
