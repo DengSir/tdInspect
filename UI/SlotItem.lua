@@ -37,6 +37,10 @@ function SlotItem:Constructor()
     self.IconBorder:SetPoint('CENTER')
     self.IconBorder:SetSize(67, 67)
 
+    self.LevelText = self:CreateFontString(nil, 'ARTWORK', 'NumberFontNormalYellow')
+    self.LevelText:SetPoint('BOTTOMLEFT', 1, 0)
+    self.LevelText:Hide()
+
     self.UpdateTooltip = self.OnEnter
 
     self:SetScript('OnClick', self.OnClick)
@@ -65,9 +69,13 @@ function SlotItem:Update()
         end
 
         if quality and quality > 1 then
-            self:UpdateBorder(GetItemQualityColor(quality))
+            local r, g, b = GetItemQualityColor(quality)
+            local level = select(4, GetItemInfo(item))
+            self:UpdateBorder(r, g, b)
+            self:UpdateItemLevel(level, r, g, b)
         else
             self:UpdateBorder()
+            self:UpdateItemLevel()
         end
 
         -- @build<2@
@@ -97,6 +105,16 @@ function SlotItem:UpdateBorder(r, g, b)
         self.IconBorder:Show()
     else
         self.IconBorder:Hide()
+    end
+end
+
+function SlotItem:UpdateItemLevel(level, r, g, b)
+    if level and level > 0 then
+        self.LevelText:SetText(level)
+        self.LevelText:SetTextColor(r, g, b, 1)
+        self.LevelText:Show()
+    else
+        self.LevelText:Hide()
     end
 end
 
