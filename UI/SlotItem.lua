@@ -37,7 +37,7 @@ function SlotItem:Constructor()
     self.IconBorder:SetPoint('CENTER')
     self.IconBorder:SetSize(67, 67)
 
-    self.LevelText = self:CreateFontString(nil, 'ARTWORK', 'NumberFontNormalYellow')
+    self.LevelText = self:CreateFontString(nil, 'OVERLAY', 'TextStatusBarText')
     self.LevelText:SetPoint('BOTTOMLEFT', 1, 0)
     self.LevelText:Hide()
 
