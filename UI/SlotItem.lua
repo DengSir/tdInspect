@@ -91,6 +91,7 @@ function SlotItem:Update()
     else
         SetItemButtonTexture(self, self:GetEmptyIcon())
         self:UpdateBorder()
+        self:UpdateItemLevel()
         -- @build<2@
         self.subicon:Hide()
         -- @end-build<2@
