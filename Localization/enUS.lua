@@ -4,6 +4,12 @@ if not L then
 end
 
 -- @locale:language=enUS@
+L = L or {}
+L["Inspect mouseover"] = true
+L["Inspect target"] = true
+L["Last update:"] = true
+L["Show Modal"] = true
+
 -- @end-locale@
 
 -- @debug@
