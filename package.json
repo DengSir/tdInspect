@@ -24,6 +24,17 @@
     "name": "tdInspect",
     "curse_id": 500065,
     "changelog": "CHANGELOG.md",
+    "localization": {
+      "folder": "Localization",
+      "ignores": [
+        "Localization",
+        "Libs"
+      ],
+      "imports": {
+        "zhCN": "zhCN.lua",
+        "enUS": "enUS.lua"
+      }
+    },
     "builds": {
       "lkc": "30403",
       "classic": "11501"
