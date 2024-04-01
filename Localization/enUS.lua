@@ -8,7 +8,6 @@ L = L or {}
 L['Inspect mouseover'] = true
 L['Inspect target'] = true
 L['Last update:'] = true
--- [comment by wct] L['Show Modal'] = true
 
 -- @end-locale@
 
