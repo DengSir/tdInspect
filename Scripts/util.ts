@@ -21,7 +21,6 @@ const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
 const WOW_TOOLS2 = 'https://wago.tools/db2/{name}/csv';
 const PROJECTS = new Map([
     [ProjectId.Classic, { version: '1.15.2.54092', dataEnv: 4 }],
-    // [ProjectId.BCC, { version: '2.5.4.44833', dataEnv: 5 }],
     [ProjectId.WLK, { version: '3.4.3.53788', dataEnv: 8 }],
 ]);
 
