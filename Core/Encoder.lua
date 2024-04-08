@@ -195,6 +195,9 @@ end
 
 function Encoder:UnpackRunes(code)
     -- @build<2@
+    if not code then
+        return
+    end
     local data = strsplittable(MAJOR_SEP, code)
     local runes = {}
     for i, v in ipairs(data) do

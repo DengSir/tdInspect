@@ -77,30 +77,30 @@ class App {
     async getTalents() {
         const csv = await this.cli.fetchTable('talent');
 
-        return csv
-            .map((x) => ({
-                id: Number.parseInt(x[0]),
-                tier: Number.parseInt(x[2]),
-                col: Number.parseInt(x[4]),
-                tabId: Number.parseInt(x[5]),
-                spells: x
-                    .slice(13, 21)
-                    .map((x) => Number.parseInt(x))
-                    .filter((x) => x),
-                reqs: x
-                    .slice(22, 24)
-                    .map((x) => Number.parseInt(x))
-                    .filter((x) => x),
-            }))
-            .sort((a, b) => {
-                if (a.tabId !== b.tabId) {
-                    return a.tabId - b.tabId;
-                }
-                if (a.tier !== b.tier) {
-                    return a.tier - b.tier;
-                }
-                return a.col - b.col;
-            });
+        return csv.map((x, i) => ({
+            index: i,
+            id: Number.parseInt(x[0]),
+            tier: Number.parseInt(x[2]),
+            col: Number.parseInt(x[4]),
+            tabId: Number.parseInt(x[5]),
+            spells: x
+                .slice(13, 21)
+                .map((x) => Number.parseInt(x))
+                .filter((x) => x),
+            reqs: x
+                .slice(22, 24)
+                .map((x) => Number.parseInt(x))
+                .filter((x) => x),
+        }));
+        // .sort((a, b) => {
+        //     if (a.tabId !== b.tabId) {
+        //         return a.tabId - b.tabId;
+        //     }
+        //     if (a.tier !== b.tier) {
+        //         return a.tier - b.tier;
+        //     }
+        //     return a.col - b.col;
+        // });
     }
 
     async run(output: string) {
@@ -110,13 +110,38 @@ class App {
 
         const talentsMap = new Map(talents.map((x) => [x.id, x]));
 
+        for (const cls of classes) {
+            let n = 0;
+            for (const tab of tabs) {
+                if (tab.classMask === cls.classMask) {
+                    const tabTalents = talents.filter((talent) => talent.tabId === tab.id);
+
+                    tabTalents.forEach((x, i) => (x.index = i + 1 + n));
+                    n = tabTalents.length;
+                }
+            }
+            // const tabsSet = new Set(tabs.filter((tab) => tab.classMask == cls.classMask).map((tab) => tab.id));
+            // const clsTalents = talents.filter((talent) => tabsSet.has(talent.tabId)); //.sort((a, b) => a.id - b.id);
+            // clsTalents.forEach((talent, i) => (talent.index = i + 1 + n));
+        }
+
         const classTabs = classes.map((cls) => ({
             ...cls,
             tabs: tabs
                 .filter((tab) => tab.classMask === cls.classMask)
                 .sort((a, b) => a.order - b.order)
                 .map((tab) => ({
-                    talents: talents.filter((talent) => talent.tabId === tab.id),
+                    talents: talents
+                        .filter((talent) => talent.tabId === tab.id)
+                        .sort((a, b) => {
+                            if (a.tabId !== b.tabId) {
+                                return a.tabId - b.tabId;
+                            }
+                            if (a.tier !== b.tier) {
+                                return a.tier - b.tier;
+                            }
+                            return a.col - b.col;
+                        }),
                     ...tab,
                 })),
         }));
@@ -153,7 +178,7 @@ select(2,...).TalentMake()`
 
                 for (const talent of tab.talents) {
                     {
-                        write(`I(${talent.tier + 1},${talent.col + 1},${talent.spells.length}`);
+                        write(`I(${talent.index},${talent.tier + 1},${talent.col + 1},${talent.spells.length}`);
                         if (this.prj.hasId) {
                             write(`,${talent.id}`);
                         }
