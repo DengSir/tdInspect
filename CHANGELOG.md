@@ -1,3 +1,25 @@
+## [2.1.8](https://github.com/DengSir/tdInspect/compare/v2.1.7...v2.1.8) (2024-04-08)
+
+
+### Bug Fixes
+
+* 无装备的装等未正确隐藏 ([16fc391](https://github.com/DengSir/tdInspect/commit/16fc3916132d3fafdbef4f5194141db9702afb7a))
+
+
+### Features
+
+* 更新装等字体 ([0f4959e](https://github.com/DengSir/tdInspect/commit/0f4959e027876429321a56bf8ebe618442adb61b))
+* 装备列表符文图标支持鼠标提示 ([3191394](https://github.com/DengSir/tdInspect/commit/31913941e468c2cc4e7fdc241979c67240501a6c))
+* actions add scan locale ([8ee8264](https://github.com/DengSir/tdInspect/commit/8ee82643ac863eeffc20e32432262c6f8bef4af1))
+* add locale scan ([c8a5ca8](https://github.com/DengSir/tdInspect/commit/c8a5ca8af21d2c00f4590e946a2b315f07059bf5))
+* add locale scan ([33e4d6b](https://github.com/DengSir/tdInspect/commit/33e4d6b0a4b395459587f478e8dc9a81f9be12a1))
+* ignore wrong talent ([664f293](https://github.com/DengSir/tdInspect/commit/664f293f386d8ecbfb53f180dad33ae4e87ad77e))
+* macro ([192e8d7](https://github.com/DengSir/tdInspect/commit/192e8d7c8c8d787fc7b140289f24946e8c25ba79))
+* show item level ([a560644](https://github.com/DengSir/tdInspect/commit/a5606441d7435957039086d05ad7ba4ebb164e46))
+* update locale ([d2da517](https://github.com/DengSir/tdInspect/commit/d2da517ecac1d51367df1711ba11fa485b87de14))
+
+
+
 ## [2.1.7](https://github.com/DengSir/tdInspect/compare/v2.1.6...v2.1.7) (2024-03-21)
 
 
