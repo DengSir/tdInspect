@@ -237,7 +237,7 @@ function Ala:RecvTalentV1(code)
         end
 
         if #talent > count then
-            print('error', talent, #talent, code)
+            -- print('error', talent, #talent, code)
             return result
         end
     end
@@ -262,19 +262,19 @@ function Ala:RecvTalentV1(code)
                 for _, t in ipairs(tab.talents) do
                     local point = tonumber(talent:sub(t.index, t.index)) or 0
                     if point > t.maxRank then
-                        print('resolve failed', talent, #talent, code)
+                        -- print('resolve failed', talent, #talent, code)
                         return result
                     else
                         tinsert(sb, tostring(point))
                     end
                 end
             end
-            print('resolve success')
+            -- print('resolve success')
             talent = table.concat(sb, '')
         end
     end
 
-    print('ok', talent, #talent, code)
+    -- print('ok', talent, #talent, code)
 
     return { --
         class = class,
@@ -290,7 +290,7 @@ function Ala:RecvCommV1(msg)
     if cmd == '_repeq' or cmd == '_r_equ' or cmd == '_r_eq3' then
         return self:RecvEquipmentV1(strsub(msg, CMD_LEN_V1 + 1, -1))
     elseif cmd == '_reply' or cmd == '_r_tal' then
-        print(cmd, msg)
+        -- print(cmd, msg)
         return self:RecvTalentV1(strsub(msg, CMD_LEN_V1 + 1, -1))
     end
 end
