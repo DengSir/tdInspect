@@ -29,11 +29,13 @@ class App {
 -- GENERATE BY GlyphGen.ts
 select(2,...).GlyphMake()`
         );
+        write('\n');
 
         const glyphs = await this.getGlyphs();
 
         for (const glyph of glyphs) {
             write(`D(${glyph.join(',')})`);
+            write('\n');
         }
 
         file.close();

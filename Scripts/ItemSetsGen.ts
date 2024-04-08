@@ -63,6 +63,8 @@ class App {
 -- GENERATE BY ItemSetGen.ts
 select(2,...).ItemSetMake()`);
 
+        write('\n');
+
         for (const i of data) {
             write(`S(${i.id})`);
             write(`B'${i.threshold.join('/')}'`);
@@ -79,6 +81,7 @@ select(2,...).ItemSetMake()`);
 
                 write(`I(${slot},${item})`);
             }
+            write('\n');
         }
 
         file.close();
