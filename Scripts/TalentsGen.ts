@@ -13,7 +13,7 @@ interface Config {
 }
 
 const PROJECTS: { [key: number]: Config } = {
-    [ProjectId.Classic]: { hasId: false, hasIcon: false },
+    [ProjectId.Classic]: { hasId: false, hasIcon: true },
     [ProjectId.BCC]: { hasId: true, hasIcon: false },
     [ProjectId.WLK]: { hasId: true, hasIcon: true },
 };
