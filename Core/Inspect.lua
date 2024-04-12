@@ -166,7 +166,7 @@ function Inspect:IsItemEquipped(itemId)
     end
 end
 
--- @non-build>2@
+-- @build>2@
 local GEM_COLORS = {
     [Enum.ItemGemSubclass.Red] = {Enum.ItemGemSubclass.Red},
     [Enum.ItemGemSubclass.Yellow] = {Enum.ItemGemSubclass.Yellow},
@@ -327,6 +327,9 @@ function Inspect:CanBlizzardInspect(unit)
     if UnitIsDeadOrGhost(unit) then
         return false
     end
+    if InCombatLockdown() then
+        return false
+    end
     if not CheckInteractDistance(unit, 1) then
         return false
     end
@@ -450,15 +453,9 @@ function Inspect:INSPECT_READY(_, guid)
         db.level = UnitLevel(self.unit)
         -- @build>2@
         db.talents = Encoder:PackTalents(true)
+        db.numGroups = GetNumTalentGroups and GetNumTalentGroups(true) or 1
+        db.activeGroup = GetActiveTalentGroup and GetActiveTalentGroup(true) or 1
         -- @end-build>2@
-        -- @build>3@
-        db.numGroups = GetNumTalentGroups(true)
-        db.activeGroup = GetActiveTalentGroup(true)
-        -- @end-build>3@
-        -- @build<3@
-        db.numGroups = 1
-        db.activeGroup = 1
-        -- @end-build<3@
 
         self:TryFireMessage(self.unit, name, db)
     end
@@ -577,6 +574,10 @@ function Inspect:OnComm(cmd, sender, ...)
         if talents then
             db.talents = Encoder:UnpackTalents(talents)
             db.numGroups = #db.talents
+
+            if db.activeGroup > db.numGroups then
+                db.activeGroup = 1
+            end
         end
 
         if equips then
