@@ -1,4 +1,4 @@
-name: 'Generate data'
+name: 'Generate data🧭'
 on:
   push:
     branches:
