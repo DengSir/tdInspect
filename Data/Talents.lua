@@ -2,7 +2,7 @@
 -- GENERATE BY TalentsGen.ts
 select(2,...).TalentMake()D'enUS/koKR/frFR/deDE/zhCN/zhTW/esES/ruRU/ptBR/itIT'
 C'WARRIOR'
-T(161,18,'WarriorArms')N'Arms/무기/Armes/Waffen/武器/武器/Armas/Оружие/Armas/Arms'
+T(161,18,'WarriorArms',132292)N'Arms/무기/Armes/Waffen/武器/武器/Armas/Оружие/Armas/Arms'
 I(3,1,1,3)R{12282,12663,12664}
 I(9,1,2,5)R{16462,16463,16464,16465,16466}
 I(6,1,3,3)R{12286,12658,12659}
@@ -21,7 +21,7 @@ I(2,5,4,5)R{12281,12812,12813,12814,12815}
 I(13,6,1,5)R{12165,12830,12831,12832,12833}
 I(8,6,3,3)R{12289,12668,23695}
 I(14,7,2,1)R{12294}P(5,2,13)
-T(164,17,'WarriorFury')N'Fury/분노/Fureur/Furor/狂怒/狂怒/Furia/Неистовство/Fúria/Fury'
+T(164,17,'WarriorFury',132347)N'Fury/분노/Fureur/Furor/狂怒/狂怒/Furia/Неистовство/Fúria/Fury'
 I(22,1,2,5)R{12321,12835,12836,12837,12838}
 I(21,1,3,5)R{12320,12852,12853,12855,12856}
 I(25,2,2,5)R{12324,12876,12877,12878,12879}
@@ -39,7 +39,7 @@ I(33,5,4,2)R{20504,20505}
 I(31,6,1,2)R{20500,20501}
 I(20,6,3,5)R{12319,12971,12972,12973,12974}P(4,3,11)
 I(28,7,2,1)R{23881}P(5,2,13)
-T(163,17,'WarriorProtection')N'Protection/방어/Protection/Schutz/防护/防護/Protección/Защита/Proteção/Protection'
+T(163,17,'WarriorProtection',134952)N'Protection/방어/Protection/Schutz/防护/防護/Protección/Защита/Proteção/Protection'
 I(35,1,2,5)R{12298,12724,12725,12726,12727}
 I(19,1,3,5)R{12297,12750,12751,12752,12753}
 I(22,2,1,2)R{12301,12818}
@@ -58,7 +58,7 @@ I(29,5,3,2)R{12311,12958}
 I(34,6,3,5)R{16538,16539,16540,16541,16542}
 I(28,7,2,1)R{23922}P(5,2,14)
 C'PALADIN'
-T(382,14,'PaladinHoly')N'Holy/신성/Sacré/Heilig/神圣/神聖/Sagrado/Свет/Sagrado/Holy'
+T(382,14,'PaladinHoly',135920)N'Holy/신성/Sacré/Heilig/神圣/神聖/Sagrado/Свет/Sagrado/Holy'
 I(23,1,2,5)R{20262,20263,20264,20265,20266}
 I(22,1,3,5)R{20257,20258,20259,20260,20261}
 I(16,2,2,5)R{20205,20206,20207,20209,20208}
@@ -73,7 +73,7 @@ I(17,5,2,1)R{20216}P(4,2,9)
 I(26,5,3,3)R{20359,20360,20361}
 I(28,6,3,5)R{5923,5924,5925,5926,25829}
 I(27,7,2,1)R{20473}P(5,2,11)
-T(383,15,'PaladinProtection')N'Protection/보호/Protection/Schutz/防护/防護/Protección/Защита/Proteção/Protection'
+T(383,15,'PaladinProtection',135893)N'Protection/보호/Protection/Schutz/防护/防護/Protección/Защита/Proteção/Protection'
 I(16,1,2,5)R{20138,20139,20140,20141,20142}
 I(15,1,3,5)R{20127,20130,20135,20136,20137}
 I(29,2,1,3)R{20189,20192,20193}
@@ -89,7 +89,7 @@ I(23,5,2,1)R{20911}
 I(20,5,3,5)R{20177,20179,20181,20180,20182}
 I(21,6,3,5)R{20196,20197,20198,20199,20200}
 I(22,7,2,1)R{20925}P(5,2,12)
-T(381,15,'PaladinCombat')N'Retribution/징벌/Vindicte/Vergeltung/惩戒/懲戒/Reprensión/Воздаяние/Retribuição/Retribution'
+T(381,15,'PaladinCombat',135873)N'Retribution/징벌/Vindicte/Vergeltung/惩戒/懲戒/Reprensión/Воздаяние/Retribuição/Retribution'
 I(1,1,2,5)R{20042,20045,20046,20047,20048}
 I(5,1,3,5)R{20101,20102,20103,20104,20105}
 I(12,2,1,2)R{25956,25957}
@@ -106,7 +106,7 @@ I(6,5,3,1)R{20218}
 I(2,6,2,5)R{20049,20056,20057,20058,20059}P(3,2,7)
 I(9,7,2,1)R{20066}
 C'HUNTER'
-T(361,16,'HunterBeastMastery')N'Beast Mastery/야수/Maîtrise des bêtes/Tierherrschaft/野兽控制/野獸控制/Dominio de bestias/Чувство зверя/Domínio das Feras/Beast Mastery'
+T(361,16,'HunterBeastMastery',132164)N'Beast Mastery/야수/Maîtrise des bêtes/Tierherrschaft/野兽控制/野獸控制/Dominio de bestias/Чувство зверя/Domínio das Feras/Beast Mastery'
 I(2,1,2,5)R{19552,19553,19554,19555,19556}
 I(8,1,3,5)R{19583,19584,19585,19586,19587}
 I(15,2,1,2)R{19557,19558}
@@ -123,7 +123,7 @@ I(6,5,2,1)R{19577}
 I(9,5,4,2)R{19590,19592}
 I(14,6,3,5)R{19621,19622,19623,19624,19625}P(4,3,11)
 I(5,7,2,1)R{19574}P(5,2,13)
-T(363,14,'HunterMarksmanship')N'Marksmanship/사격/Précision/Treffsicherheit/射击/射擊/Puntería/Стрельба/Precisão/Marksmanship'
+T(363,14,'HunterMarksmanship',132222)N'Marksmanship/사격/Précision/Treffsicherheit/射击/射擊/Puntería/Стрельба/Precisão/Marksmanship'
 I(17,1,2,5)R{19407,19412,19413,19414,19415}
 I(18,1,3,5)R{19416,19417,19418,19419,19420}
 I(19,2,2,5)R{19421,19422,19423,19424,19425}
@@ -138,7 +138,7 @@ I(23,5,2,3)R{19461,19462,24691}
 I(26,5,3,3)R{19491,19493,19494}
 I(30,6,3,5)R{19507,19508,19509,19510,19511}
 I(29,7,2,1)R{19506}P(5,2,11)
-T(362,16,'HunterSurvival')N'Survival/생존/Survie/Überleben/生存/生存/Supervivencia/Выживание/Sobrevivência/Survival'
+T(362,16,'HunterSurvival',132215)N'Survival/생존/Survie/Überleben/生存/生存/Supervivencia/Выживание/Sobrevivência/Survival'
 I(32,1,1,3)R{24293,24294,24295}
 I(17,1,2,3)R{19151,19152,19153}
 I(25,1,3,5)R{19295,19297,19298,19301,19300}
@@ -156,7 +156,7 @@ I(26,5,3,1)R{19306}P(3,3,9)
 I(18,6,3,5)R{19168,19180,19181,24296,24297}
 I(29,7,2,1)R{19386}P(5,2,13)
 C'ROGUE'
-T(182,15,'RogueAssassination')N'Assassination/암살/Assassinat/Meucheln/奇袭/刺殺/Asesinato/Ликвидация/Assassinato/Assassination'
+T(182,15,'RogueAssassination',132292)N'Assassination/암살/Assassinat/Meucheln/奇袭/刺殺/Asesinato/Ликвидация/Assassinato/Assassination'
 I(26,1,1,3)R{14162,14163,14164}
 I(23,1,2,2)R{14144,14148}
 I(22,1,3,5)R{14138,14139,14140,14141,14142}
@@ -172,7 +172,7 @@ I(30,5,2,1)R{14177}
 I(29,5,3,3)R{14174,14175,14176}
 I(32,6,2,5)R{14186,14190,14193,14194,14195}P(5,2,12)
 I(33,7,2,1)R{14983}
-T(181,19,'RogueCombat')N'Combat/전투/Combat/Kampf/战斗/戰鬥/Combate/Бой/Combate/Combat'
+T(181,19,'RogueCombat',132090)N'Combat/전투/Combat/Kampf/战斗/戰鬥/Combate/Бой/Combate/Combat'
 I(9,1,1,3)R{13741,13793,13792}
 I(7,1,2,2)R{13732,13863}
 I(5,1,3,5)R{13712,13788,13789,13790,13791}
@@ -192,7 +192,7 @@ I(3,5,4,5)R{13707,13966,13967,13968,13969}
 I(19,6,2,2)R{30919,30920}P(5,2,14)
 I(18,6,3,3)R{18427,18428,18429}
 I(11,7,2,1)R{13750}
-T(183,17,'RogueSubtlety')N'Subtlety/잠행/Finesse/Täuschung/敏锐/敏銳/Sutileza/Скрытность/Subterfúgio/Subtlety'
+T(183,17,'RogueSubtlety',132320)N'Subtlety/잠행/Finesse/Täuschung/敏锐/敏銳/Sutileza/Скрытность/Subterfúgio/Subtlety'
 I(16,1,2,5)R{13958,13970,13971,13972,13973}
 I(21,1,3,5)R{14057,14072,14073,14074,14075}
 I(30,2,1,2)R{30892,30893}
@@ -211,7 +211,7 @@ I(28,5,4,1)R{16511}P(4,3,11)
 I(32,6,3,5)R{30902,30903,30904,30905,30906}
 I(27,7,2,1)R{14183}P(5,2,13)
 C'PRIEST'
-T(201,15,'PriestDiscipline')N'Discipline/수양/Discipline/Disziplin/戒律/戒律/Disciplina/Послушание/Disciplina/Discipline'
+T(201,15,'PriestDiscipline',135987)N'Discipline/수양/Discipline/Disziplin/戒律/戒律/Disciplina/Послушание/Disciplina/Discipline'
 I(4,1,2,5)R{14522,14788,14789,14790,14791}
 I(7,1,3,5)R{14524,14525,14526,14527,14528}
 I(13,2,1,5)R{14523,14784,14785,14786,14787}
@@ -227,7 +227,7 @@ I(14,5,2,5)R{18551,18552,18553,18554,18555}
 I(12,5,3,1)R{14752}P(3,3,8)
 I(15,6,3,5)R{18544,18547,18548,18549,18550}
 I(2,7,2,1)R{10060}P(5,2,12)
-T(202,16,'PriestHoly')N'Holy/신성/Sacré/Heilig/神圣/神聖/Sagrado/Свет/Sagrado/Holy'
+T(202,16,'PriestHoly',237542)N'Holy/신성/Sacré/Heilig/神圣/神聖/Sagrado/Свет/Sagrado/Holy'
 I(23,1,1,2)R{14913,15012}
 I(21,1,2,3)R{14908,15020,17191}
 I(17,1,3,5)R{14889,15008,15009,15010,15011}
@@ -244,7 +244,7 @@ I(28,5,2,1)R{20711}
 I(18,5,3,5)R{14901,15028,15029,15030,15031}
 I(20,6,3,5)R{14898,15349,15354,15355,15356}
 I(31,7,2,1)R{724}P(5,2,13)
-T(203,16,'PriestShadow')N'Shadow/암흑/Ombre/Schatten/暗影/暗影/Sombra/Тьма/Sombra/Shadow'
+T(203,16,'PriestShadow',136207)N'Shadow/암흑/Ombre/Schatten/暗影/暗影/Sombra/Тьма/Sombra/Shadow'
 I(21,1,2,5)R{15270,15335,15336,15337,15338}
 I(20,1,3,5)R{15268,15323,15324,15325,15326}
 I(22,2,1,3)R{15318,15272,15320}
@@ -262,7 +262,7 @@ I(32,5,3,2)R{27839,27840}P(5,2,13)
 I(18,6,3,5)R{15259,15307,15308,15309,15310}
 I(28,7,2,1)R{15473}P(5,2,13)
 C'SHAMAN'
-T(261,15,'ShamanElementalCombat')N'Elemental/정기/Elémentaire/Elementar/元素/元素/Elemental/Стихии/Elemental/Elemental'
+T(261,15,'ShamanElementalCombat',136048)N'Elemental/정기/Elémentaire/Elementar/元素/元素/Elemental/Стихии/Elemental/Elemental'
 I(4,1,2,5)R{16039,16109,16110,16111,16112}
 I(3,1,3,5)R{16035,16105,16106,16107,16108}
 I(7,2,1,2)R{16043,16130}
@@ -278,7 +278,7 @@ I(13,5,1,2)R{28999,29000}
 I(5,5,2,1)R{16089}
 I(11,6,3,5)R{16578,16579,16580,16581,16582}P(3,3,8)
 I(8,7,2,1)R{16166}P(5,2,13)
-T(263,16,'ShamanEnhancement')N'Enhancement/고양/Amélioration/Verstärk/增强/增強/Mejora/Совершенствование/Aperfeiçoamento/Enhancement'
+T(263,16,'ShamanEnhancement',136051)N'Enhancement/고양/Amélioration/Verstärk/增强/增強/Mejora/Совершенствование/Aperfeiçoamento/Enhancement'
 I(25,1,2,5)R{17485,17486,17487,17488,17489}
 I(23,1,3,5)R{16253,16298,16299,16300,16301}
 I(20,2,1,2)R{16258,16293}
@@ -295,7 +295,7 @@ I(22,5,2,3)R{16266,29079,29080}
 I(27,5,3,1)R{16268}
 I(30,6,3,5)R{29082,29084,29086,29087,29088}
 I(29,7,2,1)R{17364}P(5,2,13)
-T(262,15,'ShamanRestoration')N'Restoration/복원/Restauration/Wiederherst/恢复/恢復/Recuperación/Исцеление/Restauração/Restoration'
+T(262,15,'ShamanRestoration',136052)N'Restoration/복원/Restauration/Wiederherst/恢复/恢復/Recuperación/Исцеление/Restauração/Restoration'
 I(19,1,2,5)R{16182,16226,16227,16228,16229}
 I(26,1,3,5)R{16179,16214,16215,16216,16217}
 I(22,2,1,2)R{16184,16209}
@@ -312,7 +312,7 @@ I(24,5,3,1)R{16188}
 I(25,6,3,5)R{16178,16210,16211,16212,16213}
 I(23,7,2,1)R{16190}P(4,2,10)
 C'MAGE'
-T(81,16,'MageArcane')N'Arcane/비전/Arcanes/Arkan/奥术/秘法/Arcano/Тайная магия/Arcano/Arcane'
+T(81,16,'MageArcane',135932)N'Arcane/비전/Arcanes/Arkan/奥术/秘法/Arcano/Тайная магия/Arcano/Arcane'
 I(18,1,1,2)R{11210,12592}
 I(20,1,2,5)R{11222,12839,12840,12841,12842}
 I(23,1,3,5)R{11237,12463,12464,16769,16770}
@@ -329,7 +329,7 @@ I(28,5,2,1)R{12043}
 I(21,5,3,5)R{11232,12500,12501,12502,12503}P(3,3,9)
 I(31,6,2,3)R{15058,15059,15060}P(5,2,13)
 I(29,7,2,1)R{12042}P(6,2,15)
-T(41,16,'MageFire')N'Fire/화염/Feu/Feuer/火焰/火焰/Fuego/Огонь/Fogo/Fire'
+T(41,16,'MageFire',135810)N'Fire/화염/Feu/Feuer/火焰/火焰/Fuego/Огонь/Fogo/Fire'
 I(4,1,2,5)R{11069,12338,12339,12340,12341}
 I(8,1,3,5)R{11103,12357,12358,12359,12360}
 I(12,2,1,5)R{11119,11120,12846,12847,12848}
@@ -346,7 +346,7 @@ I(11,5,2,3)R{11115,11367,11368}
 I(10,5,3,1)R{11113}P(3,3,8)
 I(13,6,3,5)R{11124,12378,12398,12399,12400}
 I(14,7,2,1)R{11129}P(5,2,13)
-T(61,17,'MageFrost')N'Frost/냉기/Givre/Frost/冰霜/冰霜/Escarcha/Лед/Gelo/Frost'
+T(61,17,'MageFrost',135846)N'Frost/냉기/Givre/Frost/冰霜/冰霜/Escarcha/Лед/Gelo/Frost'
 I(28,1,1,2)R{11189,28332}
 I(17,1,2,5)R{11070,12473,16763,16765,16766}
 I(33,1,3,3)R{29438,29439,29440}
@@ -365,7 +365,7 @@ I(22,5,3,3)R{11190,12489,12490}
 I(26,6,3,5)R{11180,28592,28593,28594,28595}
 I(29,7,2,1)R{11426}P(5,2,14)
 C'WARLOCK'
-T(302,17,'WarlockCurses')N'Affliction/고통/Affliction/Gebrechen/痛苦/痛苦/Aflicción/Колдовство/Suplício/Affliction'
+T(302,17,'WarlockCurses',136145)N'Affliction/고통/Affliction/Gebrechen/痛苦/痛苦/Aflicción/Колдовство/Suplício/Affliction'
 I(21,1,2,5)R{18174,18175,18176,18177,18178}
 I(19,1,3,5)R{17810,17811,17812,17813,17814}
 I(22,2,1,3)R{18179,18180,18181}
@@ -383,7 +383,7 @@ I(29,5,3,1)R{18223}P(3,3,9)
 I(30,5,4,4)R{18310,18311,18312,18313}P(5,3,14)
 I(27,6,2,5)R{18271,18272,18273,18274,18275}P(5,2,13)
 I(25,7,2,1)R{18220}
-T(303,17,'WarlockSummoning')N'Demonology/악마/Démonologie/Dämonologie/恶魔学识/惡魔學識/Demonología/Демонология/Demonologia/Demonology'
+T(303,17,'WarlockSummoning',136172)N'Demonology/악마/Démonologie/Dämonologie/恶魔学识/惡魔學識/Demonología/Демонология/Demonologia/Demonology'
 I(18,1,1,2)R{18692,18693}
 I(19,1,2,3)R{18694,18695,18696}
 I(20,1,3,5)R{18697,18698,18699,18700,18701}
@@ -401,7 +401,7 @@ I(29,5,4,2)R{18767,18768}
 I(28,6,3,5)R{23785,23822,23823,23824,23825}P(4,3,11)
 I(33,7,2,1)R{19028}P(5,2,13)
 I(31,7,3,2)R{18774,18775}
-T(301,16,'WarlockDestruction')N'Destruction/파괴/Destruction/Zerstörung/毁灭/毀滅/Destrucción/Разрушение/Destruição/Destruction'
+T(301,16,'WarlockDestruction',136186)N'Destruction/파괴/Destruction/Zerstörung/毁灭/毀滅/Destrucción/Разрушение/Destruição/Destruction'
 I(3,1,2,5)R{17793,17796,17801,17802,17803}
 I(1,1,3,5)R{17778,17779,17780,17781,17782}
 I(2,2,2,5)R{17788,17789,17790,17791,17792}
@@ -419,7 +419,7 @@ I(9,5,3,1)R{17959}P(3,3,7)
 I(8,6,3,5)R{17954,17955,17956,17957,17958}
 I(10,7,2,1)R{17962}P(5,2,13)
 C'DRUID'
-T(283,16,'DruidBalance')N'Balance/조화/Equilibre/Gleichgewicht/平衡/平衡/Equilibrio/Баланс/Equilíbrio/Balance'
+T(283,16,'DruidBalance',136096)N'Balance/조화/Equilibre/Gleichgewicht/平衡/平衡/Equilibrio/Баланс/Equilíbrio/Balance'
 I(17,1,1,5)R{16814,16815,16816,16817,16818}
 I(16,1,2,1)R{16689}
 I(31,1,3,4)R{17245,17247,17248,17249}P(1,2,2)
@@ -436,7 +436,7 @@ I(26,5,2,1)R{16880}
 I(22,5,3,3)R{16845,16846,16847}
 I(27,6,2,5)R{16896,16897,16899,16900,16901}P(5,2,13)
 I(30,7,2,1)R{24858}
-T(281,16,'DruidFeralCombat')N'Feral Combat/야성/Combat farouche/Wilder Kampf/野性战斗/野性戰鬥/Combate feral/Сила зверя/Combate Feral/Feral Combat'
+T(281,16,'DruidFeralCombat',132276)N'Feral Combat/야성/Combat farouche/Wilder Kampf/野性战斗/野性戰鬥/Combate feral/Сила зверя/Combate Feral/Feral Combat'
 I(3,1,2,5)R{16934,16935,16936,16937,16938}
 I(2,1,3,5)R{16858,16859,16860,16861,16862}
 I(6,2,1,5)R{16947,16948,16949,16950,16951}
@@ -453,7 +453,7 @@ I(12,5,1,2)R{16998,16999}
 I(16,5,3,1)R{16857}
 I(14,6,2,5)R{17003,17004,17005,17006,24894}P(4,2,10)
 I(15,7,2,1)R{17007}
-T(282,15,'DruidRestoration')N'Restoration/회복/Restauration/Wiederherst/恢复/恢復/Recuperación/Исцеление/Restauração/Restoration'
+T(282,15,'DruidRestoration',136041)N'Restoration/회복/Restauration/Wiederherst/恢复/恢復/Recuperación/Исцеление/Restauração/Restoration'
 I(17,1,2,5)R{17050,17051,17053,17054,17055}
 I(18,1,3,5)R{17056,17058,17059,17060,17061}
 I(20,2,1,5)R{17069,17070,17071,17072,17073}
