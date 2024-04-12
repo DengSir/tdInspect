@@ -1,3 +1,21 @@
+## [2.1.9](https://github.com/DengSir/tdInspect/compare/v2.1.8...v2.1.9) (2024-04-12)
+
+
+### Bug Fixes
+
+* active group ([faf3df3](https://github.com/DengSir/tdInspect/commit/faf3df330a10e55a6b8970f76964562f235f93a8))
+* classic talent tab need icon ([658e12e](https://github.com/DengSir/tdInspect/commit/658e12e3b9bd59e7ebc4973cc41b7d4e7f8b2dc7))
+* error ([b485445](https://github.com/DengSir/tdInspect/commit/b4854457aac5a2032a2ff8bc24f121f845c273cb))
+* plus double talent ([bb3c196](https://github.com/DengSir/tdInspect/commit/bb3c196fc15eef03a63feb1e1694d1745014c4ab))
+
+
+### Features
+
+* 暂时不请求旧版ala天赋数据 ([70a2021](https://github.com/DengSir/tdInspect/commit/70a202171620ad1382d017949644e968bb0b8b3b))
+* update scripts ([078dc72](https://github.com/DengSir/tdInspect/commit/078dc72bebcb1af5411a46619f7335509313ec07))
+
+
+
 ## [2.1.8](https://github.com/DengSir/tdInspect/compare/v2.1.7...v2.1.8) (2024-04-08)
 
 
