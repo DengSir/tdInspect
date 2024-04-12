@@ -19,7 +19,6 @@ jobs:
         with:
           token: ${{ secrets.CURSE_TOKEN }}
 
-      - uses: GuillaumeFalourd/git-commit-push@v1.3
+      - uses: EndBug/add-and-commit@v9
         with:
-          commit_message: "chore: Update locale files"
-          tags: false
+          message: 'chore: Update locale files'

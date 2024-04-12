@@ -321,12 +321,7 @@ end
 
 function Encoder:PackTalents(isInspect)
     local data = {}
-    -- @build<3@
-    local numGroups = 1
-    -- @end-build<3@
-    -- @build>3@
-    local numGroups = GetNumTalentGroups(isInspect)
-    -- @end-build>3@
+    local numGroups = GetNumTalentGroups and GetNumTalentGroups(isInspect) or 1
     for i = 1, numGroups do
         data[i] = self:PackTalent(isInspect, i, isInspect)
     end

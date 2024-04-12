@@ -576,6 +576,7 @@ function Inspect:OnComm(cmd, sender, ...)
 
         if talents then
             db.talents = Encoder:UnpackTalents(talents)
+            db.numGroups = #db.talents
         end
 
         if equips then
