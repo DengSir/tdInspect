@@ -107,12 +107,17 @@ function PaperDoll:Constructor()
 end
 
 function PaperDoll:OnShow()
-    self:RegisterMessage('INSPECT_READY', 'Update')
+    self:RegisterMessage('INSPECT_READY')
     self:RegisterEvent('UNIT_LEVEL', 'UpdateInfo')
     self:UpdateControls()
     self:UpdateInset()
     self:UpdateInfo()
     self:Update()
+end
+
+function PaperDoll:INSPECT_READY()
+    self:Update()
+    self:UpdateInfo()
 end
 
 function PaperDoll:OnHide()

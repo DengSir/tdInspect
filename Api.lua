@@ -145,3 +145,8 @@ function ns.GetGlyphInfo(glyphId)
     end
     return nil, d.spellId, d.icon
 end
+
+function ns.ResolveTalent(class, data)
+    local talent = ns.Talent:New(class, data)
+    return talent:ToString()
+end

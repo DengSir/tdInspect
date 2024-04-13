@@ -215,7 +215,7 @@ function Ala:RecvEquipmentV1(code)
     return {equips = equips}
 end
 
-function Ala:RecvTalentV1(code)
+function Ala:RecvTalentV1(code, maybeOld)
     local classIndex = __debase64[strsub(code, 1, 1)]
     if not classIndex then
         return
@@ -229,60 +229,17 @@ function Ala:RecvTalentV1(code)
     local talent = self:DecodeTalentV1(strsub(code, 2, -3))
     local result = {class = class, level = level}
 
-    local data = ns.Talents[ns.GetClassFileName(class)]
-    if data then
-        local count = 0
-        for _, tab in ipairs(data) do
-            count = count + tab.numTalents
-        end
-
-        if #talent > count then
-            -- print('error', talent, #talent, code)
-            return result
-        end
+    if maybeOld then
+        talent = ns.ResolveTalent(ns.GetClassFileName(class), talent)
     end
 
-    do
-        local needResolve = false
-        local index = 1
-        for _, tab in ipairs(data) do
-            for _, t in ipairs(tab.talents) do
-                local point = tonumber(talent:sub(index, index)) or 0
-                if point > t.maxRank then
-                    needResolve = true
-                    break
-                end
-                index = index + 1
-            end
-        end
-
-        if needResolve then
-            local sb = {}
-            for _, tab in ipairs(data) do
-                for _, t in ipairs(tab.talents) do
-                    local point = tonumber(talent:sub(t.index, t.index)) or 0
-                    if point > t.maxRank then
-                        -- print('resolve failed', talent, #talent, code)
-                        return result
-                    else
-                        tinsert(sb, tostring(point))
-                    end
-                end
-            end
-            -- print('resolve success')
-            talent = table.concat(sb, '')
-        end
+    if talent then
+        result.numGroups = 1
+        result.activeGroup = 1
+        result.talents = {talent}
     end
 
-    -- print('ok', talent, #talent, code)
-
-    return { --
-        class = class,
-        level = level,
-        numGroups = 1,
-        activeGroup = 1,
-        talents = {talent},
-    }
+    return result
 end
 
 function Ala:RecvCommV1(msg)
@@ -290,8 +247,7 @@ function Ala:RecvCommV1(msg)
     if cmd == '_repeq' or cmd == '_r_equ' or cmd == '_r_eq3' then
         return self:RecvEquipmentV1(strsub(msg, CMD_LEN_V1 + 1, -1))
     elseif cmd == '_reply' or cmd == '_r_tal' then
-        -- print(cmd, msg)
-        return self:RecvTalentV1(strsub(msg, CMD_LEN_V1 + 1, -1))
+        return self:RecvTalentV1(strsub(msg, CMD_LEN_V1 + 1, -1), true)
     end
 end
 
@@ -515,6 +471,9 @@ function Ala:RecvCommV2(msg, sender)
         elseif v2_ctrl_code == '!N' then
             r = merge(r, self:RecvRune(code))
         end
+    end
+    if r then
+        r.v2 = true
     end
     return r
 end

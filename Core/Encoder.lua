@@ -185,7 +185,13 @@ function Encoder:PackRunes()
 end
 
 function Encoder:UnpackRune(code)
+    if not code or #code == 0 then
+        return
+    end
     local slot, spellId, icon = strsplit(MINOR_SEP, code)
+    if not slot then
+        return
+    end
     return { --
         slot = self:DecodeInteger(slot),
         spellId = self:DecodeInteger(spellId),
@@ -200,9 +206,11 @@ function Encoder:UnpackRunes(code)
     end
     local data = strsplittable(MAJOR_SEP, code)
     local runes = {}
-    for i, v in ipairs(data) do
+    for _, v in ipairs(data) do
         local info = self:UnpackRune(v)
-        runes[info.slot] = info
+        if info then
+            runes[info.slot] = info
+        end
     end
     return runes
     -- @end-build<2@
