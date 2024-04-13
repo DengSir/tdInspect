@@ -15,7 +15,7 @@ local UnitRace = UnitRace
 local GetClassColor = GetClassColor
 local CreateFrame = CreateFrame
 
-local PLAYER_LEVEL = PLAYER_LEVEL
+local PLAYER_LEVEL = PLAYER_LEVEL:gsub('%%d', '%%s')
 
 local L = ns.L
 local Inspect = ns.Inspect
