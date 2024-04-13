@@ -1,3 +1,18 @@
+## [2.1.10](https://github.com/DengSir/tdInspect/compare/v2.1.9...v2.1.10) (2024-04-13)
+
+
+### Bug Fixes
+
+* error ([c8c7ec7](https://github.com/DengSir/tdInspect/commit/c8c7ec7ed4a7c11a0c5c34021091a3d69b976de0))
+
+
+### Features
+
+* fix old talent code ([c2916f0](https://github.com/DengSir/tdInspect/commit/c2916f0e114304a03e3f5e03dd40567f1e2d2139))
+* fix talent index ([dad2780](https://github.com/DengSir/tdInspect/commit/dad2780b5d18a24a06ba0b381978418565db089f))
+
+
+
 ## [2.1.9](https://github.com/DengSir/tdInspect/compare/v2.1.8...v2.1.9) (2024-04-12)
 
 
