@@ -1,116 +1,50 @@
 -- Locale.lua
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
--- @Date   : 4/11/2024, 3:43:22 PM
+-- @Date   : 4/17/2024, 3:33:09 PM
 --
-local ADDON = ...
-local function Apply(locale, apply)
-    local L = LibStub('AceLocale-3.0'):NewLocale(ADDON, locale)
-    if L then
-        apply(L)
-    end
+local A = ...
+local function T(l, f)
+    local o = LibStub('AceLocale-3.0'):NewLocale(A, l)
+    if o then f(o) end
 end
-Apply('deDE', function(L)
-    -- @locale:language=deDE@
-L = L or {}
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Show Model"] = "Show Model"--]]
-    -- @end-locale@
+
+T('deDE', function(L)
+-- @locale:language=deDE@
+-- @end-locale@
 end)
-Apply('esES', function(L)
-    -- @locale:language=esES@
-L = L or {}
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Show Model"] = "Show Model"--]]
-    -- @end-locale@
+
+T('esES', function(L)
+-- @locale:language=esES@
+-- @end-locale@
 end)
-Apply('frFR', function(L)
-    -- @locale:language=frFR@
-L = L or {}
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Show Model"] = "Show Model"--]]
-    -- @end-locale@
+
+T('frFR', function(L)
+-- @locale:language=frFR@
+-- @end-locale@
 end)
-Apply('itIT', function(L)
-    -- @locale:language=itIT@
-L = L or {}
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Show Model"] = "Show Model"--]]
-    -- @end-locale@
+
+T('itIT', function(L)
+-- @locale:language=itIT@
+-- @end-locale@
 end)
-Apply('koKR', function(L)
-    -- @locale:language=koKR@
-L = L or {}
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Show Model"] = "Show Model"--]]
-    -- @end-locale@
+
+T('koKR', function(L)
+-- @locale:language=koKR@
+-- @end-locale@
 end)
-Apply('ptBR', function(L)
-    -- @locale:language=ptBR@
-L = L or {}
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Show Model"] = "Show Model"--]]
-    -- @end-locale@
+
+T('ptBR', function(L)
+-- @locale:language=ptBR@
+-- @end-locale@
 end)
-Apply('ruRU', function(L)
-    -- @locale:language=ruRU@
-L = L or {}
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Show Model"] = "Show Model"--]]
-    -- @end-locale@
+
+T('ruRU', function(L)
+-- @locale:language=ruRU@
+-- @end-locale@
 end)
-Apply('zhTW', function(L)
-    -- @locale:language=zhTW@
-L = L or {}
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Show Model"] = "Show Model"--]]
-    -- @end-locale@
+
+T('zhTW', function(L)
+-- @locale:language=zhTW@
+-- @end-locale@
 end)

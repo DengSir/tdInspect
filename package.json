@@ -24,20 +24,16 @@
     "name": "tdInspect",
     "curse_id": 500065,
     "changelog": "CHANGELOG.md",
-    "localization": {
-      "folder": "Localization",
-      "ignores": [
-        "Localization",
-        "Libs"
-      ],
-      "imports": {
-        "zhCN": "zhCN.lua",
-        "enUS": "enUS.lua"
-      }
-    },
     "builds": {
       "Vanilla": "11502",
       "Wrath": "30403"
-    }
+    },
+    "scan-locale-ignores": [
+      "Localization/**",
+      "Libs/**"
+    ],
+    "no-compiles": [
+      "Libs/*/**"
+    ]
   }
 }
