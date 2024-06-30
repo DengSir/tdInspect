@@ -16,6 +16,7 @@ const PROJECTS: { [key: number]: Config } = {
     [ProjectId.Classic]: { hasId: false, hasIcon: true },
     [ProjectId.BCC]: { hasId: true, hasIcon: false },
     [ProjectId.WLK]: { hasId: true, hasIcon: true },
+    [ProjectId.Cata]: { hasId: true, hasIcon: true },
 };
 
 const LOCALES: [n: number, l: string, resolve?: string][] = [
@@ -43,15 +44,15 @@ class App {
     async getClasses() {
         const csv = await this.cli.fetchTable('ChrClasses');
         return csv.map((x) => ({
-            id: Number.parseInt(x[5]),
-            fileName: x[1],
-            classMask: 1 << (Number.parseInt(x[5]) - 1),
+            id: Number.parseInt(x.ID),
+            fileName: x.Filename,
+            classMask: 1 << (Number.parseInt(x.ID) - 1),
         }));
     }
 
     async getTalentTabNames(locale: string) {
         const csv = await this.cli.fetchTable('talenttab', locale);
-        return new Map(csv.map(([id, name]) => [Number.parseInt(id), name]));
+        return new Map(csv.map((x) => [Number.parseInt(x.ID), x.Name_lang]));
     }
 
     async getTalentTabs() {
@@ -64,14 +65,16 @@ class App {
             )
         );
 
-        return csv.map((x) => ({
-            id: Number.parseInt(x[0]),
-            bg: x[2],
-            order: Number.parseInt(x[3]),
-            classMask: Number.parseInt(x[5]),
-            icon: Number.parseInt(x[7]),
-            names: LOCALES.map(([, l]) => l).map((l) => names.get(l)?.get(Number.parseInt(x[0]))),
-        }));
+        return csv
+            .filter((x) => Number.parseInt(x.OrderIndex) >= 0)
+            .map((x) => ({
+                id: Number.parseInt(x.ID),
+                bg: x.BackgroundFile,
+                order: Number.parseInt(x.OrderIndex),
+                classMask: Number.parseInt(x.ClassMask),
+                icon: Number.parseInt(x.SpellIconID),
+                names: LOCALES.map(([, l]) => l).map((l) => names.get(l)?.get(Number.parseInt(x.ID))),
+            }));
     }
 
     async getTalents() {
@@ -79,16 +82,24 @@ class App {
 
         return csv.map((x, i) => ({
             index: i,
-            id: Number.parseInt(x[0]),
-            tier: Number.parseInt(x[2]),
-            col: Number.parseInt(x[4]),
-            tabId: Number.parseInt(x[5]),
-            spells: x
-                .slice(13, 21)
+            id: Number.parseInt(x.ID),
+            tier: Number.parseInt(x.TierID),
+            col: Number.parseInt(x.ColumnIndex),
+            tabId: Number.parseInt(x.TabID),
+            spells: [
+                x.SpellRank_0,
+                x.SpellRank_1,
+                x.SpellRank_2,
+                x.SpellRank_3,
+                x.SpellRank_4,
+                x.SpellRank_5,
+                x.SpellRank_6,
+                x.SpellRank_7,
+                x.SpellRank_8,
+            ]
                 .map((x) => Number.parseInt(x))
                 .filter((x) => x),
-            reqs: x
-                .slice(22, 24)
+            reqs: [x.PrereqTalent_0, x.PrereqTalent_1, x.PrereqTalent_2]
                 .map((x) => Number.parseInt(x))
                 .filter((x) => x),
         }));
@@ -108,7 +119,6 @@ class App {
 
             for (const tab of classTabs) {
                 if (tab.classMask === cls.classMask) {
-                    console.log(tab);
                     const tabTalents = talents.filter((talent) => talent.tabId === tab.id);
 
                     tabTalents.forEach((x, i) => (x.index = i + 1 + n));
@@ -201,6 +211,7 @@ select(2,...).TalentMake()`
 
 async function main() {
     await new App(ProjectId.WLK).run('Data/Talents.WLK.lua');
+    await new App(ProjectId.Cata).run('Data/Talents.Cata.lua');
     await new App(ProjectId.Classic).run('Data/Talents.lua');
 }
 

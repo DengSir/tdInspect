@@ -16,7 +16,11 @@ class App {
 
     async getGlyphs() {
         const csv = await this.cli.fetchTable('GlyphProperties');
-        return csv.map((x) => [Number.parseInt(x[0]), Number.parseInt(x[1]), Number.parseInt(x[4])]);
+        return csv.map((x) => [
+            Number.parseInt(x.ID),
+            Number.parseInt(x.SpellID),
+            Number.parseInt(x.SpellIconFileDataID),
+        ]);
     }
 
     async run(output: string) {
@@ -44,6 +48,7 @@ select(2,...).GlyphMake()`
 
 async function main() {
     await new App(ProjectId.WLK).run('Data/GlyphData.lua');
+    await new App(ProjectId.Cata).run('Data/GlyphData.Cata.lua');
 }
 
 main();

@@ -17,8 +17,8 @@ class App {
     async getItemSetSpells() {
         const csv = await this.cli.fetchTable('itemsetspell');
         return csv.map((x) => ({
-            setId: Number.parseInt(x[4]),
-            threshold: Number.parseInt(x[3]),
+            setId: Number.parseInt(x.ItemSetID),
+            threshold: Number.parseInt(x.Threshold),
         }));
     }
 
@@ -27,9 +27,7 @@ class App {
         return csv
             .map((x) => ({
                 id: Number.parseInt(x[0]),
-                items: x
-                    .slice(5, 21)
-                    .map((x) => Number.parseInt(x))
+                items: x.ItemID.map((x) => Number.parseInt(x))
                     .filter((x) => x)
                     .sort((a, b) => a - b),
             }))
@@ -39,7 +37,7 @@ class App {
 
     async getItemSlots() {
         const csv = await this.cli.fetchTable('item');
-        return new Map(csv.map((x) => [Number.parseInt(x[0]), Number.parseInt(x[4])]));
+        return new Map(csv.map((x) => [Number.parseInt(x.ID), Number.parseInt(x.InventoryType)]));
     }
 
     async run(output: string) {
@@ -91,6 +89,7 @@ select(2,...).ItemSetMake()`);
 async function main() {
     await new App(ProjectId.WLK).run('Data/ItemSet.WLK.lua');
     await new App(ProjectId.Classic).run('Data/ItemSet.lua');
+    await new App(ProjectId.Cata).run('Data/ItemSet.Cata.lua');
 }
 
 main();

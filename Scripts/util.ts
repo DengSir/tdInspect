@@ -5,25 +5,35 @@
  * @Date   : 2022/9/26 18:55:36
  */
 import { format } from 'https://deno.land/x/format/mod.ts';
-import { Html5Entities } from 'https://deno.land/x/html_entities@v1.0/mod.js';
 
 export enum ProjectId {
-    Classic = 2,
-    BCC = 5,
-    WLK = 11,
+    Classic,
+    BCC,
+    WLK,
+    Cata,
 }
 
 interface ProjectData {
-    version?: string;
+    version: string;
     product: string;
+    version_pattern?: RegExp;
 }
 
 const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
 const WOW_TOOLS2 = 'https://wago.tools/db2/{name}/csv';
 const PROJECTS = new Map([
     [ProjectId.Classic, { product: 'wow_classic_era' }],
-    [ProjectId.WLK, { product: 'wow_classic' }],
+    [ProjectId.WLK, { product: 'wow_classic', version_pattern: /^3\..+/ }],
+    [ProjectId.Cata, { product: 'wow_classic', version_pattern: /^4\..+/ }],
 ]);
+
+interface Fields {
+    [name: string]: number | number[];
+}
+
+interface Row {
+    [name: string]: string | string[];
+}
 
 export class WowToolsClient {
     private pro: ProjectData;
@@ -34,32 +44,73 @@ export class WowToolsClient {
             throw Error('');
         }
 
-        this.pro = data;
+        this.pro = data as ProjectData;
     }
 
     private async fetchVersion() {
-        const resp = await fetch('https://wago.tools');
-        const body = await resp.text();
+        const resp = await fetch('https://wago.tools/api/builds');
+        const data = await resp.json();
 
-        const match = [...body.matchAll(/data-page="([^"]+)"/g)];
-        if (!match || match.length < 1) {
+        const versions = data[this.pro.product];
+        if (!versions) {
             throw Error();
         }
 
-        const data = JSON.parse(Html5Entities.decode(match[0][1]));
-
-        const versions = data?.props?.versions as { product: string; version: string }[];
-        const version = versions?.filter(({ product }) => product === this.pro.product)[0].version;
-        if (!version) {
-            throw Error();
+        if (this.pro.version_pattern) {
+            for (const v of versions) {
+                if (this.pro.version_pattern.test(v.version)) {
+                    return v.version as string;
+                }
+            }
+        } else {
+            return versions[0].version as string;
         }
-        return version;
+        return '';
+    }
+
+    decodeFields(data: string) {
+        const fields = data.split(',').map((x, i) => ({ name: x, index: i }));
+        const info: Fields = {};
+
+        for (const field of fields) {
+            const m = /^(.+)_(\d+)$/g.exec(field.name);
+
+            if (!m) {
+                info[field.name] = field.index;
+            } else {
+                const arrayName = m[1];
+                const arrayIndex = Number.parseInt(m[2]);
+
+                info[arrayName] = info[arrayName] || [];
+                info[arrayName][arrayIndex] = field.index;
+            }
+        }
+        return info;
+    }
+
+    decodeRow(fields: Fields, data: string) {
+        const row = data.split(',').map((x) => this.parseString(x));
+        const obj: Row = {};
+
+        for (const [name, index] of Object.entries(fields)) {
+            if (Array.isArray(index)) {
+                obj[name] = index.map((i) => row[i]);
+            } else {
+                obj[name] = row[index];
+            }
+        }
+        return obj;
     }
 
     decodeCSV(data: string) {
         const rows = data.split(/[\r\n]+/).filter((x) => x);
-        rows.splice(0, 1);
-        return rows.map((x) => x.split(',').map((i) => this.parseString(i)));
+        const fields = this.decodeFields(rows.splice(0, 1)[0]);
+
+        return rows.map((x) => {
+            const row = this.decodeRow(fields, x);
+            console.log(row);
+            return row;
+        });
     }
 
     private parseString(x: string) {
@@ -78,6 +129,7 @@ export class WowToolsClient {
         if (!this.pro.version) {
             this.pro.version = await this.fetchVersion();
         }
+
         const url = (() => {
             let url;
             if (source == 2) {
