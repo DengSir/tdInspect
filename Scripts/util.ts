@@ -7,9 +7,9 @@
 import { format } from 'https://deno.land/x/format/mod.ts';
 
 export enum ProjectId {
-    Classic,
+    Vanilla,
     BCC,
-    WLK,
+    Wrath,
     Cata,
 }
 
@@ -22,18 +22,10 @@ interface ProjectData {
 const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
 const WOW_TOOLS2 = 'https://wago.tools/db2/{name}/csv';
 const PROJECTS = new Map([
-    [ProjectId.Classic, { product: 'wow_classic_era' }],
-    [ProjectId.WLK, { product: 'wow_classic', version_pattern: /^3\..+/ }],
+    [ProjectId.Vanilla, { product: 'wow_classic_era' }],
+    [ProjectId.Wrath, { product: 'wow_classic', version_pattern: /^3\..+/ }],
     [ProjectId.Cata, { product: 'wow_classic', version_pattern: /^4\..+/ }],
 ]);
-
-interface Fields {
-    [name: string]: number | number[];
-}
-
-interface Row {
-    [name: string]: string | string[];
-}
 
 export class WowToolsClient {
     private pro: ProjectData;
@@ -70,7 +62,7 @@ export class WowToolsClient {
 
     decodeFields(data: string) {
         const fields = data.split(',').map((x, i) => ({ name: x, index: i }));
-        const info: Fields = {};
+        const info: any = {};
 
         for (const field of fields) {
             const m = /^(.+)_(\d+)$/g.exec(field.name);
@@ -88,9 +80,9 @@ export class WowToolsClient {
         return info;
     }
 
-    decodeRow(fields: Fields, data: string) {
+    decodeRow(fields: any[], data: string) {
         const row = data.split(',').map((x) => this.parseString(x));
-        const obj: Row = {};
+        const obj: any = {};
 
         for (const [name, index] of Object.entries(fields)) {
             if (Array.isArray(index)) {
@@ -106,11 +98,7 @@ export class WowToolsClient {
         const rows = data.split(/[\r\n]+/).filter((x) => x);
         const fields = this.decodeFields(rows.splice(0, 1)[0]);
 
-        return rows.map((x) => {
-            const row = this.decodeRow(fields, x);
-            console.log(row);
-            return row;
-        });
+        return rows.map((x) => this.decodeRow(fields, x));
     }
 
     private parseString(x: string) {

@@ -1,0 +1,46 @@
+name: Update 🧀
+on:
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - "v*"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Update libs
+        uses: curse-action/update@master
+        with:
+          curse-forge-token: ${{ secrets.CURSE_FORGE_TOKEN }}
+
+      - name: Update locales
+        uses: curse-action/locale@master
+        with:
+          curse-wow-token: ${{ secrets.CURSE_TOKEN }}
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Generate talents
+        run: deno task talent
+
+      - name: Generate itemset
+        run: deno task itemset
+
+      - name: Generate glyph
+        run: deno task glyph
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "chore: Update libs/locale/data files"

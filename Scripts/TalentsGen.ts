@@ -5,6 +5,7 @@
  * @Date   : 2022/9/26 14:22:02
  */
 
+import * as path from 'https://deno.land/std@0.224.0/path/mod.ts';
 import { ProjectId, WowToolsClient } from './util.ts';
 
 interface Config {
@@ -13,9 +14,9 @@ interface Config {
 }
 
 const PROJECTS: { [key: number]: Config } = {
-    [ProjectId.Classic]: { hasId: false, hasIcon: true },
+    [ProjectId.Vanilla]: { hasId: false, hasIcon: true },
     [ProjectId.BCC]: { hasId: true, hasIcon: false },
-    [ProjectId.WLK]: { hasId: true, hasIcon: true },
+    [ProjectId.Wrath]: { hasId: true, hasIcon: true },
     [ProjectId.Cata]: { hasId: true, hasIcon: true },
 };
 
@@ -86,19 +87,7 @@ class App {
             tier: Number.parseInt(x.TierID),
             col: Number.parseInt(x.ColumnIndex),
             tabId: Number.parseInt(x.TabID),
-            spells: [
-                x.SpellRank_0,
-                x.SpellRank_1,
-                x.SpellRank_2,
-                x.SpellRank_3,
-                x.SpellRank_4,
-                x.SpellRank_5,
-                x.SpellRank_6,
-                x.SpellRank_7,
-                x.SpellRank_8,
-            ]
-                .map((x) => Number.parseInt(x))
-                .filter((x) => x),
+            spells: (x.SpellRank as string[]).map((x) => Number.parseInt(x)).filter((x) => x),
             reqs: [x.PrereqTalent_0, x.PrereqTalent_1, x.PrereqTalent_2]
                 .map((x) => Number.parseInt(x))
                 .filter((x) => x),
@@ -149,6 +138,8 @@ class App {
         }));
 
         console.log(`Generate ${output}`);
+
+        Deno.mkdirSync(path.dirname(output), { recursive: true });
 
         const file = Deno.openSync(output, { write: true, create: true, truncate: true });
         const encoder = new TextEncoder();
@@ -210,9 +201,9 @@ select(2,...).TalentMake()`
 }
 
 async function main() {
-    await new App(ProjectId.WLK).run('Data/Talents.WLK.lua');
-    await new App(ProjectId.Cata).run('Data/Talents.Cata.lua');
-    await new App(ProjectId.Classic).run('Data/Talents.lua');
+    await new App(ProjectId.Wrath).run('Data/Wrath/Talents.lua');
+    await new App(ProjectId.Cata).run('Data/Cata/Talents.lua');
+    await new App(ProjectId.Vanilla).run('Data/Vanilla/Talents.lua');
 }
 
 main();

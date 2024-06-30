@@ -5,6 +5,7 @@
  * @Date   : 1/28/2024, 4:02:59 PM
  */
 
+import * as path from 'https://deno.land/std@0.224.0/path/mod.ts';
 import { ProjectId, WowToolsClient } from './util.ts';
 
 class App {
@@ -24,6 +25,7 @@ class App {
     }
 
     async run(output: string) {
+        Deno.mkdirSync(path.dirname(output), { recursive: true });
         const file = Deno.openSync(output, { write: true, create: true, truncate: true });
         const encoder = new TextEncoder();
         const write = (x: string) => file.writeSync(encoder.encode(x));
@@ -47,8 +49,8 @@ select(2,...).GlyphMake()`
 }
 
 async function main() {
-    await new App(ProjectId.WLK).run('Data/GlyphData.lua');
-    await new App(ProjectId.Cata).run('Data/GlyphData.Cata.lua');
+    await new App(ProjectId.Wrath).run('Data/Wrath/Glyph.lua');
+    await new App(ProjectId.Cata).run('Data/Cata/Glyph.lua');
 }
 
 main();

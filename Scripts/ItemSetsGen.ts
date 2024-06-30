@@ -5,6 +5,7 @@
  * @Date   : 2022/9/26 18:47:21
  */
 
+import * as path from 'https://deno.land/std@0.224.0/path/mod.ts';
 import { ProjectId, WowToolsClient } from './util.ts';
 
 class App {
@@ -26,8 +27,9 @@ class App {
         const csv = await this.cli.fetchTable('itemset');
         return csv
             .map((x) => ({
-                id: Number.parseInt(x[0]),
-                items: x.ItemID.map((x) => Number.parseInt(x))
+                id: Number.parseInt(x.ID),
+                items: (x.ItemID as string[])
+                    .map((x) => Number.parseInt(x))
                     .filter((x) => x)
                     .sort((a, b) => a - b),
             }))
@@ -53,6 +55,7 @@ class App {
                 .map((i) => i.threshold),
         }));
 
+        Deno.mkdirSync(path.dirname(output), { recursive: true });
         const file = Deno.openSync(output, { write: true, create: true, truncate: true });
         const encoder = new TextEncoder();
         const write = (x: string) => file.writeSync(encoder.encode(x));
@@ -87,9 +90,9 @@ select(2,...).ItemSetMake()`);
 }
 
 async function main() {
-    await new App(ProjectId.WLK).run('Data/ItemSet.WLK.lua');
-    await new App(ProjectId.Classic).run('Data/ItemSet.lua');
-    await new App(ProjectId.Cata).run('Data/ItemSet.Cata.lua');
+    await new App(ProjectId.Wrath).run('Data/Wrath/ItemSet.lua');
+    await new App(ProjectId.Vanilla).run('Data/Vanilla/ItemSet.lua');
+    await new App(ProjectId.Cata).run('Data/Cata/ItemSet.lua');
 }
 
 main();
