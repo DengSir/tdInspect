@@ -1,3 +1,12 @@
+## [2.1.11](https://github.com/DengSir/tdInspect/compare/v2.1.10...v2.1.11) (2024-07-12)
+
+
+### Bug Fixes
+
+* decode ala proto error ([7cdd4de](https://github.com/DengSir/tdInspect/commit/7cdd4de37faeb5b06789fa9bde29117bdc59e9be))
+
+
+
 ## [2.1.10](https://github.com/DengSir/tdInspect/compare/v2.1.9...v2.1.10) (2024-04-13)
 
 
