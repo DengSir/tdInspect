@@ -1,3 +1,13 @@
+## [2.1.12](https://github.com/DengSir/tdInspect/compare/v2.1.11...v2.1.12) (2024-07-26)
+
+
+### Bug Fixes
+
+* remove assert ([ab5d8bb](https://github.com/DengSir/tdInspect/commit/ab5d8bbf640345cc1398485ff4f960faaf90f437))
+* talent reqs data ([1af31d3](https://github.com/DengSir/tdInspect/commit/1af31d3741835c11e1cc932e4830f0f43e40ba6c))
+
+
+
 ## [2.1.11](https://github.com/DengSir/tdInspect/compare/v2.1.10...v2.1.11) (2024-07-12)
 
 
