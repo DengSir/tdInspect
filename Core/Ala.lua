@@ -198,7 +198,6 @@ function Ala:DecodeGlyph(code)
                 local spellId = DecodeNumber(val[2])
                 -- local icon = DecodeNumber(val[3])
                 local glyphId = ns.GetGlyphIdBySpellId(spellId)
-                assert(not spellId or glyphId)
                 data[i] = glyphId or nil
             end
         end

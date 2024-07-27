@@ -88,7 +88,7 @@ class App {
             col: Number.parseInt(x.ColumnIndex),
             tabId: Number.parseInt(x.TabID),
             spells: (x.SpellRank as string[]).map((x) => Number.parseInt(x)).filter((x) => x),
-            reqs: [x.PrereqTalent_0, x.PrereqTalent_1, x.PrereqTalent_2]
+            reqs: x.PrereqTalent
                 .map((x) => Number.parseInt(x))
                 .filter((x) => x),
         }));
