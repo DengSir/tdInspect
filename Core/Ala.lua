@@ -439,6 +439,9 @@ local function merge(dst, src)
     if not dst then
         return src
     end
+    if not src then
+        return src
+    end
     for k, v in pairs(src) do
         dst[k] = v
     end
