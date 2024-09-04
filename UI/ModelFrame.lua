@@ -11,9 +11,9 @@ local UnitFactionGroup = UnitFactionGroup
 local Inspect = ns.Inspect
 
 local factionLogoTextures = {
-    ['Alliance'] = 'Interface\\Timer\\Alliance-Logo',
-    ['Horde'] = 'Interface\\Timer\\Horde-Logo',
-    ['Neutral'] = 'Interface\\Timer\\Panda-Logo',
+    Alliance = [[Interface\Timer\Alliance-Logo]],
+    Horde = [[Interface\Timer\Horde-Logo]],
+    Neutral = [[Interface\Timer\Panda-Logo]],
 }
 
 ---@class UI.ModelFrame: Object, Frame, AceEvent-3.0
@@ -28,7 +28,6 @@ function ModelFrame:Constructor()
     self.Modal:SetParent(self)
     self.Faction:SetParent(self)
 
-    self:Hide()
     self:SetScript('OnShow', self.OnShow)
 end
 

@@ -150,3 +150,26 @@ function ns.ResolveTalent(class, data)
     local talent = ns.Talent:New(class, data)
     return talent:ToString()
 end
+
+local function FlagTest(value, flag)
+    return bit.band(value, bit.lshift(1, flag)) > 0
+end
+
+function ns.GetItemEnchantInfo(link)
+    if not link then
+        return
+    end
+    local enchantId = tonumber(link:match('item:%d+:(%d*)'))
+    if enchantId then
+        local itemId, _, _, _, _, classId, subClassId = GetItemInfoInstant(link)
+        local invType = C_Item.GetItemInventoryTypeByID(itemId)
+
+        for _, v in ipairs(ns.ItemEnchants) do
+            if v.enchantId == enchantId and v.classId == classId and
+                (not v.subClassMask or FlagTest(v.subClassMask, subClassId)) and
+                (not v.invTypeMask or FlagTest(v.invTypeMask, invType)) then
+                return v
+            end
+        end
+    end
+end

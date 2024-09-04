@@ -8,7 +8,8 @@
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "talent": "deno run --allow-all Scripts/TalentsGen.ts",
     "itemset": "deno run --allow-all Scripts/ItemSetsGen.ts",
-    "glyph": "deno run --allow-all Scripts/GlyphGen.ts"
+    "glyph": "deno run --allow-all Scripts/GlyphGen.ts",
+    "itemenchant": "deno run --allow-all Scripts/ItemEnchantGen.ts"
   },
   "repository": {
     "type": "git",

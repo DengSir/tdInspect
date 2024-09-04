@@ -13,6 +13,7 @@ L["Show Model"] = true
 -- @import@
 L['Show Model'] = true
 L['Last update:'] = true
+L['Data source:'] = true
 L['Inspect target'] = true
 L['Inspect mouseover'] = true
 -- @locale-fill@

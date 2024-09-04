@@ -41,12 +41,11 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
     Name:SetPoint('RIGHT')
     self.Name = Name
 
-    -- @build<2@
-    local RuneIcon = self:CreateTexture(nil, 'OVERLAY')
-    RuneIcon:SetSize(17, 17)
-    RuneIcon:SetPoint('RIGHT')
-    self.RuneIcon = RuneIcon
-    -- @end-build<2@
+    local Enchant = CreateFrame('Frame', nil, self)
+    Enchant:SetPoint('TOPRIGHT')
+    Enchant:SetHeight(17)
+    Enchant:SetWidth(17)
+    self.Enchant = Enchant
 
     local ht = self:CreateTexture(nil, 'HIGHLIGHT')
     ht:SetAllPoints(true)
@@ -61,51 +60,114 @@ function EquipItem:Constructor(_, id, slotName, hasBg)
     self:SetScript('OnLeave', GameTooltip_Hide)
     self:SetScript('OnEnter', self.OnEnter)
     self.UpdateTooltip = self.OnEnter
+
+    self.enchantCount = 0
+    self.enchants = {}
+end
+
+function EquipItem:AllocEnchant()
+    self.enchantCount = self.enchantCount + 1
+
+    for _, v in ipairs(self.enchants) do
+        if not v:IsVisible() then
+            v:Show()
+            return v
+        end
+    end
+
+    local Enchant = self.Enchant:CreateTexture(nil, 'ARTWORK')
+    Enchant:SetSize(17, 17)
+    if #self.enchants == 0 then
+        Enchant:SetPoint('TOPRIGHT')
+    else
+        Enchant:SetPoint('TOPRIGHT', self.enchants[#self.enchants], 'TOPLEFT', 0, 0)
+    end
+
+    tinsert(self.enchants, Enchant)
+    return Enchant
+end
+
+function EquipItem:FreeAllEnchants()
+    self.enchantCount = 0
+    for _, tex in ipairs(self.enchants) do
+        tex.itemId = nil
+        tex.spellId = nil
+        tex:Hide()
+    end
 end
 
 function EquipItem:OnHide()
     self:UnregisterAllEvents()
+    self:FreeAllEnchants()
 end
 
 function EquipItem:OnEnter()
     local item = Inspect:GetItemLink(self:GetID())
     if item then
-        -- @build<2@
-        if self.RuneIcon:IsVisible() and self.RuneIcon:IsMouseOver() then
-            local rune = Inspect:GetItemRune(self:GetID())
-            if rune then
+
+        for _, tex in ipairs(self.enchants) do
+            if tex:IsVisible() and tex:IsMouseOver() then
                 GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-                GameTooltip:SetSpellByID(rune.spellId)
+                if tex.spellId then
+                    GameTooltip:SetSpellByID(tex.spellId)
+                else
+                    GameTooltip:SetItemByID(tex.itemId)
+                end
+                return
             end
-        else
-            -- @end-build<2@
-            GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-            GameTooltip:SetHyperlink(item)
-            ns.FixInspectItemTooltip(GameTooltip, self:GetID(), item)
-            -- @build<2@
         end
-        -- @end-build<2@
+
+        GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+        GameTooltip:SetHyperlink(item)
+        ns.FixInspectItemTooltip(GameTooltip, self:GetID(), item)
     end
 end
 
 function EquipItem:Update()
-    self.itemId = nil
+    self:FreeAllEnchants()
+
+    self.Name:SetText('')
+    self.ItemLevel:SetText('')
+    self.Slot:SetTextColor(0.6, 0.6, 0.6)
 
     local id = self:GetID()
 
-    -- @build<2@
-    local rune = Inspect:GetItemRune(id)
-    if rune then
-        local icon = rune.icon or select(3, GetSpellInfo(rune.spellId))
-        self.RuneIcon:SetTexture(icon)
-        self.RuneIcon:Show()
-    else
-        self.RuneIcon:Hide()
-    end
-    -- @end-build<2@
-
     local item = Inspect:GetItemLink(id)
     if item then
+        -- @build<2@
+        local rune = Inspect:GetItemRune(id)
+        if rune then
+            local icon = rune.icon or select(3, GetSpellInfo(rune.spellId))
+            local tex = self:AllocEnchant()
+            tex.spellId = rune.spellId
+            tex:SetTexture(icon)
+        end
+        -- @end-build<2@
+
+        local enchantInfo = ns.GetItemEnchantInfo(item)
+        if enchantInfo then
+            local tex = self:AllocEnchant()
+            if enchantInfo.itemId then
+                tex.itemId = enchantInfo.itemId
+                tex:SetTexture(GetItemIcon(enchantInfo.itemId))
+            elseif enchantInfo.spellId then
+                tex.spellId = enchantInfo.spellId
+                tex:SetTexture(select(3, GetSpellInfo(enchantInfo.spellId)))
+            end
+        end
+
+        for i = 1, 3 do
+            local _, gemLink = GetItemGem(item, i)
+            if gemLink then
+                local tex = self:AllocEnchant()
+                tex.itemId = ns.ItemLinkToId(gemLink)
+                tex:SetTexture(GetItemIcon(gemLink))
+            end
+        end
+
+        self.Enchant:SetWidth(max(0.1, 17 * self.enchantCount))
+        self.Name:SetPoint('RIGHT', self.Enchant, 'LEFT', -2, 0)
+
         local name, link, quality, itemLevel = GetItemInfo(item)
         if name then
             local r, g, b = GetItemQualityColor(quality)
@@ -118,10 +180,7 @@ function EquipItem:Update()
             return
         else
             self:WaitItem(item)
+            return
         end
     end
-
-    self.Name:SetText('')
-    self.ItemLevel:SetText('')
-    self.Slot:SetTextColor(0.6, 0.6, 0.6)
 end

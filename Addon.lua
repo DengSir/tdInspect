@@ -65,6 +65,9 @@ function Addon:OnEnable()
     self:RegisterEvent('ADDON_LOADED')
     self:RegisterMessage('INSPECT_READY')
     self:RegisterMessage('INSPECT_TALENT_READY', 'INSPECT_READY')
+
+    self.GearFrame = ns.UI.CharacterGearFrame:Create(PaperDollFrame)
+    self.GearFrame:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -33, -12)
 end
 
 function Addon:OnModuleCreated(module)
