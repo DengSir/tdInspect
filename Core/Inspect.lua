@@ -733,6 +733,9 @@ function Inspect:GET_ITEM_INFO_RECEIVED(_, id, ok)
     end
 
     local guid = UnitGUID(self.unit)
+    if not guid then
+        return
+    end
     local name = ns.GetFullName(select(6, GetPlayerInfoByGUID(guid)))
     local db = self:BuildCharacterDb(name)
 

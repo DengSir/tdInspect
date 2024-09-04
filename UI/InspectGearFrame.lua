@@ -26,6 +26,7 @@ function InspectGearFrame:OnShow()
     self:RegisterMessage('INSPECT_READY', 'Update')
     self:RegisterEvent('UNIT_LEVEL', 'Update')
     self:RegisterEvent('UNIT_INVENTORY_CHANGED')
+    self:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'UpdateItemLevel')
     self:Update()
 end
 
@@ -42,6 +43,10 @@ function InspectGearFrame:UNIT_INVENTORY_CHANGED(_, unit)
     end
 end
 
+function InspectGearFrame:UpdateItemLevel()
+    self:SetItemLevel(Inspect:GetItemLevel())
+end
+
 function InspectGearFrame:Update()
     self:StartLayout()
 
@@ -56,9 +61,43 @@ function InspectGearFrame:Update()
     self:SetClass(classFileName)
     self:SetUnit(Inspect:GetUnit())
     self:SetLevel(Inspect:GetUnitLevel())
-    self:SetItemLevel(Inspect:GetItemLevel())
     self.DataSource:SetFormattedText('%s|cffffffff%s|r  %s|cffffffff%s|r', L['Data source:'], dataSource,
                                      L['Last update:'], FriendsFrame_GetLastOnline(lastUpdate))
+    self:UpdateItemLevel()
+
+    self:UpdateTalents()
 
     self:EndLayout()
+end
+
+function InspectGearFrame:GetNumTalentGroups()
+    return Inspect:GetNumTalentGroups()
+end
+
+function InspectGearFrame:GetActiveTalentGroup()
+    return Inspect:GetActiveTalentGroup()
+end
+
+function InspectGearFrame:GetTalentInfo(group)
+    local maxPoint = 0
+    local maxName = nil
+    local maxIcon
+    local maxBg
+    local counts = {}
+    local talent = Inspect:GetUnitTalent(group)
+    if not talent then
+        return
+    end
+    for i = 1, talent:GetNumTalentTabs() do
+        local name, bg, pointsSpent, icon = talent:GetTabInfo(i)
+        if pointsSpent > maxPoint then
+            maxPoint = pointsSpent
+            maxName = name
+            maxIcon = icon
+            maxBg = bg
+        end
+
+        tinsert(counts, pointsSpent)
+    end
+    return maxName, maxIcon, maxBg, table.concat(counts, '/')
 end

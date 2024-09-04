@@ -49,6 +49,50 @@
         </Layers>
     </Frame>
 
+    <Button name="tdInspectGearTalentFrame" virtual="true">
+        <Size x="48" y="48"/>
+        <Layers>
+            <Layer level="ARTWORK" textureSubLevel="-1">
+                <Texture parentKey="Icon">
+                    <Size x="40" y="40"/>
+                    <Anchors>
+                        <Anchor point="TOP" />
+                    </Anchors>
+                </Texture>
+                <MaskTexture parentKey="CircleMask" file="Interface\CharacterFrame\TempPortraitAlphaMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+                    <Size x="40" y="40"/>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeKey="$parent.Icon"/>
+                    </Anchors>
+                    <MaskedTextures>
+                        <MaskedTexture childKey="Icon"/>
+                    </MaskedTextures>
+                </MaskTexture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <FontString parentKey="Text" inherits="SystemFont_Outline_Small">
+                    <Color r="1.0" g="0.82" b="0"/>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeKey="$parent.Icon" relativePoint="CENTER" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="Point" inherits="Tooltip_Small">
+                    <Anchors>
+                        <Anchor point="BOTTOM" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad>
+                self.Icon:SetVertexColor(0.5, 0.5, 0.5)
+                self.Icon:SetTexCoord(0.04, 0.96, 0.04, 0.96)
+                self.Text:SetFont(self.Text:GetFont(), 13, "OUTLINE")
+                self.Point:SetFont(self.Point:GetFont(), 11, "OUTLINE")
+            </OnLoad>
+        </Scripts>
+    </Button>
+
     <Frame name="tdInspectGearFrameTemplate" inherits="BackdropTemplate" enableMouse="true" virtual="true">
         <Size x="200" y="424"/>
         <Frames>
@@ -57,6 +101,16 @@
                     <Anchor point="TOPLEFT" x="18" y="-16"/>
                 </Anchors>
             </Frame>
+            <Button parentKey="Talent1" inherits="tdInspectGearTalentFrame">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-10" y="-10" />
+                </Anchors>
+            </Button>
+            <Button parentKey="Talent2" scale="0.8" inherits="tdInspectGearTalentFrame">
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Talent1" relativePoint="BOTTOMLEFT" x="-10" y="0" />
+                </Anchors>
+            </Button>
         </Frames>
         <Layers>
             <Layer level="ARTWORK">
@@ -85,6 +139,8 @@
                 }
                 self:SetBackdropColor(0, 0, 0, 0.95)
                 self.ItemLevel:SetFont(self.ItemLevel:GetFont(), 12, "OUTLINE")
+                self.Talent2.Text:SetTextColor(0.6, 0.6, 0.6)
+                self.Talent2.Point:SetTextColor(0.6, 0.6, 0.6)
             </OnLoad>
         </Scripts>
     </Frame>

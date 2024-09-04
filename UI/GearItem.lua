@@ -60,6 +60,8 @@ function GearItem:Constructor(parent, id, slotName)
     self:SetScript('OnEnter', self.OnEnter)
     self:SetScript('OnLeave', self.OnLeave)
     self:SetScript('OnHide', self.OnHide)
+
+    self.UpdateTooltip = self.OnEnter
 end
 
 function GearItem:SetItem(item, inspect)
