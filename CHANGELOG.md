@@ -1,3 +1,20 @@
+## [2.1.13](https://github.com/DengSir/tdInspect/compare/v2.1.11...v2.1.13) (2024-09-04)
+
+
+### Bug Fixes
+
+* 修复按需请求协议未生效 ([16475c5](https://github.com/DengSir/tdInspect/commit/16475c56f480ee8ee88067f68ea811c66b4476b2))
+* error ([7585682](https://github.com/DengSir/tdInspect/commit/75856821c5e7cc4757a5283f3c548f33546c1a97))
+* remove assert ([ab5d8bb](https://github.com/DengSir/tdInspect/commit/ab5d8bbf640345cc1398485ff4f960faaf90f437))
+* talent reqs data ([1af31d3](https://github.com/DengSir/tdInspect/commit/1af31d3741835c11e1cc932e4830f0f43e40ba6c))
+
+
+### Features
+
+* support ala ([16464bc](https://github.com/DengSir/tdInspect/commit/16464bc91fa386a67786561709c5bccf0176f337))
+
+
+
 ## [2.1.12](https://github.com/DengSir/tdInspect/compare/v2.1.11...v2.1.12) (2024-07-26)
 
 
