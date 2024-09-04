@@ -18,6 +18,10 @@ function CharacterGearFrame:OnShow()
     self:RegisterEvent('UNIT_INVENTORY_CHANGED')
     self:RegisterEvent('UNIT_LEVEL', 'UNIT_INVENTORY_CHANGED')
     self:Update()
+
+    if GearManagerDialog then
+        GearManagerDialog:SetFrameLevel(self:GetFrameLevel() + 10)
+    end
 end
 
 function CharacterGearFrame:UNIT_INVENTORY_CHANGED(_, unit)

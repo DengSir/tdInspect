@@ -32,11 +32,7 @@ local SPACING_V = 3
 local SPACING_H = 5
 local PADDING = 10
 
-<<<<<<< Updated upstream
----@class UI.GearFrame : Frame, BackdropTemplate, AceEvent-3.0
-=======
 ---@class UI.GearFrame : AceEvent-3.0, Frame, BackdropTemplate
->>>>>>> Stashed changes
 local GearFrame = ns.Addon:NewClass('UI.GearFrame', 'Frame')
 
 function GearFrame:Create(parent)
@@ -54,10 +50,7 @@ function GearFrame:Constructor()
     LevelColumn:SetHeight(1)
     self.LevelColumn = LevelColumn
 
-<<<<<<< Updated upstream
-=======
     ---@type table<number, UI.GearItem>
->>>>>>> Stashed changes
     self.gears = {}
     self.columnWidths = {}
 
@@ -106,13 +99,6 @@ end
 function GearFrame:SetClass(class)
     self.class = class
 
-<<<<<<< Updated upstream
-    local color = RAID_CLASS_COLORS[class]
-    self.Name:SetTextColor(color.r, color.g, color.b)
-    self:SetBackdropBorderColor(color.r, color.g, color.b)
-    self.Portrait.PortraitRingQuality:SetVertexColor(color.r, color.g, color.b)
-    self.Portrait.LevelBorder:SetVertexColor(color.r, color.g, color.b)
-=======
     if class then
         local color = RAID_CLASS_COLORS[class]
         self.Name:SetTextColor(color.r, color.g, color.b)
@@ -120,7 +106,6 @@ function GearFrame:SetClass(class)
         self.Portrait.PortraitRingQuality:SetVertexColor(color.r, color.g, color.b)
         self.Portrait.LevelBorder:SetVertexColor(color.r, color.g, color.b)
     end
->>>>>>> Stashed changes
 end
 
 function GearFrame:SetUnit(unit, name)
@@ -130,15 +115,10 @@ function GearFrame:SetUnit(unit, name)
 
     if unit then
         SetPortraitTexture(self.Portrait.Portrait, unit)
-<<<<<<< Updated upstream
-    else
-        -- self.Portrait.Portrait:SetTexture([[Interface\CharacterFrame\TempPortrait]])
-=======
         self.Portrait.Portrait:SetTexCoord(0, 1, 0, 1)
     elseif self.class then
         self.Portrait.Portrait:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
         self.Portrait.Portrait:SetTexCoord(unpack(CLASS_ICON_TCOORDS[self.class]))
->>>>>>> Stashed changes
     end
 end
 

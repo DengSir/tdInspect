@@ -4,10 +4,10 @@ if not L then
 end
 -- @locale:language=enUS@
 L = L or {}
-L["Inspect mouseover"] = true
-L["Inspect target"] = true
-L["Last update:"] = true
-L["Show Model"] = true
+L['Inspect mouseover'] = true
+L['Inspect target'] = true
+L['Last update:'] = true
+L['Show Model'] = true
 -- @end-locale@
 -- @debug@
 -- @import@
@@ -16,6 +16,7 @@ L['Last update:'] = true
 L['Data source:'] = true
 L['Inspect target'] = true
 L['Inspect mouseover'] = true
+L['iLvl:'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@

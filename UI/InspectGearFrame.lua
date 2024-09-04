@@ -30,11 +30,8 @@ function InspectGearFrame:OnShow()
 end
 
 function InspectGearFrame:OnHide()
-<<<<<<< Updated upstream
-=======
     self.unit = nil
     self.class = nil
->>>>>>> Stashed changes
     self:UnregisterAllEvents()
     self:UnregisterAllMessages()
 end
@@ -56,13 +53,8 @@ function InspectGearFrame:Update()
     local dataSource = Inspect:GetDataSource()
     local lastUpdate = Inspect:GetLastUpdate()
 
-<<<<<<< Updated upstream
     self:SetClass(classFileName)
     self:SetUnit(Inspect:GetUnit())
-=======
-    self:SetUnit(Inspect:GetUnit())
-    self:SetClass(classFileName)
->>>>>>> Stashed changes
     self:SetLevel(Inspect:GetUnitLevel())
     self:SetItemLevel(Inspect:GetItemLevel())
     self.DataSource:SetFormattedText('%s|cffffffff%s|r  %s|cffffffff%s|r', L['Data source:'], dataSource,

@@ -65,7 +65,7 @@
                         <Anchor point="TOPLEFT" x="66" y="-18"/>
                     </Anchors>
                 </FontString>
-                <FontString parentKey="ItemLevel" height="12" outline="NORMAL" inherits="Tooltip_Small">
+                <FontString parentKey="ItemLevel" inherits="Tooltip_Small">
                     <Color r="1.0" g="0.82" b="0"/>
                     <Anchors>
                         <Anchor point="TOPLEFT" x="66" y="-42"/>
@@ -84,6 +84,7 @@
                     insets = {left = 4, right = 4, top = 4, bottom = 4},
                 }
                 self:SetBackdropColor(0, 0, 0, 0.95)
+                self.ItemLevel:SetFont(self.ItemLevel:GetFont(), 12, "OUTLINE")
             </OnLoad>
         </Scripts>
     </Frame>
