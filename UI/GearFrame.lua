@@ -31,6 +31,7 @@ local EQUIP_SLOTS = {
 local SPACING_V = 3
 local SPACING_H = 5
 local PADDING = 10
+local BG_PADDING = 4
 
 ---@class UI.GearFrame : AceEvent-3.0, Frame, BackdropTemplate
 local GearFrame = ns.Addon:NewClass('UI.GearFrame', 'Frame')
@@ -40,6 +41,8 @@ function GearFrame:Create(parent)
 end
 
 function GearFrame:Constructor()
+    self:SetScript('OnSizeChanged', self.OnSizeChanged)
+
     local SlotColumn = CreateFrame('Frame', nil, self)
     SlotColumn:SetPoint('TOPLEFT', PADDING, 0)
     SlotColumn:SetHeight(1)
@@ -49,6 +52,29 @@ function GearFrame:Constructor()
     LevelColumn:SetPoint('TOPLEFT', SlotColumn, 'TOPRIGHT', SPACING_H, 0)
     LevelColumn:SetHeight(1)
     self.LevelColumn = LevelColumn
+
+    local TopLeft = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+    TopLeft:SetPoint('TOPLEFT', BG_PADDING, -BG_PADDING)
+    TopLeft:SetVertexColor(0.2, 0.2, 0.2, 0.8)
+    self.TopLeft = TopLeft
+
+    local TopRight = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+    TopRight:SetPoint('TOPLEFT', TopLeft, 'TOPRIGHT')
+    TopRight:SetVertexColor(0.2, 0.2, 0.2, 0.8)
+    TopRight:SetTexCoord(0, 44 / 64, 0, 1)
+    self.TopRight = TopRight
+
+    local BottomLeft = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+    BottomLeft:SetPoint('TOPLEFT', TopLeft, 'BOTTOMLEFT')
+    BottomLeft:SetVertexColor(0.2, 0.2, 0.2, 0.8)
+    BottomLeft:SetTexCoord(0, 1, 0, 74 / 128)
+    self.BottomLeft = BottomLeft
+
+    local BottomRight = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+    BottomRight:SetPoint('TOPLEFT', TopLeft, 'BOTTOMRIGHT')
+    BottomRight:SetVertexColor(0.2, 0.2, 0.2, 0.8)
+    BottomRight:SetTexCoord(0, 44 / 64, 0, 74 / 128)
+    self.BottomRight = BottomRight
 
     ---@type table<number, UI.GearItem>
     self.gears = {}
@@ -69,6 +95,15 @@ end
 
 function GearFrame:RequestUpdateSize()
     self:SetScript('OnUpdate', self.OnUpdate)
+end
+
+function GearFrame:OnSizeChanged(width, height)
+    width = width - BG_PADDING * 2
+    height = height - BG_PADDING * 2
+    self.TopLeft:SetSize(width * 256 / 300, height * 256 / 330)
+    self.TopRight:SetSize(width * 44 / 300, height * 256 / 330)
+    self.BottomLeft:SetSize(width * 256 / 300, height * 74 / 330)
+    self.BottomRight:SetSize(width * 44 / 300, height * 74 / 330)
 end
 
 function GearFrame:OnUpdate()
@@ -128,4 +163,46 @@ end
 
 function GearFrame:SetLevel(level)
     self.Portrait.Level:SetText(level or '')
+end
+
+function GearFrame:SetBackground(background)
+    local base
+    if background then
+        base = [[Interface\TalentFrame\]] .. background .. '-'
+    else
+        base = [[Interface\TalentFrame\MageFire-]]
+    end
+    self.TopLeft:SetTexture(base .. 'TopLeft')
+    self.TopRight:SetTexture(base .. 'TopRight')
+    self.BottomLeft:SetTexture(base .. 'BottomLeft')
+    self.BottomRight:SetTexture(base .. 'BottomRight')
+end
+
+function GearFrame:UpdateTalents()
+    local numGroups = self:GetNumTalentGroups()
+    local activeGroup = self:GetActiveTalentGroup()
+    if numGroups <= 1 then
+        self.Talent2:Hide()
+        self:UpdateTalent(self.Talent1, activeGroup, true)
+    else
+        self:UpdateTalent(self.Talent1, activeGroup, true)
+        self:UpdateTalent(self.Talent2, activeGroup == 1 and 2 or 1, false)
+    end
+end
+
+function GearFrame:UpdateTalent(button, group, isActive)
+    button.id = group
+    button.isActive = isActive
+
+    local name, icon, bg, points = self:GetTalentInfo(group)
+    if name then
+        button.Icon:SetTexture(icon)
+        button.Text:SetText(name)
+        button.Point:SetText(points)
+        button:Show()
+        self:SetBackground(bg)
+    else
+        button:Hide()
+        self:SetBackground()
+    end
 end
