@@ -12,6 +12,12 @@ local CharacterGearFrame = ns.Addon:NewClass('UI.CharacterGearFrame', ns.UI.Gear
 function CharacterGearFrame:Constructor()
     self:SetScript('OnShow', self.OnShow)
     self:SetScript('OnHide', self.UnregisterAllEvents)
+
+    self.Talent2:SetScript('OnClick', function(button)
+        if not InCombatLockdown() then
+            SetActiveTalentGroup(button.id)
+        end
+    end)
 end
 
 function CharacterGearFrame:OnShow()
@@ -42,5 +48,35 @@ function CharacterGearFrame:Update()
         gear:SetItem(GetInventoryItemLink('player', id), false)
     end
 
+    self:UpdateTalents()
+
     self:EndLayout()
+end
+
+function CharacterGearFrame:GetNumTalentGroups()
+    return GetNumTalentGroups()
+end
+
+function CharacterGearFrame:GetActiveTalentGroup()
+    return GetActiveTalentGroup()
+end
+
+function CharacterGearFrame:GetTalentInfo(group)
+    local maxPoint = 0
+    local maxName = nil
+    local maxIcon
+    local maxBg
+    local counts = {}
+    for i = 1, GetNumTalentTabs() do
+        local name, icon, pointsSpent, bg = GetTalentTabInfo(i, nil, nil, group)
+        if pointsSpent > maxPoint then
+            maxPoint = pointsSpent
+            maxName = name
+            maxIcon = icon
+            maxBg = bg
+        end
+
+        tinsert(counts, pointsSpent)
+    end
+    return maxName, maxIcon, maxBg, table.concat(counts, '/')
 end
