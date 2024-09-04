@@ -5,6 +5,7 @@
  * @Date   : 2022/9/26 18:55:36
  */
 import { format } from 'https://deno.land/x/format/mod.ts';
+import { Semaphore } from "https://deno.land/x/async@v2.1.0/semaphore.ts";
 
 export enum ProjectId {
     Vanilla,
@@ -26,6 +27,11 @@ const PROJECTS = new Map([
     [ProjectId.Wrath, { product: 'wow_classic', version_pattern: /^3\..+/ }],
     [ProjectId.Cata, { product: 'wow_classic', version_pattern: /^4\..+/ }],
 ]);
+
+export function mapLimit<T, U>(array: T[], limit: number, fn: (value: T, index: number, array: T[]) => U) {
+    const sem = new Semaphore(limit);
+    return array.map((...args) => sem.lock(() => fn(...args)));
+}
 
 export class WowToolsClient {
     private pro: ProjectData;

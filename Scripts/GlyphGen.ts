@@ -5,7 +5,7 @@
  * @Date   : 1/28/2024, 4:02:59 PM
  */
 
-import * as path from 'https://deno.land/std@0.224.0/path/mod.ts';
+import * as path from '@std/path';
 import { ProjectId, WowToolsClient } from './util.ts';
 
 class App {

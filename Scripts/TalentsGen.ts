@@ -5,7 +5,7 @@
  * @Date   : 2022/9/26 14:22:02
  */
 
-import * as path from 'https://deno.land/std@0.224.0/path/mod.ts';
+import * as path from '@std/path';
 import { ProjectId, WowToolsClient } from './util.ts';
 
 interface Config {
@@ -88,9 +88,7 @@ class App {
             col: Number.parseInt(x.ColumnIndex),
             tabId: Number.parseInt(x.TabID),
             spells: (x.SpellRank as string[]).map((x) => Number.parseInt(x)).filter((x) => x),
-            reqs: x.PrereqTalent
-                .map((x) => Number.parseInt(x))
-                .filter((x) => x),
+            reqs: (x.PrereqTalent as string[]).map((x) => Number.parseInt(x)).filter((x) => x),
         }));
     }
 
