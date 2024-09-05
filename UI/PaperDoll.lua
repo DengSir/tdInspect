@@ -20,7 +20,7 @@ local PLAYER_LEVEL = PLAYER_LEVEL:gsub('%%d', '%%s')
 local L = ns.L
 local Inspect = ns.Inspect
 
----@class UI.PaperDoll: Object, Frame, AceEvent-3.0
+---@class UI.PaperDoll: AceEvent-3.0, Object, Frame
 local PaperDoll = ns.Addon:NewClass('UI.PaperDoll', 'Frame')
 
 function PaperDoll:Constructor()

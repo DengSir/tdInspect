@@ -6,8 +6,14 @@
 ---@type ns
 local ns = select(2, ...)
 
----@class UI.EnchantItem : UI.SocketItem
-local EnchantItem = ns.Addon:NewClass('UI.EnchantItem', ns.UI.SocketItem)
+---@class UI.EnchantItem : AceEvent-3.0, Object, Button, tdInspectSocketItemTemplate, Pool
+local EnchantItem = ns.Addon:NewClass('UI.EnchantItem', 'Button')
+
+ns.Pool:Mixin(EnchantItem)
+
+function EnchantItem:Create(parent)
+    return self:Bind(CreateFrame('Button', nil, parent, 'tdInspectSocketItemTemplate'))
+end
 
 function EnchantItem:Constructor()
     self:SetScript('OnEnter', self.OnEnter)
@@ -18,17 +24,6 @@ end
 function EnchantItem:OnFree()
     self.item = nil
     self.spell = nil
-end
-
-function EnchantItem:Alloc(parent)
-    local obj = tremove(self.pool)
-    if not obj then
-        obj = self:New(parent)
-    else
-        obj:SetParent(parent)
-    end
-    obj:Show()
-    return obj
 end
 
 function EnchantItem:OnEnter()

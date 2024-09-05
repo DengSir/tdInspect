@@ -9,7 +9,7 @@ local ns = select(2, ...)
 local L = ns.L
 local Inspect = ns.Inspect
 
----@class UI.InspectGearFrame : UI.GearFrame, Frame
+---@class UI.InspectGearFrame : UI.GearFrame
 local InspectGearFrame = ns.Addon:NewClass('UI.InspectGearFrame', ns.UI.GearFrame)
 
 function InspectGearFrame:Constructor()

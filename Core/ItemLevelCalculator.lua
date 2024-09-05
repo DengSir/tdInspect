@@ -10,8 +10,8 @@ local ipairs = ipairs
 local select = select
 local max, min = math.max, math.min
 
+---@class ItemLevelCalculator
 local ItemLevelCalculator = ns.Addon:NewClass('ItemLevelCalculator')
-ns.ItemLevelCalculator = ItemLevelCalculator
 
 local SLOTS = {
     INVSLOT_HEAD, INVSLOT_NECK, INVSLOT_SHOULDER, INVSLOT_CHEST, INVSLOT_WAIST, INVSLOT_LEGS, INVSLOT_FEET,

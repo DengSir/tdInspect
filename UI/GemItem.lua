@@ -6,8 +6,14 @@
 ---@type ns
 local ns = select(2, ...)
 
----@class UI.GemItem : UI.SocketItem
-local GemItem = ns.Addon:NewClass('UI.GemItem', ns.UI.SocketItem)
+---@class UI.GemItem : AceEvent-3.0, Button, tdInspectSocketItemTemplate, Pool
+local GemItem = ns.Addon:NewClass('UI.GemItem', 'Button')
+
+ns.Pool:Mixin(GemItem)
+
+function GemItem:Create(parent)
+    return self:Bind(CreateFrame('Button', nil, parent, 'tdInspectSocketItemTemplate'))
+end
 
 function GemItem:Constructor()
     self:SetScript('OnEnter', self.OnEnter)
@@ -30,15 +36,4 @@ end
 
 function GemItem:OnFree()
     self.item = nil
-end
-
-function GemItem:Alloc(parent)
-    local obj = tremove(self.pool)
-    if not obj then
-        obj = self:New(parent)
-    else
-        obj:SetParent(parent)
-    end
-    obj:Show()
-    return obj
 end

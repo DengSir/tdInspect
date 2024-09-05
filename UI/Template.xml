@@ -126,6 +126,31 @@
                     </Anchors>
                 </FontString>
             </Layer>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="TopLeft">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="4" y="-4"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="TopRight">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="TOPRIGHT" />
+                    </Anchors>
+                    <TexCoords left="0" right="0.6875" top="0" bottom="1"/>
+                </Texture>
+                <Texture parentKey="BottomLeft">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="BOTTOMLEFT" />
+                    </Anchors>
+                    <TexCoords left="0" right="1" top="0" bottom="0.578125"/>
+                </Texture>
+                <Texture parentKey="BottomRight">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.TopLeft" relativePoint="BOTTOMRIGHT" />
+                    </Anchors>
+                    <TexCoords left="0" right="0.6875" top="0" bottom="0.578125"/>
+                </Texture>
+            </Layer>
         </Layers>
         <Scripts>
             <OnLoad>
@@ -141,7 +166,42 @@
                 self.ItemLevel:SetFont(self.ItemLevel:GetFont(), 12, "OUTLINE")
                 self.Talent2.Text:SetTextColor(0.6, 0.6, 0.6)
                 self.Talent2.Point:SetTextColor(0.6, 0.6, 0.6)
+                self.TopLeft:SetVertexColor(0.2, 0.2, 0.2, 0.8)
+                self.TopRight:SetVertexColor(0.2, 0.2, 0.2, 0.8)
+                self.BottomLeft:SetVertexColor(0.2, 0.2, 0.2, 0.8)
+                self.BottomRight:SetVertexColor(0.2, 0.2, 0.2, 0.8)
             </OnLoad>
         </Scripts>
     </Frame>
+
+    <Button name="tdInspectSocketItemTemplate" virtual="true">
+        <Size x="16" y="16"/>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture parentKey="Icon">
+                    <Size x="15" y="15"/>
+                    <Anchors>
+                        <Anchor point="CENTER"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Border" atlas="worldquest-tracker-ring">
+                    <Size x="22" y="22"/>
+                    <Anchors>
+                        <Anchor point="CENTER"/>
+                    </Anchors>
+                </Texture>
+                <MaskTexture parentKey="CircleMask" file="Interface\CharacterFrame\TempPortraitAlphaMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeKey="$parent.Icon" relativePoint="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Icon" relativePoint="BOTTOMRIGHT" />
+                    </Anchors>
+                    <MaskedTextures>
+                        <MaskedTexture childKey="Icon"/>
+                    </MaskedTextures>
+                </MaskTexture>
+            </Layer>
+        </Layers>
+    </Button>
 </Ui>

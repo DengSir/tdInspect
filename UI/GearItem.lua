@@ -68,8 +68,8 @@ function GearItem:SetItem(item, inspect)
     self.inspect = inspect
     self.item = item
     self:Hide()
-    self:Update()
     self:Show()
+    self:Update()
 end
 
 function GearItem:OnEnter()

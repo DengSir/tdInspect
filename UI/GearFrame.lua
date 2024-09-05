@@ -33,7 +33,7 @@ local SPACING_H = 5
 local PADDING = 10
 local BG_PADDING = 4
 
----@class UI.GearFrame : AceEvent-3.0, Frame, BackdropTemplate
+---@class UI.GearFrame : AceEvent-3.0, Frame, tdInspectGearFrameTemplate
 local GearFrame = ns.Addon:NewClass('UI.GearFrame', 'Frame')
 
 function GearFrame:Create(parent)
@@ -52,29 +52,6 @@ function GearFrame:Constructor()
     LevelColumn:SetPoint('TOPLEFT', SlotColumn, 'TOPRIGHT', SPACING_H, 0)
     LevelColumn:SetHeight(1)
     self.LevelColumn = LevelColumn
-
-    local TopLeft = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
-    TopLeft:SetPoint('TOPLEFT', BG_PADDING, -BG_PADDING)
-    TopLeft:SetVertexColor(0.2, 0.2, 0.2, 0.8)
-    self.TopLeft = TopLeft
-
-    local TopRight = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
-    TopRight:SetPoint('TOPLEFT', TopLeft, 'TOPRIGHT')
-    TopRight:SetVertexColor(0.2, 0.2, 0.2, 0.8)
-    TopRight:SetTexCoord(0, 44 / 64, 0, 1)
-    self.TopRight = TopRight
-
-    local BottomLeft = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
-    BottomLeft:SetPoint('TOPLEFT', TopLeft, 'BOTTOMLEFT')
-    BottomLeft:SetVertexColor(0.2, 0.2, 0.2, 0.8)
-    BottomLeft:SetTexCoord(0, 1, 0, 74 / 128)
-    self.BottomLeft = BottomLeft
-
-    local BottomRight = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
-    BottomRight:SetPoint('TOPLEFT', TopLeft, 'BOTTOMRIGHT')
-    BottomRight:SetVertexColor(0.2, 0.2, 0.2, 0.8)
-    BottomRight:SetTexCoord(0, 44 / 64, 0, 74 / 128)
-    self.BottomRight = BottomRight
 
     ---@type table<number, UI.GearItem>
     self.gears = {}

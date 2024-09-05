@@ -2,11 +2,10 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/22/2020, 9:31:04 AM
-
----@type ns
+---@class ns
 local ns = select(2, ...)
 
----@type GameTooltip
+---@class TipScaner : GameTooltip
 local TipScaner = CreateFrame('GameTooltip')
 ns.TipScaner = TipScaner
 

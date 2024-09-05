@@ -7,6 +7,7 @@
 ---@field Inspect Inspect
 ---@field Talent Talent
 ---@field Glyph Glyph
+---@field ItemLevelCalculator ItemLevelCalculator
 local ns = select(2, ...)
 
 local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
@@ -19,6 +20,12 @@ local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
 ---@field EnchantItem UI.EnchantItem
 ---@field InspectFrame UI.InspectFrame
 ---@field InspectGearFrame UI.InspectGearFrame
+---@field GlyphItem UI.GlyphItem
+---@field TalentFrame UI.TalentFrame
+---@field CharacterGearFrame UI.CharacterGearFrame
+---@field GlyphFrame UI.GlyphFrame
+---@field PaperDoll UI.PaperDoll
+---@field InspectTalent UI.InspectTalent
 ns.UI = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
 
@@ -30,22 +37,20 @@ _G.BINDING_HEADER_TDINSPECT = 'tdInspect'
 _G.BINDING_NAME_TDINSPECT_VIEW_TARGET = ns.L['Inspect target']
 _G.BINDING_NAME_TDINSPECT_VIEW_MOUSEOVER = ns.L['Inspect mouseover']
 
----@class Addon: AceAddon-3.0, LibClass-2.0, AceEvent-3.0
+---@class Addon: AceAddon, LibClass-2.0, AceEvent-3.0
 local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0', 'AceEvent-3.0')
 ns.Addon = Addon
 
 function Addon:OnInitialize()
-    ---@class tdInspectProfile
+    ---@class tdInspectProfile: table
     local profile = { --
         global = { --
             userCache = {},
         },
-        profile = { --
-            showModel = true,
-        },
+        profile = {},
     }
 
-    ---@type tdInspectProfile
+    ---@type tdInspectProfile | AceDB.Schema
     self.db = LibStub('AceDB-3.0'):New('TDDB_INSPECT2', profile, true)
 
     if not self.db.global.version or self.db.global.version < 20000 then

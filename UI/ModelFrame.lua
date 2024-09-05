@@ -16,7 +16,7 @@ local factionLogoTextures = {
     Neutral = [[Interface\Timer\Panda-Logo]],
 }
 
----@class UI.ModelFrame: Object, Frame, AceEvent-3.0
+---@class UI.ModelFrame: AceEvent-3.0, Object, Frame
 local ModelFrame = ns.Addon:NewClass('UI.ModelFrame', 'Frame')
 
 function ModelFrame:Constructor()

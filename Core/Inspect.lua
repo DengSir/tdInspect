@@ -49,7 +49,7 @@ local function sleep(n)
     coroutine.yield()
 end
 
----@class Inspect: AceAddon-3.0, AceEvent-3.0, AceComm-3.0
+---@class Inspect: AceModule, AceEvent-3.0, AceComm-3.0
 local Inspect = ns.Addon:NewModule('Inspect', 'AceEvent-3.0', 'AceComm-3.0')
 
 function Inspect:OnInitialize()
