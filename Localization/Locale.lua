@@ -33,7 +33,17 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
 --[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]]
+--[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show talent background"] = "Show talent background"--]] 
+--[[Translation missing --]]
+--[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
+--[[Translation missing --]]
+--[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
+--[[Translation missing --]]
+--[[ L["View target hotkey"] = "View target hotkey"--]]
 -- @end-locale@
 end)
 
@@ -61,7 +71,17 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
 --[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]]
+--[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show talent background"] = "Show talent background"--]] 
+--[[Translation missing --]]
+--[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
+--[[Translation missing --]]
+--[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
+--[[Translation missing --]]
+--[[ L["View target hotkey"] = "View target hotkey"--]]
 -- @end-locale@
 end)
 
@@ -89,7 +109,17 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
 --[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]]
+--[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show talent background"] = "Show talent background"--]] 
+--[[Translation missing --]]
+--[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
+--[[Translation missing --]]
+--[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
+--[[Translation missing --]]
+--[[ L["View target hotkey"] = "View target hotkey"--]]
 -- @end-locale@
 end)
 
@@ -117,7 +147,17 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
 --[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]]
+--[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show talent background"] = "Show talent background"--]] 
+--[[Translation missing --]]
+--[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
+--[[Translation missing --]]
+--[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
+--[[Translation missing --]]
+--[[ L["View target hotkey"] = "View target hotkey"--]]
 -- @end-locale@
 end)
 
@@ -145,7 +185,17 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
 --[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]]
+--[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show talent background"] = "Show talent background"--]] 
+--[[Translation missing --]]
+--[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
+--[[Translation missing --]]
+--[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
+--[[Translation missing --]]
+--[[ L["View target hotkey"] = "View target hotkey"--]]
 -- @end-locale@
 end)
 
@@ -173,7 +223,17 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
 --[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]]
+--[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show talent background"] = "Show talent background"--]] 
+--[[Translation missing --]]
+--[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
+--[[Translation missing --]]
+--[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
+--[[Translation missing --]]
+--[[ L["View target hotkey"] = "View target hotkey"--]]
 -- @end-locale@
 end)
 
@@ -201,7 +261,17 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
 --[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]]
+--[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show talent background"] = "Show talent background"--]] 
+--[[Translation missing --]]
+--[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
+--[[Translation missing --]]
+--[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
+--[[Translation missing --]]
+--[[ L["View target hotkey"] = "View target hotkey"--]]
 -- @end-locale@
 end)
 
@@ -229,6 +299,16 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
 --[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]]
+--[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
+--[[Translation missing --]]
+--[[ L["Show talent background"] = "Show talent background"--]] 
+--[[Translation missing --]]
+--[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
+--[[Translation missing --]]
+--[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
+--[[Translation missing --]]
+--[[ L["View target hotkey"] = "View target hotkey"--]]
 -- @end-locale@
 end)
