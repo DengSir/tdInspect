@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 select(2,...).ItemEnchantMake()
 local n=nil
 D(15,2831,2304,4,30,1050016)
