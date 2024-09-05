@@ -6,7 +6,6 @@
     <Script file="Addon.lua" />
 
     <Script file="Data\DataLoader.lua" />
-    <Script file="Data\Glyph.lua" build=">3" />
 
     <Script file="Data\Vanilla\Talents.lua" build="Vanilla" />
     <Script file="Data\Vanilla\ItemSet.lua" build="Vanilla" />

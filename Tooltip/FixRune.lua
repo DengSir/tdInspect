@@ -2,6 +2,8 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 3/19/2024, 11:55:34 AM
+--
+---@class ns
 local ns = select(2, ...)
 
 local function ToPattern(p)

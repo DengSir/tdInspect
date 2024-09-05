@@ -26,6 +26,8 @@ local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
 ---@field GlyphFrame UI.GlyphFrame
 ---@field PaperDoll UI.PaperDoll
 ---@field InspectTalent UI.InspectTalent
+---@field ModelFrame UI.ModelFrame
+---@field SlotItem UI.SlotItem
 ns.UI = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
 

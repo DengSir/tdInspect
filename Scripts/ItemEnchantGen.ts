@@ -50,7 +50,8 @@ class App {
             }
         }
 
-        const code = `select(2,...).ItemEnchantMake()
+        const code = `---@diagnostic disable: undefined-global
+select(2,...).ItemEnchantMake()
 local n=nil
 ${codes.join('\n')}`;
 

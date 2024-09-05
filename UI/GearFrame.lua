@@ -97,7 +97,7 @@ function GearFrame:UpdateSize()
             self[key]:SetWidth(v)
         end
     end
-    self:SetWidth(width - SPACING_V + PADDING * 2)
+    self:SetWidth(max(width - SPACING_V + PADDING * 2, 165 + self.Name:GetStringWidth()))
 end
 
 function GearFrame:StartLayout()
