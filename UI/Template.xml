@@ -162,14 +162,13 @@
                     edgeSize = 16,
                     insets = {left = 4, right = 4, top = 4, bottom = 4},
                 }
-                self:SetBackdropColor(0, 0, 0, 0.95)
                 self.ItemLevel:SetFont(self.ItemLevel:GetFont(), 12, "OUTLINE")
                 self.Talent2.Text:SetTextColor(0.6, 0.6, 0.6)
                 self.Talent2.Point:SetTextColor(0.6, 0.6, 0.6)
-                self.TopLeft:SetVertexColor(0.2, 0.2, 0.2, 0.8)
-                self.TopRight:SetVertexColor(0.2, 0.2, 0.2, 0.8)
-                self.BottomLeft:SetVertexColor(0.2, 0.2, 0.2, 0.8)
-                self.BottomRight:SetVertexColor(0.2, 0.2, 0.2, 0.8)
+                self.TopLeft:SetVertexColor(0.2, 0.2, 0.2, 0.95)
+                self.TopRight:SetVertexColor(0.2, 0.2, 0.2, 0.95)
+                self.BottomLeft:SetVertexColor(0.2, 0.2, 0.2, 0.95)
+                self.BottomRight:SetVertexColor(0.2, 0.2, 0.2, 0.95)
             </OnLoad>
         </Scripts>
     </Frame>

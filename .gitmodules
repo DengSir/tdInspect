@@ -7,3 +7,6 @@
 [submodule "Libs/LibShowUIPanel-1.0"]
 	path = Libs/LibShowUIPanel-1.0
 	url = https://github.com/DengSir/LibShowUIPanel-1.0.git
+[submodule "Libs/tdOptions"]
+	path = Libs/tdOptions
+	url = git@github.com:DengSir/tdOptions.git

@@ -38,7 +38,6 @@ function Pool:Alloc(parent)
 end
 
 function Pool:Free()
-    print(self, debugstack())
     self.pool[self] = true
 
     if self.Hide then

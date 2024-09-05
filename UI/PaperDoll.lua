@@ -78,9 +78,6 @@ function PaperDoll:Constructor()
     self.LevelText = InspectLevelText
     self.ModelFrame = ns.UI.ModelFrame:Bind(self:CreateInsetFrame())
 
-    self.GearFrame = ns.UI.InspectGearFrame:Create(self)
-    self.GearFrame:SetPoint('TOPLEFT', self, 'TOPRIGHT', -33, -12)
-
     self:SetScript('OnShow', self.OnShow)
     self:SetScript('OnHide', self.OnHide)
 end
@@ -90,16 +87,17 @@ function PaperDoll:OnShow()
     self:RegisterEvent('UNIT_LEVEL', 'UpdateInfo')
     self:UpdateInfo()
     self:Update()
-end
-
-function PaperDoll:INSPECT_READY()
-    self:Update()
-    self:UpdateInfo()
+    ns.Addon:OpenInspectGearFrame()
 end
 
 function PaperDoll:OnHide()
     self:UnregisterAllEvents()
     self:UnregisterAllMessages()
+end
+
+function PaperDoll:INSPECT_READY()
+    self:Update()
+    self:UpdateInfo()
 end
 
 function PaperDoll:CreateInsetFrame()

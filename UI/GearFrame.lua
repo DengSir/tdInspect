@@ -41,6 +41,7 @@ function GearFrame:Create(parent)
 end
 
 function GearFrame:Constructor()
+    self:Hide()
     self:SetScript('OnSizeChanged', self.OnSizeChanged)
 
     local SlotColumn = CreateFrame('Frame', nil, self)
@@ -143,16 +144,24 @@ function GearFrame:SetLevel(level)
 end
 
 function GearFrame:SetBackground(background)
-    local base
-    if background then
-        base = [[Interface\TalentFrame\]] .. background .. '-'
+    if not background then
+        self.TopLeft:Hide()
+        self.TopRight:Hide()
+        self.BottomLeft:Hide()
+        self.BottomRight:Hide()
+        self:SetBackdropColor(0, 0, 0, 0.95)
     else
-        base = [[Interface\TalentFrame\MageFire-]]
+        local base = [[Interface\TalentFrame\]] .. background .. '-'
+        self.TopLeft:SetTexture(base .. 'TopLeft')
+        self.TopRight:SetTexture(base .. 'TopRight')
+        self.BottomLeft:SetTexture(base .. 'BottomLeft')
+        self.BottomRight:SetTexture(base .. 'BottomRight')
+        self.TopLeft:Show()
+        self.TopRight:Show()
+        self.BottomLeft:Show()
+        self.BottomRight:Show()
+        self:SetBackdropColor(0, 0, 0, 0)
     end
-    self.TopLeft:SetTexture(base .. 'TopLeft')
-    self.TopRight:SetTexture(base .. 'TopRight')
-    self.BottomLeft:SetTexture(base .. 'BottomLeft')
-    self.BottomRight:SetTexture(base .. 'BottomRight')
 end
 
 function GearFrame:UpdateTalents()
@@ -177,7 +186,7 @@ function GearFrame:UpdateTalent(button, group, isActive)
         button.Text:SetText(name)
         button.Point:SetText(points)
         button:Show()
-        self:SetBackground(bg)
+        self:SetBackground(ns.Addon.db.profile.showTalentBackground and bg or nil)
     else
         button:Hide()
         self:SetBackground()

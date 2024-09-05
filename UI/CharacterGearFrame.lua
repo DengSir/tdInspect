@@ -11,7 +11,7 @@ local CharacterGearFrame = ns.Addon:NewClass('UI.CharacterGearFrame', ns.UI.Gear
 
 function CharacterGearFrame:Constructor()
     self:SetScript('OnShow', self.OnShow)
-    self:SetScript('OnHide', self.UnregisterAllEvents)
+    self:SetScript('OnHide', self.OnHide)
 
     self.Talent2:SetScript('OnClick', function(button)
         if not InCombatLockdown() then
@@ -23,10 +23,27 @@ end
 function CharacterGearFrame:OnShow()
     self:RegisterEvent('UNIT_INVENTORY_CHANGED')
     self:RegisterEvent('UNIT_LEVEL', 'UNIT_INVENTORY_CHANGED')
+    self:RegisterMessage('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
     self:Update()
 
     if GearManagerDialog then
         GearManagerDialog:SetFrameLevel(self:GetFrameLevel() + 10)
+    end
+end
+
+function CharacterGearFrame:OnHide()
+    self:UnregisterAllEvents()
+    self:UnregisterAllMessages()
+    self:Hide()
+end
+
+function CharacterGearFrame:UpdateOption(_, key, value)
+    if key == 'showTalentBackground' then
+        if value then
+            self:UpdateTalents()
+        else
+            self:SetBackground()
+        end
     end
 end
 
@@ -85,5 +102,5 @@ function CharacterGearFrame:TapTo(frame, ...)
     self:SetParent(frame)
     self:ClearAllPoints()
     self:SetPoint(...)
-    self:Show()
+    self:UpdateOption()
 end

@@ -44,5 +44,6 @@
     <Script file="UI\GearFrame.lua" />
     <Script file="UI\InspectGearFrame.lua" />
     <Script file="UI\CharacterGearFrame.lua" />
+    <Script file="UI\Option.lua" />
     <Script file="UI\ElvUI.lua" />
 </Ui>

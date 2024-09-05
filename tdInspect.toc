@@ -4,6 +4,7 @@
 #@end-debug@
 #@project-interface@
 ## Title: tdInspect
+## IconTexture: 132092
 ## Author: Dencer
 ## Version: @project-version@
 ## OptionalDeps: LibCompress
