@@ -109,7 +109,7 @@ class App {
                     const tabTalents = talents.filter((talent) => talent.tabId === tab.id);
 
                     tabTalents.forEach((x, i) => (x.index = i + 1 + n));
-                    n = tabTalents.length;
+                    n += tabTalents.length;
                 }
             }
         }
