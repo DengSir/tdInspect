@@ -8,18 +8,18 @@
 ---@field PortraitRingCover Texture
 local tdInspectPortraitTemplate = {}
 
----@class tdInspectGearTalentFrame : Button
+---@class tdInspectGearTalentTemplate : Button
 ---@field Icon Texture
 ---@field CircleMask MaskTexture
 ---@field Text FontString
 ---@field Point FontString
-local tdInspectGearTalentFrame = {}
+local tdInspectGearTalentTemplate = {}
 
 ---@class __tdInspectGearFrameTemplate_Portrait : tdInspectPortraitTemplate , Frame
 
----@class __tdInspectGearFrameTemplate_Talent1 : tdInspectGearTalentFrame , Button
+---@class __tdInspectGearFrameTemplate_Talent1 : tdInspectGearTalentTemplate , Button
 
----@class __tdInspectGearFrameTemplate_Talent2 : tdInspectGearTalentFrame , Button
+---@class __tdInspectGearFrameTemplate_Talent2 : tdInspectGearTalentTemplate , Button
 
 ---@class tdInspectGearFrameTemplate : BackdropTemplate , Frame
 ---@field Name FontString

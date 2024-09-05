@@ -192,3 +192,7 @@ function GearFrame:UpdateTalent(button, group, isActive)
         self:SetBackground()
     end
 end
+
+function GearFrame:OptionOnClick()
+    ns.Addon:OpenOptionFrame()
+end

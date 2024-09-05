@@ -39,6 +39,13 @@ function Addon:SetupOptionFrame()
             inspectGear = fullToggle(L['Show inspect gear list']),
             inspectCompare = fullToggle(L['Show inspect compare']),
             showTalentBackground = fullToggle(L['Show talent background']),
+            help = {
+                type = 'group',
+                name = L['Help'],
+                inline = true,
+                order = orderGen(),
+                args = {help = {type = 'description', name = L.HELP_SUMMARY, order = orderGen()}},
+            },
         },
     }
 

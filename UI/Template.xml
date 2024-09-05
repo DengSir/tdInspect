@@ -49,7 +49,7 @@
         </Layers>
     </Frame>
 
-    <Button name="tdInspectGearTalentFrame" virtual="true">
+    <Button name="tdInspectGearTalentTemplate" virtual="true">
         <Size x="48" y="48"/>
         <Layers>
             <Layer level="ARTWORK" textureSubLevel="-1">
@@ -101,15 +101,28 @@
                     <Anchor point="TOPLEFT" x="18" y="-16"/>
                 </Anchors>
             </Frame>
-            <Button parentKey="Talent1" inherits="tdInspectGearTalentFrame">
+            <Button parentKey="Talent1" inherits="tdInspectGearTalentTemplate">
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-10" y="-10" />
                 </Anchors>
             </Button>
-            <Button parentKey="Talent2" scale="0.8" inherits="tdInspectGearTalentFrame">
+            <Button parentKey="Talent2" scale="0.8" inherits="tdInspectGearTalentTemplate">
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Talent1" relativePoint="BOTTOMLEFT" x="-10" y="0" />
                 </Anchors>
+            </Button>
+            <Button>
+                <Size x="16" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-4" y="4"/>
+                </Anchors>
+                <NormalTexture file="Interface\Scenarios\ScenarioIcon-Interact" />
+                <HighlightTexture file="Interface\Scenarios\ScenarioIcon-Interact" alphaMode="ADD" />
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():OptionOnClick()
+                    </OnClick>
+                </Scripts>
             </Button>
         </Frames>
         <Layers>

@@ -23,6 +23,8 @@ L['Show character gear list'] = true
 L['Show inspect compare'] = true
 L['Show inspect gear list'] = true
 L['Show talent background'] = true
+L.HELP_SUMMARY = true
+L.Help = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
