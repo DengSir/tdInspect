@@ -28,6 +28,8 @@ function InspectGearFrame:OnShow()
     self:RegisterEvent('UNIT_INVENTORY_CHANGED')
     self:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'UpdateItemLevel')
     self:Update()
+
+    ns.Addon.GearFrame:TapTo(self, 'TOPLEFT', self, 'TOPRIGHT', 0, 0)
 end
 
 function InspectGearFrame:OnHide()
@@ -35,6 +37,8 @@ function InspectGearFrame:OnHide()
     self.class = nil
     self:UnregisterAllEvents()
     self:UnregisterAllMessages()
+
+    ns.Addon.GearFrame:TapTo(PaperDollFrame, 'TOPLEFT', CharacterFrame, 'TOPRIGHT', -33, -12)
 end
 
 function InspectGearFrame:UNIT_INVENTORY_CHANGED(_, unit)

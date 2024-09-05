@@ -8,6 +8,8 @@
     <Include remote="curse@Ace3" file="AceDB-3.0\AceDB-3.0.xml"/>
     <Include remote="curse@Ace3" file="AceLocale-3.0\AceLocale-3.0.xml"/>
     <Include remote="curse@Ace3" file="AceSerializer-3.0\AceSerializer-3.0.xml"/>
+    <Include remote="curse@Ace3" file="AceGUI-3.0\AceGUI-3.0.xml"/>
+    <Include remote="curse@Ace3" file="AceConfig-3.0\AceConfig-3.0.xml"/>
 
     <Include file="LibClass-2.0\LibClass-2.0.xml"/>
 	<Include file="LibTooltipExtra-1.0\LibTooltipExtra-1.0.xml" />

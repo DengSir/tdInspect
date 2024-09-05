@@ -80,3 +80,10 @@ function CharacterGearFrame:GetTalentInfo(group)
     end
     return maxName, maxIcon, maxBg, table.concat(counts, '/')
 end
+
+function CharacterGearFrame:TapTo(frame, ...)
+    self:SetParent(frame)
+    self:ClearAllPoints()
+    self:SetPoint(...)
+    self:Show()
+end
