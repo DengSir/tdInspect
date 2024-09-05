@@ -16,6 +16,8 @@ function InspectGearFrame:Constructor()
     self:SetScript('OnShow', self.OnShow)
     self:SetScript('OnHide', self.OnHide)
 
+    self:UpdateOptionButton(ns.Addon.db.profile.showOptionButtonInInspect)
+
     local DataSource = self:CreateFontString(nil, 'ARTWORK', 'GameFontNormalSmall')
     DataSource:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 10, 0)
     DataSource:SetFont(DataSource:GetFont(), 12, 'OUTLINE')
@@ -23,10 +25,11 @@ function InspectGearFrame:Constructor()
 end
 
 function InspectGearFrame:OnShow()
-    self:RegisterMessage('INSPECT_READY', 'Update')
     self:RegisterEvent('UNIT_LEVEL', 'Update')
     self:RegisterEvent('UNIT_INVENTORY_CHANGED')
     self:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'UpdateItemLevel')
+    self:RegisterMessage('INSPECT_READY', 'Update')
+    self:RegisterMessage('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
     self:Update()
 end
 
@@ -42,10 +45,6 @@ function InspectGearFrame:UNIT_INVENTORY_CHANGED(_, unit)
     if self.unit == unit then
         self:Update()
     end
-end
-
-function InspectGearFrame:UpdateOption()
-    self:SetShown(ns.Addon.db.profile.inspectGear)
 end
 
 function InspectGearFrame:UpdateItemLevel()
@@ -105,4 +104,16 @@ function InspectGearFrame:GetTalentInfo(group)
         tinsert(counts, pointsSpent)
     end
     return maxName, maxIcon, maxBg, table.concat(counts, '/')
+end
+
+function InspectGearFrame:UpdateOption(_, key, value)
+    if key == 'showTalentBackground' then
+        if value then
+            self:UpdateTalents()
+        else
+            self:SetBackground()
+        end
+    elseif key == 'showOptionButtonInInspect' then
+        self:UpdateOptionButton(value)
+    end
 end

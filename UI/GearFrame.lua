@@ -196,3 +196,7 @@ end
 function GearFrame:OptionOnClick()
     ns.Addon:OpenOptionFrame()
 end
+
+function GearFrame:UpdateOptionButton(value)
+    self.Option:SetShown(value)
+end

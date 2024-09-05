@@ -23,6 +23,32 @@ function Addon:SetupOptionFrame()
         return {type = 'toggle', name = name, width = 'full', order = orderGen()}
     end
 
+    local function keybinding(name)
+        return {
+            type = 'keybinding',
+            name = name,
+            order = orderGen(),
+            width = 'double',
+            get = function(item)
+                return GetBindingKey(item[#item])
+            end,
+            set = function(item, value)
+                local action = item[#item]
+                for _, key in ipairs({GetBindingKey(action)}) do
+                    SetBinding(key, nil)
+                end
+                SetBinding(value, action)
+            end,
+            confirm = function(item, value)
+                local action = GetBindingAction(value)
+                if action ~= '' and action ~= item[#item] then
+                    return L['The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?']:format(
+                               _G['BINDING_NAME_' .. action] or action)
+                end
+            end,
+        }
+    end
+
     local options = {
         type = 'group',
         name = format('tdInspect - |cff00ff00%s|r', C_AddOns.GetAddOnMetadata('tdInspect', 'Version')),
@@ -36,9 +62,13 @@ function Addon:SetupOptionFrame()
         end,
         args = {
             characterGear = fullToggle(L['Show character gear list']),
+            showOptionButtonInCharacter = fullToggle(L['Show option button in character gear list']),
             inspectGear = fullToggle(L['Show inspect gear list']),
             inspectCompare = fullToggle(L['Show inspect compare']),
+            showOptionButtonInInspect = fullToggle(L['Show option button in inspect gear list']),
             showTalentBackground = fullToggle(L['Show talent background']),
+            TDINSPECT_VIEW_TARGET = keybinding(L['View target hotkey']),
+            TDINSPECT_VIEW_MOUSEOVER = keybinding(L['View mouseover hotkey']),
             help = {
                 type = 'group',
                 name = L['Help'],

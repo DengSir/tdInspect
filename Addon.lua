@@ -54,6 +54,8 @@ function Addon:OnInitialize()
             inspectGear = true,
             inspectCompare = true,
             showTalentBackground = true,
+            showOptionButtonInCharacter = true,
+            showOptionButtonInInspect = true,
         },
     }
 
@@ -142,6 +144,20 @@ function Addon:TDINSPECT_OPTION_CHANGED(_, key, value)
                 self:OpenInspectGearFrame()
             elseif self.InspectGearFrame then
                 self.InspectGearFrame:Hide()
+            end
+        elseif self.InspectGearFrame then
+            self.InspectGearFrame:Hide()
+        end
+    elseif key == 'inspectCompare' then
+        if value then
+            if InspectPaperDollFrame:IsShown() then
+                self:OpenInspectGearFrame()
+            end
+        elseif self.CharacterGearFrame then
+            self.CharacterGearFrame:Hide()
+
+            if self.CharacterGearParent:IsShown() then
+                self:OpenCharacterGearFrame()
             end
         end
     end

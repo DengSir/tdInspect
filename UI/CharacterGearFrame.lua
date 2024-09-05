@@ -13,6 +13,8 @@ function CharacterGearFrame:Constructor()
     self:SetScript('OnShow', self.OnShow)
     self:SetScript('OnHide', self.OnHide)
 
+    self:UpdateOptionButton(ns.Addon.db.profile.showOptionButtonInCharacter)
+
     self.Talent2:SetScript('OnClick', function(button)
         if not InCombatLockdown() then
             SetActiveTalentGroup(button.id)
@@ -35,16 +37,6 @@ function CharacterGearFrame:OnHide()
     self:UnregisterAllEvents()
     self:UnregisterAllMessages()
     self:Hide()
-end
-
-function CharacterGearFrame:UpdateOption(_, key, value)
-    if key == 'showTalentBackground' then
-        if value then
-            self:UpdateTalents()
-        else
-            self:SetBackground()
-        end
-    end
 end
 
 function CharacterGearFrame:UNIT_INVENTORY_CHANGED(_, unit)
@@ -103,4 +95,16 @@ function CharacterGearFrame:TapTo(frame, ...)
     self:ClearAllPoints()
     self:SetPoint(...)
     self:UpdateOption()
+end
+
+function CharacterGearFrame:UpdateOption(_, key, value)
+    if key == 'showTalentBackground' then
+        if value then
+            self:UpdateTalents()
+        else
+            self:SetBackground()
+        end
+    elseif key == 'showOptionButtonInCharacter' then
+        self:UpdateOptionButton(value)
+    end
 end

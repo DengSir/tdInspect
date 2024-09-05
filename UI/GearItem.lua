@@ -121,6 +121,7 @@ function GearItem:Update()
             tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
 
             socketWidth = socketWidth + tex:GetWidth()
+        else
         end
 
         for i = 1, 3 do

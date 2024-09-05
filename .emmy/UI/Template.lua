@@ -31,6 +31,7 @@ local tdInspectGearTalentTemplate = {}
 ---@field Portrait __tdInspectGearFrameTemplate_Portrait
 ---@field Talent1 __tdInspectGearFrameTemplate_Talent1
 ---@field Talent2 __tdInspectGearFrameTemplate_Talent2
+---@field Option Button
 local tdInspectGearFrameTemplate = {}
 
 ---@class tdInspectSocketItemTemplate : Button

@@ -111,7 +111,7 @@
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Talent1" relativePoint="BOTTOMLEFT" x="-10" y="0" />
                 </Anchors>
             </Button>
-            <Button>
+            <Button parentKey="Option">
                 <Size x="16" y="16"/>
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-4" y="4"/>

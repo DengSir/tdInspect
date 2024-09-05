@@ -18,8 +18,6 @@ L["Show talent background"] = true
 -- @end-locale@
 -- @debug@
 -- @import:language=enUS@
---[====[ never used ]====]
---[====[ L['Show Model'] = true ]====]
 L['Last update:'] = true
 L['Data source:'] = true
 L['Inspect target'] = true
@@ -31,6 +29,11 @@ L['Show inspect gear list'] = true
 L['Show talent background'] = true
 L.HELP_SUMMARY = true
 L.Help = true
+L['Show option button in character gear list'] = true
+L['Show option button in inspect gear list'] = true
+L['View mouseover hotkey'] = true
+L['View target hotkey'] = true
+L['The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
