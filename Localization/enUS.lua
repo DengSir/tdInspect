@@ -4,14 +4,20 @@ if not L then
 end
 -- @locale:language=enUS@
 L = L or {}
+L["Belt buckle"] = true
 L["Data source:"] = true
+L["Empty socket"] = true
 L["Help"] = true
 L["HELP_SUMMARY"] = true
 L["iLvl:"] = true
 L["Inspect mouseover"] = true
 L["Inspect target"] = true
 L["Last update:"] = true
+L["No Enchant"] = true
 L["Show character gear list"] = true
+L["Show enchant"] = true
+L["Show enchant/gem lost"] = true
+L["Show gem"] = true
 L["Show inspect compare"] = true
 L["Show inspect gear list"] = true
 L["Show option button in character gear list"] = true
