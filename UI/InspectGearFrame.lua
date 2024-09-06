@@ -55,7 +55,7 @@ function InspectGearFrame:Update()
     self:StartLayout()
 
     for id, gear in pairs(self.gears) do
-        gear:SetItem(Inspect:GetItemLink(id), true)
+        gear:SetItem(Inspect:GetItemLink(id))
     end
 
     local classFileName = Inspect:GetUnitClassFileName()
@@ -115,5 +115,7 @@ function InspectGearFrame:UpdateOption(_, key, value)
         end
     elseif key == 'showOptionButtonInInspect' then
         self:UpdateOptionButton(value)
+    elseif key == 'showGem' or key == 'showEnchant' or key == 'showLost' then
+        self:Update()
     end
 end

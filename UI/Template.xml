@@ -193,15 +193,7 @@
                 <Texture parentKey="Icon">
                     <Size x="15" y="15"/>
                     <Anchors>
-                        <Anchor point="CENTER"/>
-                    </Anchors>
-                </Texture>
-            </Layer>
-            <Layer level="OVERLAY">
-                <Texture parentKey="Border" atlas="worldquest-tracker-ring">
-                    <Size x="22" y="22"/>
-                    <Anchors>
-                        <Anchor point="CENTER"/>
+                        <Anchor point="CENTER" x="0" y="0"/>
                     </Anchors>
                 </Texture>
                 <MaskTexture parentKey="CircleMask" file="Interface\CharacterFrame\TempPortraitAlphaMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
@@ -213,6 +205,14 @@
                         <MaskedTexture childKey="Icon"/>
                     </MaskedTextures>
                 </MaskTexture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Border" file="Interface\AddOns\tdInspect\Resources\SocketBroder">
+                    <Size x="19" y="19"/>
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="0"/>
+                    </Anchors>
+                </Texture>
             </Layer>
         </Layers>
     </Button>

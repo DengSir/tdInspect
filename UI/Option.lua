@@ -67,6 +67,9 @@ function Addon:SetupOptionFrame()
             inspectCompare = fullToggle(L['Show inspect compare']),
             showOptionButtonInInspect = fullToggle(L['Show option button in inspect gear list']),
             showTalentBackground = fullToggle(L['Show talent background']),
+            showGem = fullToggle(L['Show gem']),
+            showEnchant = fullToggle(L['Show enchant']),
+            showLost = fullToggle(L['Show enchant/gem lost']),
             TDINSPECT_VIEW_TARGET = keybinding(L['View target hotkey']),
             TDINSPECT_VIEW_MOUSEOVER = keybinding(L['View mouseover hotkey']),
             help = {

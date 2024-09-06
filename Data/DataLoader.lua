@@ -12,6 +12,7 @@ ns.Glyphes = {}
 ns.SpellGlyphes = {}
 ns.GlyphSlots = {}
 ns.ItemEnchants = {}
+ns.ItemGemOrder = {}
 
 local strsplittable = strsplittable or function(delimiter, str, pieces)
     return {strsplit(delimiter, str, pieces)}
@@ -174,6 +175,16 @@ function ns.ItemEnchantMake()
             subClassMask = subClassMask,
             invTypeMask = invTypeMask,
         })
+    end
+
+    setfenv(2, {D = Data})
+end
+
+function ns.ItemGemOrderMake()
+    ns.ItemGemOrderMake = nil
+
+    local Data = function(itemId, ...)
+        ns.ItemGemOrder[itemId] = {...}
     end
 
     setfenv(2, {D = Data})

@@ -16,14 +16,27 @@ function EnchantItem:Create(parent)
 end
 
 function EnchantItem:Constructor()
+    self:SetScript('OnClick', self.OnClick)
     self:SetScript('OnEnter', self.OnEnter)
     self:SetScript('OnLeave', GameTooltip_Hide)
     self:SetScript('OnHide', self.Free)
+
+    self.Border:SetVertexColor(0.2, 0.7, 0.2)
 end
 
 function EnchantItem:OnFree()
     self.item = nil
     self.spell = nil
+end
+
+function EnchantItem:OnClick()
+    if self.item then
+        local _, link = GetItemInfo(self.item)
+        HandleModifiedItemClick(link)
+    elseif self.spell then
+        local link = GetSpellLink(self.spell)
+        HandleModifiedItemClick(link)
+    end
 end
 
 function EnchantItem:OnEnter()
@@ -35,18 +48,34 @@ function EnchantItem:OnEnter()
         GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
         GameTooltip:SetSpellByID(self.spell)
         GameTooltip:Show()
+    elseif self.emptyText then
+        GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+        GameTooltip:SetText(self.emptyText)
+        GameTooltip:Show()
     end
 end
 
-function EnchantItem:SetItem(item)
-    self.item = item
+function EnchantItem:Clear()
+    self.item = nil
     self.spell = nil
+    self.emptyText = nil
+end
+
+function EnchantItem:SetItem(item)
+    self:Clear()
+    self.item = item
     self:Update()
 end
 
 function EnchantItem:SetSpell(spell)
+    self:Clear()
     self.spell = spell
-    self.item = nil
+    self:Update()
+end
+
+function EnchantItem:SetEmpty(text)
+    self:Clear()
+    self.emptyText = text
     self:Update()
 end
 
@@ -55,5 +84,7 @@ function EnchantItem:Update()
         self.Icon:SetTexture(GetItemIcon(self.item))
     elseif self.spell then
         self.Icon:SetTexture(select(3, GetSpellInfo(self.spell)))
+    else
+        self.Icon:SetTexture(136509) -- Interface\PaperDoll\UI-Backpack-EmptySlot
     end
 end

@@ -21,7 +21,14 @@ L.HELP_SUMMARY = [[1. 大部分玩家右键菜单（好友，公会，聊天等�
 3. 角色装备列表非当前天赋按钮，点击可切换天赋。]]
 L['View mouseover hotkey'] = '观察鼠标悬停目标快捷键'
 L['View target hotkey'] = '观察目标快捷键'
-L['The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?'] = '按键已绑定到|cffffd100%s|r，确定要覆盖吗？'
+L['The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?'] =
+    '按键已绑定到|cffffd100%s|r，确定要覆盖吗？'
+L['No Enchant'] = '没有附魔'
+L['Belt buckle'] = '腰带扣'
+L['Empty socket'] = '空插槽'
+L['Show enchant'] = '显示附魔'
+L['Show enchant/gem lost'] = '显示附魔/宝石缺失'
+L['Show gem'] = '显示宝石'
 -- @locale-fill@
 
 -- @end-import@

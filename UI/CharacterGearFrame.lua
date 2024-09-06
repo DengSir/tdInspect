@@ -106,5 +106,7 @@ function CharacterGearFrame:UpdateOption(_, key, value)
         end
     elseif key == 'showOptionButtonInCharacter' then
         self:UpdateOptionButton(value)
+    elseif key == 'showGem' or key == 'showEnchant' or key == 'showLost' then
+        self:Update()
     end
 end

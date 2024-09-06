@@ -36,6 +36,6 @@ local tdInspectGearFrameTemplate = {}
 
 ---@class tdInspectSocketItemTemplate : Button
 ---@field Icon Texture
----@field Border Texture
 ---@field CircleMask MaskTexture
+---@field Border Texture
 local tdInspectSocketItemTemplate = {}

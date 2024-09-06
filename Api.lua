@@ -119,6 +119,10 @@ function ns.GetItemGems(link, out)
     return FillGem(out or wipe(cache), link:match('item:%d+:?[-%d]*:?(%d*):?(%d*):?(%d*):?(%d*)'))
 end
 
+function ns.GetItemGem(link, index)
+    return tonumber(select(index, link:match('item:%d+:?[-%d]*:?(%d*):?(%d*):?(%d*):?(%d*)')) or nil)
+end
+
 function ns.GetGlyphIdBySpellId(spellId)
     local d = ns.SpellGlyphes[spellId]
     return d and d.glyphId
@@ -184,6 +188,69 @@ function ns.GetGlyphSlotId(slot)
     return d and d.id
 end
 
+local CAN_ENCHANT_EQUIP_LOCS = {
+    INVTYPE_HEAD = true,
+    INVTYPE_SHOULDER = true,
+    INVTYPE_BODY = true,
+    INVTYPE_CHEST = true,
+    INVTYPE_LEGS = true,
+    INVTYPE_FEET = true,
+    INVTYPE_WRIST = true,
+    INVTYPE_HAND = true,
+    INVTYPE_WEAPON = true,
+    INVTYPE_SHIELD = true,
+    INVTYPE_RANGED = true,
+    INVTYPE_CLOAK = true,
+    INVTYPE_2HWEAPON = true,
+    INVTYPE_ROBE = true,
+    INVTYPE_WEAPONMAINHAND = true,
+    INVTYPE_WEAPONOFFHAND = true,
+}
+
 function ns.IsCanEnchant(item)
+    local itemEquipLoc, _, classId, subClassId = select(4, GetItemInfoInstant(item))
+    if itemEquipLoc == 'INVTYPE_RANGEDRIGHT' or itemEquipLoc == 'INVTYPE_RANGED' then
+        return classId == Enum.ItemClass.Weapon and
+                   (subClassId == Enum.ItemWeaponSubclass.Bows or subClassId == Enum.ItemWeaponSubclass.Guns or
+                       subClassId == Enum.ItemWeaponSubclass.Crossbow)
+    end
+    return CAN_ENCHANT_EQUIP_LOCS[itemEquipLoc]
+end
+
+function ns.IsCanSocket(item)
     local itemEquipLoc = select(4, GetItemInfoInstant(item))
+    if itemEquipLoc ~= 'INVTYPE_WAIST' then
+        return false
+    end
+
+    local numSockets = ns.GetNumItemSockets(item)
+    return not ns.GetItemGem(item, numSockets + 1)
+end
+
+function ns.GetNumItemSockets(item)
+    local itemId = ns.ItemLinkToId(item)
+    local data = ns.ItemGemOrder[itemId]
+    return data and #data or 0
+end
+
+function ns.GetItemSocket(item, index)
+    local itemId = ns.ItemLinkToId(item)
+    local data = ns.ItemGemOrder[itemId]
+    if data then
+        return data[index]
+    end
+end
+
+function ns.GetSocketColor(socketType)
+    if socketType == 2 then
+        return 1, 0.2, 0.2
+    elseif socketType == 4 then
+        return 0.2, 0.8, 0.8
+    elseif socketType == 3 then
+        return 0.8, 0.8, 0
+    elseif socketType == 1 then
+        return 1, 1, 1
+    else
+        return 0.7, 0.7, 0.7
+    end
 end

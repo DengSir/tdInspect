@@ -10,7 +10,11 @@ local ns = select(2, ...)
 local BaseItem = ns.Addon:NewClass('UI.BaseItem', 'Button')
 
 function BaseItem:Constructor()
-    self:SetScript('OnHide', self.UnregisterAllEvents)
+    self:SetScript('OnHide', self.OnHide)
+end
+
+function BaseItem:OnHide()
+    self:UnregisterAllEvents()
 end
 
 function BaseItem:GET_ITEM_INFO_RECEIVED(_, itemId, ok)
@@ -27,6 +31,9 @@ end
 function BaseItem:WaitItem(item)
     self.itemId = ns.ItemLinkToId(item)
     self:RegisterEvent('GET_ITEM_INFO_RECEIVED')
+end
+
+function BaseItem:OnClick()
 end
 
 -- @debug@

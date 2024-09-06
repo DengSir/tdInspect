@@ -6,6 +6,8 @@
 ---@type ns
 local ns = select(2, ...)
 
+local L = ns.L
+
 ---@class UI.GearItem : UI.BaseItem
 local GearItem = ns.Addon:NewClass('UI.GearItem', ns.UI.BaseItem)
 
@@ -14,10 +16,12 @@ local SPACING = 3
 ---@param parent UI.GearFrame
 ---@param id number
 ---@param slotName string
-function GearItem:Constructor(parent, id, slotName)
+function GearItem:Constructor(parent, id, slotName, inspect)
+    self.inspect = inspect
     self.parent = parent
     self:SetID(id)
     self:SetSize(1, 17)
+    self:Hide()
 
     ---@type Frame|BackdropTemplate
     local Slot = CreateFrame('Frame', nil, self, 'BackdropTemplate')
@@ -57,19 +61,28 @@ function GearItem:Constructor(parent, id, slotName)
     self.ItemLevel = ItemLevel
     self.Name = Name
 
+    self:SetScript('OnClick', self.OnClick)
     self:SetScript('OnEnter', self.OnEnter)
     self:SetScript('OnLeave', self.OnLeave)
-    self:SetScript('OnHide', self.OnHide)
 
     self.UpdateTooltip = self.OnEnter
 end
 
-function GearItem:SetItem(item, inspect)
-    self.inspect = inspect
-    self.item = item
+function GearItem:OnHide()
+    self:UnregisterAllEvents()
     self:Hide()
-    self:Show()
+end
+
+function GearItem:SetItem(item)
+    self.item = item
     self:Update()
+end
+
+function GearItem:OnClick()
+    if self.item then
+        local _, link = GetItemInfo(self.item)
+        HandleModifiedItemClick(link)
+    end
 end
 
 function GearItem:OnEnter()
@@ -92,15 +105,14 @@ function GearItem:OnLeave()
     GameTooltip:Hide()
 end
 
-function GearItem:OnHide()
-end
-
 function GearItem:Update()
+    self:Hide()
     self.Name:SetText('')
     self.ItemLevel:SetText('')
     self.SlotText:SetTextColor(0.6, 0.6, 0.6)
     self.Slot:SetBackdropBorderColor(0.6, 0.6, 0.6, 0.2)
     self.Slot:SetBackdropColor(0.6, 0.6, 0.6, 0.2)
+    self:Show()
 
     if not self.item then
         return
@@ -112,30 +124,50 @@ function GearItem:Update()
     if name then
         local enchant = ns.GetItemEnchantInfo(self.item)
         if enchant then
-            local tex = ns.UI.EnchantItem:Alloc(self)
-            if enchant.itemId then
-                tex:SetItem(enchant.itemId)
-            elseif enchant.spellId then
-                tex:SetSpell(enchant.spellId)
-            end
-            tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
-
-            socketWidth = socketWidth + tex:GetWidth()
-        else
-        end
-
-        for i = 1, 3 do
-            local _, gemLink = GetItemGem(self.item, i)
-            if gemLink then
-
-                socketWidth = socketWidth + SPACING
-
-                local tex = ns.UI.GemItem:Alloc(self)
-                tex:SetItem(gemLink)
+            if ns.Addon.db.profile.showEnchant then
+                local tex = ns.UI.EnchantItem:Alloc(self)
+                if enchant.itemId then
+                    tex:SetItem(enchant.itemId)
+                elseif enchant.spellId then
+                    tex:SetSpell(enchant.spellId)
+                end
                 tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
 
                 socketWidth = socketWidth + tex:GetWidth()
             end
+        elseif ns.Addon.db.profile.showLost and ns.IsCanEnchant(self.item) then
+            local tex = ns.UI.EnchantItem:Alloc(self)
+            tex:SetEmpty(L['No Enchant'])
+            tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
+
+            socketWidth = socketWidth + tex:GetWidth()
+        end
+
+        if ns.Addon.db.profile.showGem then
+            for i = 1, 3 do
+                local gemId = ns.GetItemGem(self.item, i)
+                local socketType = ns.GetItemSocket(self.item, i)
+
+                if socketType or gemId then
+                    socketWidth = socketWidth + SPACING
+
+                    local tex = ns.UI.GemItem:Alloc(self)
+                    tex:SetSocketItem(socketType, gemId)
+                    tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
+
+                    socketWidth = socketWidth + tex:GetWidth()
+                end
+            end
+        end
+
+        if ns.Addon.db.profile.showLost and ns.IsCanSocket(self.item) then
+            socketWidth = socketWidth + SPACING
+
+            local tex = ns.UI.GemItem:Alloc(self)
+            tex:SetSocketItem(-1, nil)
+            tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
+
+            socketWidth = socketWidth + tex:GetWidth()
         end
 
         local r, g, b = GetItemQualityColor(quality)
@@ -147,7 +179,6 @@ function GearItem:Update()
         self.ItemLevel:SetText(itemLevel)
     else
         self:WaitItem(self.item)
-
     end
 
     local slotWidth = self.SlotText:GetStringWidth() + 10

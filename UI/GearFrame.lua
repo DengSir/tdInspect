@@ -36,11 +36,12 @@ local BG_PADDING = 4
 ---@class UI.GearFrame : AceEvent-3.0, Frame, tdInspectGearFrameTemplate
 local GearFrame = ns.Addon:NewClass('UI.GearFrame', 'Frame')
 
-function GearFrame:Create(parent)
-    return self:Bind(CreateFrame('Frame', nil, parent, 'tdInspectGearFrameTemplate'))
+function GearFrame:Create(parent, inspect)
+    return self:Bind(CreateFrame('Frame', nil, parent, 'tdInspectGearFrameTemplate'), inspect)
 end
 
-function GearFrame:Constructor()
+function GearFrame:Constructor(_, inspect)
+    self.inspect = inspect
     self:Hide()
     self:SetScript('OnSizeChanged', self.OnSizeChanged)
 
@@ -59,7 +60,7 @@ function GearFrame:Constructor()
     self.columnWidths = {}
 
     for i, v in ipairs(EQUIP_SLOTS) do
-        local item = ns.UI.GearItem:New(self, v.id, v.name)
+        local item = ns.UI.GearItem:New(self, v.id, v.name, self.inspect)
         local y = -(i - 1) * (item:GetHeight() + SPACING_V) - 80
         item:SetPoint('TOPLEFT', PADDING, y)
         self.gears[v.id] = item

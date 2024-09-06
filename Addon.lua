@@ -56,6 +56,9 @@ function Addon:OnInitialize()
             showTalentBackground = true,
             showOptionButtonInCharacter = true,
             showOptionButtonInInspect = true,
+            showGem = true,
+            showEnchant = true,
+            showLost = true,
         },
     }
 
@@ -173,7 +176,7 @@ end
 
 function Addon:GetInspectGearFrame()
     if not self.InspectGearFrame then
-        self.InspectGearFrame = ns.UI.InspectGearFrame:Create(InspectPaperDollFrame)
+        self.InspectGearFrame = ns.UI.InspectGearFrame:Create(InspectPaperDollFrame, true)
         self.InspectGearFrame:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', -33, -12)
     end
     return self.InspectGearFrame
