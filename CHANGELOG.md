@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/DengSir/tdInspect/compare/v2.2.0...v2.2.1) (2024-09-07)
+
+
+### Bug Fixes
+
+* error ([933e1fb](https://github.com/DengSir/tdInspect/commit/933e1fb8bb56f17b03f428db791df4963a8484b4))
+
+
+
 # [2.2.0](https://github.com/DengSir/tdInspect/compare/v2.1.13...v2.2.0) (2024-09-07)
 
 
