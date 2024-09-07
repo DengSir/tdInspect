@@ -1,3 +1,27 @@
+# [2.2.0](https://github.com/DengSir/tdInspect/compare/v2.1.13...v2.2.0) (2024-09-07)
+
+
+### Bug Fixes
+
+* talent index ([6bed6ff](https://github.com/DengSir/tdInspect/commit/6bed6ff8f2f265d4f65f8bbb116879c25722ce50))
+* talent index ([6199bd1](https://github.com/DengSir/tdInspect/commit/6199bd14634ca3f2170b7185312e4689785dce9b))
+* wrong merge ([2234e88](https://github.com/DengSir/tdInspect/commit/2234e8818dfc1873816e6d6a6f52c5fda8409c2c))
+
+
+### Features
+
+* 点击非当前天赋，可切换天赋 ([22dda59](https://github.com/DengSir/tdInspect/commit/22dda596b9aea05449feff27353fc777d7a37eea))
+* 更新Locale ([ba081fa](https://github.com/DengSir/tdInspect/commit/ba081fa35c946f9830f8c7d9c5924906c7af6384))
+* 更新Locale ([288620c](https://github.com/DengSir/tdInspect/commit/288620cd2ac4a514a16cb4734f3666f8311a79a6))
+* 添加缺失附魔和宝石功能 ([89aa1d9](https://github.com/DengSir/tdInspect/commit/89aa1d9692bc80a4fe362aa8cbc8191c1c1302e4))
+* 添加一些设置 ([6e91516](https://github.com/DengSir/tdInspect/commit/6e91516833a169622c5ff57905b538cb0ca9db45))
+* 添加一些设置 ([5450f8f](https://github.com/DengSir/tdInspect/commit/5450f8f0c8f3b754b8db19a9102ca751e3a05a15))
+* 添加装备列表 ([68d0304](https://github.com/DengSir/tdInspect/commit/68d03049034b008292cab89430cbec12a63d4714))
+* 移除格子里的装等显示 ([4599d45](https://github.com/DengSir/tdInspect/commit/4599d45ed5b06142cdfa49797e9223ec422d166f))
+* 装备列表添加当前天赋背景 ([2a319b9](https://github.com/DengSir/tdInspect/commit/2a319b9937c6abc8e2f07439c2455dc5594b4a4a))
+
+
+
 ## [2.1.13](https://github.com/DengSir/tdInspect/compare/v2.1.11...v2.1.13) (2024-09-04)
 
 
