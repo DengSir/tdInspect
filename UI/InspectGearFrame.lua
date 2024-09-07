@@ -43,7 +43,8 @@ end
 
 function InspectGearFrame:UNIT_INVENTORY_CHANGED(_, unit)
     if self.unit == unit then
-        self:Update()
+        self:UpdateGears()
+        self:UpdateItemLevel()
     end
 end
 
@@ -51,27 +52,27 @@ function InspectGearFrame:UpdateItemLevel()
     self:SetItemLevel(Inspect:GetItemLevel())
 end
 
-function InspectGearFrame:Update()
-    self:StartLayout()
-
+function InspectGearFrame:UpdateGears()
     for id, gear in pairs(self.gears) do
         gear:SetItem(Inspect:GetItemLink(id))
     end
+end
 
-    local classFileName = Inspect:GetUnitClassFileName()
+function InspectGearFrame:UpdateDataSource()
     local dataSource = Inspect:GetDataSource()
     local lastUpdate = Inspect:GetLastUpdate()
 
-    self:SetClass(classFileName)
-    self:SetUnit(Inspect:GetUnit())
-    self:SetLevel(Inspect:GetUnitLevel())
     self.DataSource:SetFormattedText('%s|cffffffff%s|r  %s|cffffffff%s|r', L['Data source:'], dataSource,
                                      L['Last update:'], FriendsFrame_GetLastOnline(lastUpdate))
+end
+
+function InspectGearFrame:Update()
+    self:SetClass(Inspect:GetUnitClassFileName())
+    self:SetUnit(Inspect:GetUnit())
+    self:SetLevel(Inspect:GetUnitLevel())
+    self:UpdateGears()
     self:UpdateItemLevel()
-
     self:UpdateTalents()
-
-    self:EndLayout()
 end
 
 function InspectGearFrame:GetNumTalentGroups()

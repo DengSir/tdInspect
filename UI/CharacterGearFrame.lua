@@ -13,6 +13,8 @@ function CharacterGearFrame:Constructor()
     self:SetScript('OnShow', self.OnShow)
     self:SetScript('OnHide', self.OnHide)
 
+    self:SetUnit('player')
+
     self:UpdateOptionButton(ns.Addon.db.profile.showOptionButtonInCharacter)
 
     self.Talent2:SetScript('OnClick', function(button)
@@ -25,6 +27,8 @@ end
 function CharacterGearFrame:OnShow()
     self:RegisterEvent('UNIT_INVENTORY_CHANGED')
     self:RegisterEvent('UNIT_LEVEL', 'UNIT_INVENTORY_CHANGED')
+    self:RegisterEvent('UNIT_MODEL_CHANGED')
+    self:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateItemLevel')
     self:RegisterMessage('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
     self:Update()
 
@@ -45,21 +49,27 @@ function CharacterGearFrame:UNIT_INVENTORY_CHANGED(_, unit)
     end
 end
 
-function CharacterGearFrame:Update()
-    self:StartLayout()
-
-    self:SetUnit('player')
-    self:SetClass(UnitClassBase('player'))
-    self:SetLevel(UnitLevel('player'))
-    self:SetItemLevel(select(2, GetAverageItemLevel()))
-
-    for id, gear in pairs(self.gears) do
-        gear:SetItem(GetInventoryItemLink('player', id), false)
+function CharacterGearFrame:UNIT_MODEL_CHANGED(_, unit)
+    if unit == 'player' then
+        self:UpdateUnit()
     end
+end
 
+function CharacterGearFrame:UpdateGears()
+    for id, gear in pairs(self.gears) do
+        gear:SetItem(GetInventoryItemLink('player', id))
+    end
+end
+
+function CharacterGearFrame:UpdateItemLevel()
+    self:SetItemLevel(select(2, GetAverageItemLevel()))
+end
+
+function CharacterGearFrame:Update()
+    self:UpdateUnit()
+    self:UpdateGears()
+    self:UpdateItemLevel()
     self:UpdateTalents()
-
-    self:EndLayout()
 end
 
 function CharacterGearFrame:GetNumTalentGroups()

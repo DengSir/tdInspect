@@ -65,6 +65,9 @@ function GearFrame:Constructor(_, inspect)
         item:SetPoint('TOPLEFT', PADDING, y)
         self.gears[v.id] = item
     end
+
+    self:SetUnit('player')
+    self:SetClass(UnitClassBase('player'))
 end
 
 function GearFrame:ApplyColumnWidth(key, width)
@@ -88,6 +91,7 @@ end
 function GearFrame:OnUpdate()
     self:SetScript('OnUpdate', nil)
     self:UpdateSize()
+    wipe(self.columnWidths)
 end
 
 function GearFrame:UpdateSize()
@@ -102,33 +106,44 @@ function GearFrame:UpdateSize()
     self:SetWidth(max(width - SPACING_V + PADDING * 2, 165 + self.Name:GetStringWidth()))
 end
 
-function GearFrame:StartLayout()
-    wipe(self.columnWidths)
-end
-
 function GearFrame:EndLayout()
     self:RequestUpdateSize()
 end
 
 function GearFrame:SetClass(class)
     self.class = class
+    self:UpdateClass()
+end
 
-    if class then
-        local color = RAID_CLASS_COLORS[class]
-        self.Name:SetTextColor(color.r, color.g, color.b)
-        self:SetBackdropBorderColor(color.r, color.g, color.b)
-        self.Portrait.PortraitRingQuality:SetVertexColor(color.r, color.g, color.b)
-        self.Portrait.LevelBorder:SetVertexColor(color.r, color.g, color.b)
+function GearFrame:UpdateClass()
+    if not self.class then
+        return
     end
+
+    local color = RAID_CLASS_COLORS[self.class]
+    self.Name:SetTextColor(color.r, color.g, color.b)
+    self:SetBackdropBorderColor(color.r, color.g, color.b)
+    self.Portrait.PortraitRingQuality:SetVertexColor(color.r, color.g, color.b)
+    self.Portrait.LevelBorder:SetVertexColor(color.r, color.g, color.b)
 end
 
 function GearFrame:SetUnit(unit, name)
+    if unit and not UnitExists(unit) then
+        unit = nil
+    end
     self.unit, self.name = unit, name
-
-    self.Name:SetText(Ambiguate(name or ns.UnitName(unit), 'none'))
+    self:UpdateUnit()
 
     if unit then
-        SetPortraitTexture(self.Portrait.Portrait, unit)
+        self:SetClass(UnitClassBase(unit))
+    end
+end
+
+function GearFrame:UpdateUnit()
+    self.Name:SetText(Ambiguate(self.name or ns.UnitName(self.unit), 'none'))
+
+    if self.unit then
+        SetPortraitTexture(self.Portrait.Portrait, self.unit)
         self.Portrait.Portrait:SetTexCoord(0, 1, 0, 1)
     elseif self.class then
         self.Portrait.Portrait:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
