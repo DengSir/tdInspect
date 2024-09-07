@@ -141,7 +141,7 @@ function Addon:TDINSPECT_OPTION_CHANGED(_, key, value)
                 self.CharacterGearFrame:Hide()
             end
         end
-    elseif key == 'inspectGear' then
+    elseif key == 'inspectGear' and InspectPaperDollFrame then
         if value then
             if InspectPaperDollFrame:IsShown() then
                 self:OpenInspectGearFrame()
@@ -151,7 +151,7 @@ function Addon:TDINSPECT_OPTION_CHANGED(_, key, value)
         elseif self.InspectGearFrame then
             self.InspectGearFrame:Hide()
         end
-    elseif key == 'inspectCompare' then
+    elseif key == 'inspectCompare' and InspectPaperDollFrame then
         if value then
             if InspectPaperDollFrame:IsShown() then
                 self:OpenInspectGearFrame()
