@@ -1,3 +1,12 @@
+## [2.2.2](https://github.com/DengSir/tdInspect/compare/v2.2.1...v2.2.2) (2024-09-08)
+
+
+### Bug Fixes
+
+* 缺少lib ([0452e24](https://github.com/DengSir/tdInspect/commit/0452e24c037ec53227c507e87f84a75fe2215e49))
+
+
+
 ## [2.2.1](https://github.com/DengSir/tdInspect/compare/v2.2.0...v2.2.1) (2024-09-07)
 
 
