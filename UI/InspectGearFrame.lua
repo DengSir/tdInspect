@@ -79,11 +79,12 @@ function InspectGearFrame:UpdateDataSource()
 end
 
 function InspectGearFrame:Update()
-    self:SetClass(Inspect:GetUnitClassFileName())
     self:SetUnit(Inspect:GetUnit())
+    self:SetClass(Inspect:GetUnitClassFileName())
 
     self:UpdateName()
     self:UpdatePortrait()
+    self:UpdateClass()
     self:UpdateLevel()
     self:UpdateGears()
     self:UpdateItemLevel()
