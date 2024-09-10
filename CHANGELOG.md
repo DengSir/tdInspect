@@ -1,3 +1,12 @@
+## [2.2.4](https://github.com/DengSir/tdInspect/compare/v2.2.3...v2.2.4) (2024-09-10)
+
+
+### Bug Fixes
+
+* 观察面板错误的提示添加插槽 ([015acd1](https://github.com/DengSir/tdInspect/commit/015acd1dedfcddf9fbcd934346a8f89d4aec2010))
+
+
+
 ## [2.2.3](https://github.com/DengSir/tdInspect/compare/v2.2.2...v2.2.3) (2024-09-10)
 
 
