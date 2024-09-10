@@ -4,6 +4,7 @@ if not L then
 end
 -- @locale:language=enUS@
 L = L or {}
+L["Add socket"] = true
 L["Data source:"] = true
 L["Empty socket"] = true
 L["Help"] = true
