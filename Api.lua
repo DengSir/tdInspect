@@ -229,7 +229,7 @@ function ns.IsCanSocket(item, inspect)
     if itemEquipLoc == 'INVTYPE_WAIST' then
 
     elseif itemEquipLoc == 'INVTYPE_WRIST' or itemEquipLoc == 'INVTYPE_HAND' then
-        if not inspect and not ns.IsSpellKnown(2018) then -- 锻造
+        if inspect or not ns.IsSpellKnown(2018) then -- 锻造
             return false
         end
     else
