@@ -1,3 +1,18 @@
+## [2.2.3](https://github.com/DengSir/tdInspect/compare/v2.2.2...v2.2.3) (2024-09-10)
+
+
+### Bug Fixes
+
+* 计算装等时，有可能报错 ([6fd42d6](https://github.com/DengSir/tdInspect/commit/6fd42d6773ec4147f04c7cc504641ca2f2b6511b))
+* 装备列表宽度有时不正确的问题 ([b24bdb1](https://github.com/DengSir/tdInspect/commit/b24bdb19ca5812939c428d9f2503729584c450f3))
+
+
+### Features
+
+* 自己的装备列表，可以提醒附魔戒指和锻造打孔 ([86f07e9](https://github.com/DengSir/tdInspect/commit/86f07e9834c600cb4c2766e83b6c8a020f4eb711))
+
+
+
 ## [2.2.2](https://github.com/DengSir/tdInspect/compare/v2.2.1...v2.2.2) (2024-09-08)
 
 
