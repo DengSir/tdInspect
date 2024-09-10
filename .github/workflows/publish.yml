@@ -26,3 +26,16 @@ jobs:
           body_path: changelog.txt
           files: |
             *.zip
+
+      - name: Release to gitee
+        uses: nicennnnnnnlee/action-gitee-release@v1.0.5
+        with:
+          gitee_owner: DengSir
+          gitee_repo: ${{ github.repository }}
+          gitee_token: ${{ secrets.GITEE_TOKEN }}
+          gitee_tag_name: ${{ github.ref }}
+          gitee_release_name: ${{ github.ref }}
+          gitee_release_notes: "https://github.com/DengSir/${{ github.repository }}/releases/tag/${{ github.ref }}"
+          gitee_upload_retry_times:  3
+          gitee_files: |
+            *.zip
