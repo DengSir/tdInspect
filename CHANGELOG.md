@@ -1,3 +1,12 @@
+## [2.2.5](https://github.com/DengSir/tdInspect/compare/v2.2.4...v2.2.5) (2024-09-11)
+
+
+### Bug Fixes
+
+* 切换天赋按钮不刷新的问题 ([3d8e85c](https://github.com/DengSir/tdInspect/commit/3d8e85c92bf3c970122f110e5fdc00f500f79601))
+
+
+
 ## [2.2.4](https://github.com/DengSir/tdInspect/compare/v2.2.3...v2.2.4) (2024-09-10)
 
 
