@@ -28,6 +28,8 @@ function CharacterGearFrame:OnShow()
     self:RegisterEvent('UNIT_INVENTORY_CHANGED')
     self:RegisterEvent('UNIT_LEVEL')
     self:RegisterEvent('UNIT_MODEL_CHANGED')
+    self:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateTalents')
+    self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'UpdateTalents')
     self:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateItemLevel')
     self:RegisterMessage('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
 
