@@ -1,3 +1,12 @@
+## [2.2.6](https://github.com/DengSir/tdInspect/compare/v2.2.5...v2.2.6) (2024-11-22)
+
+
+### Features
+
+* 优化自己装备的鼠标提示 ([8ac2d8f](https://github.com/DengSir/tdInspect/commit/8ac2d8f7b7707f1b89b080ce00a76691b4131ddd))
+
+
+
 ## [2.2.5](https://github.com/DengSir/tdInspect/compare/v2.2.4...v2.2.5) (2024-09-11)
 
 
