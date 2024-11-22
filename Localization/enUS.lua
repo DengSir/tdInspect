@@ -13,6 +13,8 @@ L["iLvl:"] = true
 L["Inspect mouseover"] = true
 L["Inspect target"] = true
 L["Last update:"] = true
+L["Major"] = true
+L["Minor"] = true
 L["No Enchant"] = true
 L["Show character gear list"] = true
 L["Show enchant"] = true
@@ -51,6 +53,8 @@ L['Show enchant'] = true
 L['Show enchant/gem lost'] = true
 L['Show gem'] = true
 L['Add socket'] = true
+L.Major = true
+L.Minor = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
