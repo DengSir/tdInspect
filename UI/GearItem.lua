@@ -89,12 +89,14 @@ function GearItem:OnEnter()
     local r, g, b = self.Slot:GetBackdropColor()
     self.Slot:SetBackdropColor(r, g, b, 0.7)
 
-    if self.item then
+    if not self.inspect then
+        GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+        GameTooltip:SetInventoryItem('player', self:GetID())
+        GameTooltip:Show()
+    elseif self.item then
         GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
         GameTooltip:SetHyperlink(self.item)
-        if self.inspect then
-            ns.FixInspectItemTooltip(GameTooltip, self:GetID(), self.item)
-        end
+        ns.FixInspectItemTooltip(GameTooltip, self:GetID(), self.item)
         GameTooltip:Show()
     end
 end
