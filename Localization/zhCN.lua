@@ -29,6 +29,8 @@ L['Show enchant'] = '显示附魔'
 L['Show enchant/gem lost'] = '显示附魔/宝石缺失'
 L['Show gem'] = '显示宝石'
 L['Add socket'] = '添加插槽'
+L.Major = '主'
+L.Minor = '副'
 -- @locale-fill@
 
 -- @end-import@

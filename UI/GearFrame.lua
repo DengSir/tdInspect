@@ -200,21 +200,25 @@ function GearFrame:UpdateTalents()
     local activeGroup = self:GetActiveTalentGroup()
     if numGroups <= 1 then
         self.Talent2:Hide()
-        self:UpdateTalent(self.Talent1, activeGroup, true)
+        self:UpdateTalent(self.Talent1, activeGroup, true, true)
     else
         self:UpdateTalent(self.Talent1, activeGroup, true)
         self:UpdateTalent(self.Talent2, activeGroup == 1 and 2 or 1, false)
     end
 end
 
-function GearFrame:UpdateTalent(button, group, isActive)
+function GearFrame:UpdateTalent(button, group, isActive, onlyOne)
     button.id = group
     button.isActive = isActive
 
     local name, icon, bg, points = self:GetTalentInfo(group)
     if name then
         button.Icon:SetTexture(icon)
-        button.Text:SetText(name)
+        if onlyOne then
+            button.Text:SetText(name)
+        else
+            button.Text:SetFormattedText('%s: %s', group == 1 and L.Major or L.Minor, name)
+        end
         button.Point:SetText(points)
         button:Show()
     else
