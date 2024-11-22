@@ -1,5 +1,5 @@
 /**
- * @File   : ItemGems.ts
+ * @File   : ItemGemsGen.ts
  * @Author : Dencer (tdaddon@163.com)
  * @Link   : https://dengsir.github.io
  * @Date   : 9/5/2024, 7:10:45 PM
@@ -19,7 +19,9 @@ class App {
 
         items.forEach((item) => {
             item.SocketType = item.SocketType.map((x: string) => Number.parseInt(x) || 0).filter((x: number) => x);
+            item.ID = Number.parseInt(item.ID) || 0;
         });
+        items.sort((a, b) => a.ID - b.ID);
 
         console.log(output);
         const file = Deno.openSync(output, { write: true, create: true, truncate: true });

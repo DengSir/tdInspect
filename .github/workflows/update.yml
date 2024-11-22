@@ -44,6 +44,9 @@ jobs:
       - name: Generate itemenchant
         run: deno task itemenchant
 
+      - name: Generate itemgems
+        run: deno task itemgems
+
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
