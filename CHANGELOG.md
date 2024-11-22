@@ -1,3 +1,13 @@
+## [2.2.7](https://github.com/DengSir/tdInspect/compare/v2.2.6...v2.2.7) (2024-11-22)
+
+
+### Features
+
+* 添加主副天赋标记 ([0539184](https://github.com/DengSir/tdInspect/commit/0539184f9ac8a8008c826370c63e9fa8488c660e))
+* update script ([9cbb6bf](https://github.com/DengSir/tdInspect/commit/9cbb6bf7ba1ffeaae4898eb8a89f57d87eb6584e))
+
+
+
 ## [2.2.6](https://github.com/DengSir/tdInspect/compare/v2.2.5...v2.2.6) (2024-11-22)
 
 
