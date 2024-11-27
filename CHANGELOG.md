@@ -1,3 +1,12 @@
+# [2.3.0](https://github.com/DengSir/tdInspect/compare/v2.2.7...v2.3.0) (2024-11-27)
+
+
+### Features
+
+* support Vanilla ([f458979](https://github.com/DengSir/tdInspect/commit/f458979102d2c69d93f8783e7f30fbc8bc449d23))
+
+
+
 ## [2.2.7](https://github.com/DengSir/tdInspect/compare/v2.2.6...v2.2.7) (2024-11-22)
 
 
