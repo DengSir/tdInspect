@@ -19,7 +19,8 @@
     <Script file="Core\ItemLevelCalculator.lua" />
     <Script file="Core\Encoder.lua" />
     <Script file="Core\Inspect.lua" />
-    <Script file="Core\Hook.lua" />
+    <Script file="Core\Hook.lua" build="wlk" />
+    <Script file="Core\Hook-Vanilla.lua" build="classic" />
     <Script file="Core\Talent.lua" />
     <Script file="Core\Glyph.lua" />
     <Script file="Core\Ala.lua" />

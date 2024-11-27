@@ -108,7 +108,7 @@ function CharacterGearFrame:GetTalentInfo(group)
     local maxBg
     local counts = {}
     for i = 1, GetNumTalentTabs() do
-        local name, icon, pointsSpent, bg = GetTalentTabInfo(i, nil, nil, group)
+        local name, icon, pointsSpent, bg = ns.GetTalentTabInfo(i, nil, nil, group)
         if pointsSpent > maxPoint then
             maxPoint = pointsSpent
             maxName = name
