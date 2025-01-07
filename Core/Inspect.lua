@@ -321,7 +321,7 @@ function Inspect:GetNumTalentGroups()
 end
 
 function Inspect:GetActiveTalentGroup()
-    return self.db.activeGroup
+    return self.db.activeGroup or 1
 end
 
 function Inspect:GetUnitTalent(group)

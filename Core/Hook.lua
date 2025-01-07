@@ -66,6 +66,12 @@ do
 end
 
 local function FindDropdownItem(dropdown, text)
+    if type(text) == 'number' then
+        local dropdownItem = _G[dropdown:GetName() .. 'Button' .. text]
+        if dropdownItem:IsShown() then
+            return text, dropdownItem
+        end
+    end
     local name = dropdown:GetName()
     for i = 1, UIDROPDOWNMENU_MAXBUTTONS do
         local dropdownItem = _G[name .. 'Button' .. i]
@@ -110,7 +116,7 @@ hooksecurefunc('UnitPopup_ShowMenu', function(dropdownMenu, which, _, name)
         if which == 'FRIEND' or which == 'TEAM' then
             FillToDropdownAfter(InspectButton, WHISPER, 1)
         elseif which == 'RAID' then
-            FillToDropdownAfter(InspectButton, name, 1)
+            FillToDropdownAfter(InspectButton, UNIT_FRAME_DROPDOWN_SUBSECTION_TITLE_INTERACT, 1)
         end
     end
 end)
