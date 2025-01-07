@@ -78,7 +78,17 @@ function CharacterGearFrame:UpdateGears()
 end
 
 function CharacterGearFrame:UpdateItemLevel()
-    self:SetItemLevel(select(2, GetAverageItemLevel()))
+    local itemLevel = select(2, GetAverageItemLevel())
+    if itemLevel <= 0 then
+        if not self.itemLevelCalculator then
+            self.itemLevelCalculator = ns.ItemLevelCalculator:New(function(slot)
+                return GetInventoryItemLink('player', slot)
+            end)
+        end
+
+        itemLevel = self.itemLevelCalculator:GetItemLevel()
+    end
+    self:SetItemLevel(itemLevel)
 end
 
 function CharacterGearFrame:UpdateLevel()
