@@ -115,7 +115,18 @@ function GearFrame:UpdateSize()
             self[key]:SetWidth(v)
         end
     end
-    self:SetWidth(max(width - SPACING_V + PADDING * 2, 165 + self.Name:GetStringWidth()))
+
+    local widthGear = width - SPACING_V + PADDING * 2
+    local widthHeader = 90 + max(self.Name:GetStringWidth(), self.ItemLevel:GetStringWidth())
+
+    if self.Talent1:IsShown() then
+        widthHeader = widthHeader + 48
+    end
+    if self.Talent2:IsShown() then
+        widthHeader = widthHeader + 38
+    end
+
+    self:SetWidth(max(widthGear, widthHeader))
 end
 
 function GearFrame:SetClass(class)

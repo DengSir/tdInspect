@@ -30,7 +30,8 @@ local UnitRace = UnitRace
 
 local HideUIPanel = LibStub('LibShowUIPanel-1.0').HideUIPanel
 
-local ALA_PREFIX = 'ATEADD'
+local ALA_PREFIXES = {'EMUCOM', 'ATEADD', 'ATECOM', 'EMUADD'}
+local ALA_PREFIX = ALA_PREFIXES[1]
 local PROTO_PREFIX = 'tdInspect'
 local PROTO_VERSION = 2
 
@@ -112,8 +113,10 @@ function Inspect:OnEnable()
 
     self:RegisterEvent('GET_ITEM_INFO_RECEIVED')
     self:RegisterEvent('INSPECT_READY')
-    self:RegisterComm(ALA_PREFIX, 'OnAlaCommand')
     self:RegisterComm(PROTO_PREFIX, OnComm)
+    for _, v in ipairs(ALA_PREFIXES) do
+        self:RegisterComm(v, 'OnAlaCommand')
+    end
 end
 
 function Inspect:SetUnit(unit, name)
