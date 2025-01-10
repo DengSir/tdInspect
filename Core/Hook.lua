@@ -20,13 +20,14 @@ local FriendsDropDown = FriendsDropDown
 
 local function GetDropdownUnit()
     local menu = UIDROPDOWNMENU_INIT_MENU
-    if not menu or not (menu == FriendsDropDown or menu == PVPDropDown) then
+    if not menu or
+        not (menu == FriendsDropDown or menu == PVPDropDown or menu == (ChannelFrame and ChannelFrame.Dropdown)) then
         return
     end
 
     if menu.which == 'FRIEND' then
         return nil, ns.GetFullName(menu.chatTarget)
-    elseif menu.which == 'RAID' or menu.which == 'TEAM' then
+    elseif menu.which == 'RAID' or menu.which == 'TEAM' or menu.which == 'CHAT_ROSTER' then
         if menu.unit then
             return menu.unit, ns.UnitName(menu.unit)
         elseif menu.name then
@@ -113,7 +114,7 @@ hooksecurefunc('UnitPopup_ShowMenu', function(dropdownMenu, which, _, name)
         return
     end
     if UIDROPDOWNMENU_MENU_LEVEL == 1 and not UnitIsUnit('player', Ambiguate(name, 'none')) then
-        if which == 'FRIEND' or which == 'TEAM' then
+        if which == 'FRIEND' or which == 'TEAM' or which == 'CHAT_ROSTER' then
             FillToDropdownAfter(InspectButton, WHISPER, 1)
         elseif which == 'RAID' then
             FillToDropdownAfter(InspectButton, UNIT_FRAME_DROPDOWN_SUBSECTION_TITLE_INTERACT, 1)
