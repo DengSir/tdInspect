@@ -1,3 +1,18 @@
+## [2.3.1](https://github.com/DengSir/tdInspect/compare/v2.3.0...v2.3.1) (2025-01-10)
+
+
+### Bug Fixes
+
+* 接入更多TalentEmu的prefix ([5bc008f](https://github.com/DengSir/tdInspect/commit/5bc008f96c19fd10974dccc4afd3acf6e93705f3))
+* item level ([aef6a74](https://github.com/DengSir/tdInspect/commit/aef6a74484d94e8ea3245d425eccdbda86995efb))
+
+
+### Features
+
+* wlk支持频道界面的menu ([09508b4](https://github.com/DengSir/tdInspect/commit/09508b452ba428d7cb71fcf754ed682e5f80bbfa))
+
+
+
 # [2.3.0](https://github.com/DengSir/tdInspect/compare/v2.2.7...v2.3.0) (2024-11-27)
 
 
