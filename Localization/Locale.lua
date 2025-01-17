@@ -336,54 +336,32 @@ end)
 T('ruRU', function(L)
 -- @locale:language=ruRU@
 L = L or {}
---[[Translation missing --]]
---[[ L["Add socket"] = "Add socket"--]] 
---[[Translation missing --]]
---[[ L["Data source:"] = "Data source:"--]] 
---[[Translation missing --]]
---[[ L["Empty socket"] = "Empty socket"--]] 
---[[Translation missing --]]
---[[ L["Help"] = "Help"--]] 
---[[Translation missing --]]
---[[ L["HELP_SUMMARY"] = "HELP_SUMMARY"--]] 
---[[Translation missing --]]
---[[ L["iLvl:"] = "iLvl:"--]] 
---[[Translation missing --]]
---[[ L["Inspect mouseover"] = "Inspect mouseover"--]] 
---[[Translation missing --]]
---[[ L["Inspect target"] = "Inspect target"--]] 
---[[Translation missing --]]
---[[ L["Last update:"] = "Last update:"--]] 
---[[Translation missing --]]
---[[ L["Major"] = "Major"--]] 
---[[Translation missing --]]
---[[ L["Minor"] = "Minor"--]] 
---[[Translation missing --]]
---[[ L["No Enchant"] = "No Enchant"--]] 
---[[Translation missing --]]
---[[ L["Show character gear list"] = "Show character gear list"--]] 
---[[Translation missing --]]
---[[ L["Show enchant"] = "Show enchant"--]] 
---[[Translation missing --]]
---[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
---[[Translation missing --]]
---[[ L["Show gem"] = "Show gem"--]] 
---[[Translation missing --]]
---[[ L["Show inspect compare"] = "Show inspect compare"--]] 
---[[Translation missing --]]
---[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
---[[Translation missing --]]
---[[ L["Show option button in character gear list"] = "Show option button in character gear list"--]] 
---[[Translation missing --]]
---[[ L["Show option button in inspect gear list"] = "Show option button in inspect gear list"--]] 
---[[Translation missing --]]
---[[ L["Show talent background"] = "Show talent background"--]] 
---[[Translation missing --]]
---[[ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"--]] 
---[[Translation missing --]]
---[[ L["View mouseover hotkey"] = "View mouseover hotkey"--]] 
---[[Translation missing --]]
---[[ L["View target hotkey"] = "View target hotkey"--]]
+L["Add socket"] = "Добавить сокет"
+L["Data source:"] = "Источник данных:"
+L["Empty socket"] = "Пустой сокет"
+L["Help"] = "Помощь"
+L["HELP_SUMMARY"] = [=[1. Большинство игроков, ПКМ по меню (друзья, гильдии, чат и т.д.), могут удаленно наблюдать за игроками.
+2. Если при нажатии ПКМ нет меню опции просмотра, попробуйте отключить аддон.
+3. В списке экипировки персонажа нет кнопки с текущими талантами, нажмите, чтобы переключить таланты.]=]
+L["iLvl:"] = true
+L["Inspect mouseover"] = "Проверить наведением мыши"
+L["Inspect target"] = "Осмотреть цель"
+L["Last update:"] = "Последнее обновление:"
+L["Major"] = "Главный"
+L["Minor"] = "Незначительный"
+L["No Enchant"] = "Нет чар"
+L["Show character gear list"] = "Показать список экипировки персонажа"
+L["Show enchant"] = "Показать чары"
+L["Show enchant/gem lost"] = "Показать чары/камни"
+L["Show gem"] = "Показать камни"
+L["Show inspect compare"] = "Показывать проверку сравнения"
+L["Show inspect gear list"] = "Показать список осмотренной экипировки"
+L["Show option button in character gear list"] = "Показать кнопку выбора в списке снаряжения персонажа"
+L["Show option button in inspect gear list"] = "Показать кнопку выбора в списке осмотра снаряжения"
+L["Show talent background"] = "Показать фон талантов"
+L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = "Ключ привязан к |cffffd100%s|r, вы уверены, что хотите его перезаписать?"
+L["View mouseover hotkey"] = "Просмотр горячих клавиш при наведении мыши"
+L["View target hotkey"] = "Просмотр горячих клавиш"
 -- @end-locale@
 end)
 
