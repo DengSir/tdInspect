@@ -10,7 +10,7 @@ import { ProjectId, WowToolsClient } from './util.ts';
 class App {
     private cli: WowToolsClient;
 
-    constructor(projectId: number) {
+    constructor(private projectId: number) {
         this.cli = new WowToolsClient(projectId);
     }
 
@@ -22,6 +22,9 @@ class App {
             item.ID = Number.parseInt(item.ID) || 0;
         });
         items.sort((a, b) => a.ID - b.ID);
+
+        const itemsExists = new Set(items.map((x) => x.ID));
+
 
         console.log(output);
         const file = Deno.openSync(output, { write: true, create: true, truncate: true });
@@ -37,6 +40,20 @@ select(2,...).ItemGemOrderMake()
 
         for (const item of items.filter((x) => x.SocketType.length > 0)) {
             write(`D(${item.ID},${item.SocketType.join(',')})\n`);
+        }
+
+        if (this.projectId === ProjectId.Wrath) {
+            try {
+                const items2 = (await (await fetch('https://dengsir.github.io/wotlk/assets/database/db.json')).json())
+                    .items.filter(x => !itemsExists.has(x.id))
+                    .filter(x => x.gemSockets && x.gemSockets.length > 0);
+
+                for (const item of items2) {
+                    write(`D(${item.id},${item.gemSockets.map(x => (x === 3 ? 4 : x == 4 ? 3 : x).toString()).join(',')})\n`);
+                }
+            } catch {
+                console.log('error');
+            }
         }
 
         file.close();

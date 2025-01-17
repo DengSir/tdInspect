@@ -254,13 +254,13 @@ function ns.GetItemSocket(item, index)
 end
 
 function ns.GetSocketColor(socketType)
-    if socketType == 2 then
+    if socketType == 2 then -- 红孔
         return 1, 0.2, 0.2
-    elseif socketType == 4 then
-        return 0.2, 0.8, 0.8
-    elseif socketType == 3 then
+    elseif socketType == 4 then -- 蓝孔
+        return 0.2, 0.8, 0.8, ''
+    elseif socketType == 3 then -- 黄孔
         return 0.8, 0.8, 0
-    elseif socketType == 1 then
+    elseif socketType == 1 then -- 多彩
         return 1, 1, 1
     else
         return 0.7, 0.7, 0.7
