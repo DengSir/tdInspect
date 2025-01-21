@@ -12,17 +12,19 @@ local format = string.format
 local UnitFullName = UnitFullName
 
 local function memorize(func)
-    local cache = {}
-
-    return function(k, ...)
-        if not k then
-            return
-        end
-        if not cache[k] then
-            cache[k] = func(k, ...)
-        end
-        return cache[k]
-    end
+    return setmetatable({}, {
+        __index = function(t, k)
+            if not k then
+                return
+            end
+            local v = func(k)
+            t[k] = v
+            return v
+        end,
+        __call = function(t, key)
+            return t[key]
+        end,
+    })
 end
 
 ns.memorize = memorize

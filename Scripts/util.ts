@@ -4,8 +4,8 @@
  * @Link   : https://dengsir.github.io
  * @Date   : 2022/9/26 18:55:36
  */
-import { format } from 'https://deno.land/x/format/mod.ts';
-import { Semaphore } from "https://deno.land/x/async@v2.1.0/semaphore.ts";
+import { format } from "@miyauci/format";
+import { Semaphore } from "@core/asyncutil/semaphore";
 
 export enum ProjectId {
     Vanilla,

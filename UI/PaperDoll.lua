@@ -20,12 +20,13 @@ local PLAYER_LEVEL = PLAYER_LEVEL:gsub('%%d', '%%s')
 local L = ns.L
 local Inspect = ns.Inspect
 
----@class UI.PaperDoll: AceEvent-3.0, Object, Frame
+---@class UI.PaperDoll: EventHandler, Object, Frame
 local PaperDoll = ns.Addon:NewClass('UI.PaperDoll', 'Frame')
 
 function PaperDoll:Constructor()
-    self:SuperCall('UnregisterAllEvents')
+    self:UnregisterAllEvents()
     self:SetScript('OnEvent', nil)
+    self.RegisterEvent = nop
 
     self.buttons = {}
 
@@ -83,19 +84,18 @@ function PaperDoll:Constructor()
 end
 
 function PaperDoll:OnShow()
-    self:RegisterMessage('INSPECT_READY')
-    self:RegisterEvent('UNIT_LEVEL', 'UpdateInfo')
+    self:Event('TDINSPECT_READY', 'UpdateAll')
+    self:Event('UNIT_LEVEL', 'UpdateInfo')
     self:UpdateInfo()
     self:Update()
     ns.Addon:OpenInspectGearFrame()
 end
 
 function PaperDoll:OnHide()
-    self:UnregisterAllEvents()
-    self:UnregisterAllMessages()
+    self:UnAllEvents()
 end
 
-function PaperDoll:INSPECT_READY()
+function PaperDoll:UpdateAll()
     self:Update()
     self:UpdateInfo()
 end

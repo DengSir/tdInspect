@@ -69,7 +69,7 @@ function GearItem:Constructor(parent, id, slotName, inspect)
 end
 
 function GearItem:OnHide()
-    self:UnregisterAllEvents()
+    self:UnAllEvents()
     self:Hide()
 end
 
