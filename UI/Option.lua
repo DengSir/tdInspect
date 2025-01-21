@@ -58,7 +58,7 @@ function Addon:SetupOptionFrame()
         set = function(item, value)
             local key = item[#item]
             self.db.profile[key] = value
-            self:SendMessage('TDINSPECT_OPTION_CHANGED', key, value)
+            ns.Events:Fire('TDINSPECT_OPTION_CHANGED', key, value)
         end,
         args = {
             characterGear = fullToggle(L['Show character gear list']),

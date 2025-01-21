@@ -27,12 +27,13 @@ local GameTooltip = GameTooltip
 
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
----@class UI.InspectFrame: AceEvent-3.0, Object, Frame
+---@class UI.InspectFrame: EventHandler, Object, Frame
 local InspectFrame = ns.Addon:NewClass('UI.InspectFrame', 'Frame')
 
 function InspectFrame:Constructor()
-    self:SuperCall('UnregisterAllEvents')
+    self:UnregisterAllEvents()
     self:SetScript('OnEvent', nil)
+    self.RegisterEvent = nop
 
     self:SetScript('OnShow', self.OnShow)
     self:SetScript('OnHide', self.OnHide)
@@ -95,11 +96,11 @@ function InspectFrame:Constructor()
 end
 
 function InspectFrame:OnShow()
-    self:RegisterEvent('UNIT_NAME_UPDATE')
-    self:RegisterEvent('UNIT_PORTRAIT_UPDATE')
-    self:RegisterEvent('PORTRAITS_UPDATED', 'UpdatePortrait')
-    self:RegisterMessage('INSPECT_TARGET_CHANGED', 'Update')
-    self:RegisterMessage('INSPECT_TALENT_READY', 'UpdateTabs')
+    self:Event('UNIT_NAME_UPDATE')
+    self:Event('UNIT_PORTRAIT_UPDATE')
+    self:Event('PORTRAITS_UPDATED', 'UpdatePortrait')
+    self:Event('TDINSPECT_TARGET_CHANGED', 'Update')
+    self:Event('TDINSPECT_TALENT_READY', 'UpdateTabs')
     self:Update()
     self:UpdateTabs()
     self:UpdateTalentGroups()
@@ -109,8 +110,7 @@ end
 function InspectFrame:OnHide()
     self.groupId = nil
     self.unitName = nil
-    self:UnregisterAllEvents()
-    self:UnregisterAllMessages()
+    self:UnAllEvents()
     Inspect:Clear()
     self:SetTab(1)
     self.TalentFrame:SetTab(1)

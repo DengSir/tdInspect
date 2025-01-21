@@ -16,6 +16,7 @@
     <Script file="Data\Wrath\ItemEnchant.lua" build="Wrath" />
     <Script file="Data\Wrath\ItemGemOrder.lua" build="Wrath" />
 
+    <Script file="Core\Events.lua" />
     <Script file="Core\ItemLevelCalculator.lua" />
     <Script file="Core\Encoder.lua" />
     <Script file="Core\Inspect.lua" />

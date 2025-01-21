@@ -33,7 +33,7 @@ local SPACING_H = 5
 local PADDING = 10
 local BG_PADDING = 4
 
----@class UI.GearFrame : AceEvent-3.0, Frame, tdInspectGearFrameTemplate
+---@class UI.GearFrame : EventHandler, Frame, tdInspectGearFrameTemplate
 ---@field unit? UnitToken
 ---@field name? string
 local GearFrame = ns.Addon:NewClass('UI.GearFrame', 'Frame')

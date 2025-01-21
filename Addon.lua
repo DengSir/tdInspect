@@ -39,8 +39,8 @@ _G.BINDING_HEADER_TDINSPECT = 'tdInspect'
 _G.BINDING_NAME_TDINSPECT_VIEW_TARGET = ns.L['Inspect target']
 _G.BINDING_NAME_TDINSPECT_VIEW_MOUSEOVER = ns.L['Inspect mouseover']
 
----@class Addon: AceAddon, LibClass-2.0, AceEvent-3.0
-local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0', 'AceEvent-3.0')
+---@class Addon: AceAddon, LibClass-2.0, EventHandler
+local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0')
 ns.Addon = Addon
 
 function Addon:OnInitialize()
@@ -61,6 +61,8 @@ function Addon:OnInitialize()
             showLost = true,
         },
     }
+
+    ns.Events:Embed(self)
 
     ---@type tdInspectProfile | AceDB.Schema
     self.db = LibStub('AceDB-3.0'):New('TDDB_INSPECT2', profile, true)
@@ -88,10 +90,10 @@ function Addon:OnInitialize()
 end
 
 function Addon:OnEnable()
-    self:RegisterEvent('ADDON_LOADED')
-    self:RegisterMessage('INSPECT_READY')
-    self:RegisterMessage('INSPECT_TALENT_READY', 'INSPECT_READY')
-    self:RegisterMessage('TDINSPECT_OPTION_CHANGED')
+    self:Event('ADDON_LOADED')
+    self:Event('TDINSPECT_READY')
+    self:Event('TDINSPECT_TALENT_READY', 'TDINSPECT_READY')
+    self:Event('TDINSPECT_OPTION_CHANGED')
 end
 
 function Addon:OnModuleCreated(module)
@@ -102,7 +104,7 @@ function Addon:OnClassCreated(class, name)
     local uiName = name:match('^UI%.(.+)$')
     if uiName then
         ns.UI[uiName] = class
-        LibStub('AceEvent-3.0'):Embed(class)
+        ns.Events:Embed(class)
     else
         ns[name] = class
     end
@@ -121,7 +123,7 @@ function Addon:ADDON_LOADED(_, addon)
     self:UnregisterEvent('ADDON_LOADED')
 end
 
-function Addon:INSPECT_READY(_, unit, name)
+function Addon:TDINSPECT_READY(_, unit, name)
     if not InspectFrame then
         return
     end
