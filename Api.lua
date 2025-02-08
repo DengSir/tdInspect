@@ -257,7 +257,7 @@ function ns.GetSocketColor(socketType)
     if socketType == 2 then -- 红孔
         return 1, 0.2, 0.2
     elseif socketType == 4 then -- 蓝孔
-        return 0.2, 0.8, 0.8, ''
+        return 0.2, 0.8, 0.8
     elseif socketType == 3 then -- 黄孔
         return 0.8, 0.8, 0
     elseif socketType == 1 then -- 多彩
