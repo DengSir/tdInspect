@@ -44,9 +44,11 @@ select(2,...).ItemGemOrderMake()
 
         if (this.projectId === ProjectId.Wrath) {
             try {
-                const items2 = (await (await fetch('https://dengsir.github.io/wotlk/assets/database/db.json')).json())
-                    .items.filter(x => !itemsExists.has(x.id))
-                    .filter(x => x.gemSockets && x.gemSockets.length > 0);
+                const items2 = ((await (await fetch('https://dengsir.github.io/wotlk/assets/database/db.json')).json())
+                    .items as any[])
+                    .filter(x => !itemsExists.has(x.id))
+                    .filter(x => x.gemSockets && x.gemSockets.length > 0)
+                    .sort((a, b) => a.id - b.id);
 
                 for (const item of items2) {
                     write(`D(${item.id},${item.gemSockets.map(x => (x === 3 ? 4 : x == 4 ? 3 : x).toString()).join(',')})\n`);
