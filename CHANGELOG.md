@@ -1,3 +1,13 @@
+## [2.3.2](https://github.com/DengSir/tdInspect/compare/v2.3.1...v2.3.2) (2025-02-08)
+
+
+### Features
+
+* 更新itemgems ([b732df9](https://github.com/DengSir/tdInspect/commit/b732df9c60a43cd971a884b603a1921f2d35d79b))
+* update scripts ([4f66664](https://github.com/DengSir/tdInspect/commit/4f66664f3655ec359ad98ffdf4870ff61315d8e2))
+
+
+
 ## [2.3.1](https://github.com/DengSir/tdInspect/compare/v2.3.0...v2.3.1) (2025-01-10)
 
 
