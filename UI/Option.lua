@@ -58,7 +58,7 @@ function Addon:SetupOptionFrame()
         set = function(item, value)
             local key = item[#item]
             self.db.profile[key] = value
-            self:SendMessage('TDINSPECT_OPTION_CHANGED', key, value)
+            ns.Events:Fire('TDINSPECT_OPTION_CHANGED', key, value)
         end,
         args = {
             characterGear = fullToggle(L['Show character gear list']),
@@ -70,6 +70,7 @@ function Addon:SetupOptionFrame()
             showGem = fullToggle(L['Show gem']),
             showEnchant = fullToggle(L['Show enchant']),
             showLost = fullToggle(L['Show enchant/gem lost']),
+            showGemsFront = fullToggle(L['Show gems in front']),
             TDINSPECT_VIEW_TARGET = keybinding(L['View target hotkey']),
             TDINSPECT_VIEW_MOUSEOVER = keybinding(L['View mouseover hotkey']),
             help = {

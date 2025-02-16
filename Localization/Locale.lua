@@ -45,6 +45,8 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
 --[[Translation missing --]]
+--[[ L["Show gems in front"] = "Show gems in front"--]] 
+--[[Translation missing --]]
 --[[ L["Show inspect compare"] = "Show inspect compare"--]] 
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
@@ -98,6 +100,8 @@ L = L or {}
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
+--[[Translation missing --]]
+--[[ L["Show gems in front"] = "Show gems in front"--]] 
 --[[Translation missing --]]
 --[[ L["Show inspect compare"] = "Show inspect compare"--]] 
 --[[Translation missing --]]
@@ -153,6 +157,8 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
 --[[Translation missing --]]
+--[[ L["Show gems in front"] = "Show gems in front"--]] 
+--[[Translation missing --]]
 --[[ L["Show inspect compare"] = "Show inspect compare"--]] 
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
@@ -206,6 +212,8 @@ L = L or {}
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
+--[[Translation missing --]]
+--[[ L["Show gems in front"] = "Show gems in front"--]] 
 --[[Translation missing --]]
 --[[ L["Show inspect compare"] = "Show inspect compare"--]] 
 --[[Translation missing --]]
@@ -261,6 +269,8 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
 --[[Translation missing --]]
+--[[ L["Show gems in front"] = "Show gems in front"--]] 
+--[[Translation missing --]]
 --[[ L["Show inspect compare"] = "Show inspect compare"--]] 
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
@@ -315,6 +325,8 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
 --[[Translation missing --]]
+--[[ L["Show gems in front"] = "Show gems in front"--]] 
+--[[Translation missing --]]
 --[[ L["Show inspect compare"] = "Show inspect compare"--]] 
 --[[Translation missing --]]
 --[[ L["Show inspect gear list"] = "Show inspect gear list"--]] 
@@ -354,6 +366,8 @@ L["Show character gear list"] = "Показать список экипиров�
 L["Show enchant"] = "Показать чары"
 L["Show enchant/gem lost"] = "Показать чары/камни"
 L["Show gem"] = "Показать камни"
+--[[Translation missing --]]
+--[[ L["Show gems in front"] = "Show gems in front"--]] 
 L["Show inspect compare"] = "Показывать проверку сравнения"
 L["Show inspect gear list"] = "Показать список осмотренной экипировки"
 L["Show option button in character gear list"] = "Показать кнопку выбора в списке снаряжения персонажа"
@@ -400,6 +414,8 @@ L = L or {}
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
+--[[Translation missing --]]
+--[[ L["Show gems in front"] = "Show gems in front"--]] 
 --[[Translation missing --]]
 --[[ L["Show inspect compare"] = "Show inspect compare"--]] 
 --[[Translation missing --]]

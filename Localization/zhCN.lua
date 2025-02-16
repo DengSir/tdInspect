@@ -31,6 +31,7 @@ L['Show gem'] = '显示宝石'
 L['Add socket'] = '添加插槽'
 L.Major = '主'
 L.Minor = '副'
+L['Show gems in front'] = '将宝石排在前面'
 -- @locale-fill@
 
 -- @end-import@

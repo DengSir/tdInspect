@@ -69,7 +69,7 @@ function GearItem:Constructor(parent, id, slotName, inspect)
 end
 
 function GearItem:OnHide()
-    self:UnregisterAllEvents()
+    self:UnAllEvents()
     self:Hide()
 end
 
@@ -120,66 +120,21 @@ function GearItem:Update()
         return
     end
 
-    local socketWidth = SPACING
+    local socketWidth
 
     local name, link, quality, itemLevel = GetItemInfo(self.item)
     if name then
-        local enchant = ns.GetItemEnchantInfo(self.item)
-        if enchant then
-            if ns.Addon.db.profile.showEnchant then
-                local tex = ns.UI.EnchantItem:Alloc(self)
-                if enchant.itemId then
-                    tex:SetItem(enchant.itemId)
-                elseif enchant.spellId then
-                    tex:SetSpell(enchant.spellId)
-                end
-                tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
-
-                socketWidth = socketWidth + tex:GetWidth()
-            end
-        elseif ns.Addon.db.profile.showLost and ns.IsCanEnchant(self.item, self.inspect) then
-            local tex = ns.UI.EnchantItem:Alloc(self)
-            tex:SetEmpty(L['No Enchant'])
-            tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
-
-            socketWidth = socketWidth + tex:GetWidth()
-        end
-
-        if ns.Addon.db.profile.showGem then
-            for i = 1, 3 do
-                local gemId = ns.GetItemGem(self.item, i)
-                local socketType = ns.GetItemSocket(self.item, i)
-
-                if socketType or gemId then
-                    socketWidth = socketWidth + SPACING
-
-                    local tex = ns.UI.GemItem:Alloc(self)
-                    tex:SetSocketItem(socketType, gemId)
-                    tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
-
-                    socketWidth = socketWidth + tex:GetWidth()
-                end
-            end
-        end
-
-        if ns.Addon.db.profile.showLost and ns.IsCanSocket(self.item, self.inspect) then
-            socketWidth = socketWidth + SPACING
-
-            local tex = ns.UI.GemItem:Alloc(self)
-            tex:SetEmptyText(L['Add socket'])
-            tex:SetPoint('LEFT', self.Name, 'RIGHT', socketWidth, 0)
-
-            socketWidth = socketWidth + tex:GetWidth()
-        end
+        socketWidth = self:ApplyEnhancement()
 
         local r, g, b = GetItemQualityColor(quality)
-
         self.Name:SetText(link)
         self.SlotText:SetTextColor(r, g, b)
         self.Slot:SetBackdropBorderColor(r, g, b, 0.2)
         self.Slot:SetBackdropColor(r, g, b, 0.2)
         self.ItemLevel:SetText(itemLevel)
     else
+        socketWidth = SPACING
+
         self:WaitItem(self.item)
     end
 
@@ -192,4 +147,74 @@ function GearItem:Update()
     self.parent:ApplyColumnWidth('Name', nameWidth + socketWidth)
 
     self:SetPoint('RIGHT', self.parent.LevelColumn, 'RIGHT', nameWidth + 5, 0)
+end
+
+function GearItem:ApplyEnhancement()
+    local x = 0
+    if ns.Addon.db.profile.showGemsFront then
+        x = self:UpdateSockets(x)
+        x = self:UpdateEnchant(x)
+    else
+        x = self:UpdateEnchant(x)
+        x = self:UpdateSockets(x)
+    end
+    return x
+end
+
+function GearItem:UpdateEnchant(x)
+    local enchant = ns.GetItemEnchantInfo(self.item)
+    if enchant then
+        if ns.Addon.db.profile.showEnchant then
+            x = x + SPACING
+
+            local tex = ns.UI.EnchantItem:Alloc(self)
+            if enchant.itemId then
+                tex:SetItem(enchant.itemId)
+            elseif enchant.spellId then
+                tex:SetSpell(enchant.spellId)
+            end
+            tex:SetPoint('LEFT', self.Name, 'RIGHT', x, 0)
+
+            x = x + tex:GetWidth()
+        end
+    elseif ns.Addon.db.profile.showLost and ns.IsCanEnchant(self.item, self.inspect) then
+        x = x + SPACING
+
+        local tex = ns.UI.EnchantItem:Alloc(self)
+        tex:SetEmpty(L['No Enchant'])
+        tex:SetPoint('LEFT', self.Name, 'RIGHT', x, 0)
+
+        x = x + tex:GetWidth()
+    end
+    return x
+end
+
+function GearItem:UpdateSockets(x)
+    if ns.Addon.db.profile.showGem then
+        for i = 1, 3 do
+            local gemId = ns.GetItemGem(self.item, i)
+            local socketType = ns.GetItemSocket(self.item, i)
+
+            if socketType or gemId then
+                x = x + SPACING
+
+                local tex = ns.UI.GemItem:Alloc(self)
+                tex:SetSocketItem(socketType, gemId)
+                tex:SetPoint('LEFT', self.Name, 'RIGHT', x, 0)
+
+                x = x + tex:GetWidth()
+            end
+        end
+    end
+
+    if ns.Addon.db.profile.showLost and ns.IsCanSocket(self.item, self.inspect) then
+        x = x + SPACING
+
+        local tex = ns.UI.GemItem:Alloc(self)
+        tex:SetEmptyText(L['Add socket'])
+        tex:SetPoint('LEFT', self.Name, 'RIGHT', x, 0)
+
+        x = x + tex:GetWidth()
+    end
+    return x
 end
