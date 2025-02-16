@@ -1,3 +1,13 @@
+# [2.4.0](https://github.com/DengSir/tdInspect/compare/v2.3.3...v2.4.0) (2025-02-16)
+
+
+### Features
+
+* 不影响暴雪UI ([0d87c37](https://github.com/DengSir/tdInspect/commit/0d87c3702ef8318e119ca1c1eefbfadb57305d15))
+* 允许宝石在前 ([4ee1887](https://github.com/DengSir/tdInspect/commit/4ee1887ecf6ba4db0a05a4d291ea120454047f2c))
+
+
+
 ## [2.3.3](https://github.com/DengSir/tdInspect/compare/v2.3.2...v2.3.3) (2025-02-08)
 
 
