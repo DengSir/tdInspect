@@ -25,13 +25,13 @@ function CharacterGearFrame:Constructor()
 end
 
 function CharacterGearFrame:OnShow()
-    self:RegisterEvent('UNIT_INVENTORY_CHANGED')
-    self:RegisterEvent('UNIT_LEVEL')
-    self:RegisterEvent('UNIT_MODEL_CHANGED')
-    self:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateTalents')
-    self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'UpdateTalents')
-    self:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateItemLevel')
-    self:RegisterMessage('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
+    self:Event('UNIT_INVENTORY_CHANGED')
+    self:Event('UNIT_LEVEL')
+    self:Event('UNIT_MODEL_CHANGED')
+    self:Event('PLAYER_TALENT_UPDATE', 'UpdateTalents')
+    self:Event('ACTIVE_TALENT_GROUP_CHANGED', 'UpdateTalents')
+    self:Event('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateItemLevel')
+    self:Event('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
 
     self:UpdateOptionButton(ns.Addon.db.profile.showOptionButtonInCharacter)
 
@@ -44,8 +44,7 @@ end
 
 function CharacterGearFrame:OnHide()
     self:ResetColumnWidths()
-    self:UnregisterAllEvents()
-    self:UnregisterAllMessages()
+    self:UnAllEvents()
     self:Hide()
     ns.Addon:OpenCharacterGearFrame()
 end
@@ -146,7 +145,7 @@ function CharacterGearFrame:UpdateOption(_, key, value)
         end
     elseif key == 'showOptionButtonInCharacter' then
         self:UpdateOptionButton(value)
-    elseif key == 'showGem' or key == 'showEnchant' or key == 'showLost' then
+    elseif key == 'showGem' or key == 'showEnchant' or key == 'showLost' or key == 'showGemsFront' then
         self:UpdateGears()
     end
 end

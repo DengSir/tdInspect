@@ -1,3 +1,7 @@
 {
-  "imports": { "@std/path": "jsr:@std/path@^1.0.3" }
+  "imports": {
+    "@core/asyncutil": "jsr:@core/asyncutil@^1.2.0",
+    "@miyauci/format": "jsr:@miyauci/format@^1.1.0",
+    "@std/path": "jsr:@std/path@^1.0.8"
+  }
 }

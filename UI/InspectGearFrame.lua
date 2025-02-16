@@ -23,11 +23,11 @@ function InspectGearFrame:Constructor()
 end
 
 function InspectGearFrame:OnShow()
-    self:RegisterEvent('UNIT_LEVEL')
-    self:RegisterEvent('UNIT_INVENTORY_CHANGED')
-    self:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'UpdateItemLevel')
-    self:RegisterMessage('INSPECT_READY', 'Update')
-    self:RegisterMessage('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
+    self:Event('UNIT_LEVEL')
+    self:Event('UNIT_INVENTORY_CHANGED')
+    self:Event('GET_ITEM_INFO_RECEIVED', 'UpdateItemLevel')
+    self:Event('TDINSPECT_READY', 'Update')
+    self:Event('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
 
     self:UpdateOptionButton(ns.Addon.db.profile.showOptionButtonInInspect)
 
@@ -36,8 +36,7 @@ end
 
 function InspectGearFrame:OnHide()
     self:Clear()
-    self:UnregisterAllEvents()
-    self:UnregisterAllMessages()
+    self:UnAllEvents()
     self:Hide()
 end
 
@@ -133,7 +132,7 @@ function InspectGearFrame:UpdateOption(_, key, value)
         end
     elseif key == 'showOptionButtonInInspect' then
         self:UpdateOptionButton(value)
-    elseif key == 'showGem' or key == 'showEnchant' or key == 'showLost' then
+    elseif key == 'showGem' or key == 'showEnchant' or key == 'showLost' or key == 'showGemsFront' then
         self:UpdateGears()
     end
 end

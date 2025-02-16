@@ -16,7 +16,7 @@ local factionLogoTextures = {
     Neutral = [[Interface\Timer\Panda-Logo]],
 }
 
----@class UI.ModelFrame: AceEvent-3.0, Object, Frame
+---@class UI.ModelFrame: EventHandler, Object, Frame
 local ModelFrame = ns.Addon:NewClass('UI.ModelFrame', 'Frame')
 
 function ModelFrame:Constructor()
@@ -32,14 +32,13 @@ function ModelFrame:Constructor()
 end
 
 function ModelFrame:OnShow()
-    self:RegisterEvent('UNIT_MODEL_CHANGED', 'Update')
-    self:RegisterMessage('INSPECT_TARGET_CHANGED', 'Update')
+    self:Event('UNIT_MODEL_CHANGED', 'Update')
+    self:Event('TDINSPECT_TARGET_CHANGED', 'Update')
     self:Update()
 end
 
 function ModelFrame:OnHide()
-    self:UnregisterAllEvents()
-    self:UnregisterAllMessages()
+    self:UnAllEvents()
     self.modelName = nil
 end
 

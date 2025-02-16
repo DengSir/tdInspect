@@ -27,9 +27,10 @@ local Inspect = ns.Inspect
 local SlotItem = ns.Addon:NewClass('UI.SlotItem', ns.UI.BaseItem)
 
 function SlotItem:Constructor()
-    self:SuperCall('UnregisterAllEvents')
+    self:UnregisterAllEvents()
     self:SetScript('OnEvent', nil)
     self:SetScript('OnUpdate', nil)
+    self.RegisterEvent = nop
 
     self.IconBorder:SetTexture([[Interface\Buttons\UI-ActionButton-Border]])
     self.IconBorder:SetBlendMode('ADD')
@@ -49,7 +50,7 @@ function SlotItem:Constructor()
 end
 
 function SlotItem:OnShow()
-    self:RegisterEvent('UNIT_INVENTORY_CHANGED')
+    self:Event('UNIT_INVENTORY_CHANGED')
 end
 
 function SlotItem:UNIT_INVENTORY_CHANGED(_, unit)

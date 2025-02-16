@@ -50,8 +50,9 @@ local function sleep(n)
     coroutine.yield()
 end
 
----@class Inspect: AceModule, AceEvent-3.0, AceComm-3.0
-local Inspect = ns.Addon:NewModule('Inspect', 'AceEvent-3.0', 'AceComm-3.0')
+---@class Inspect: AceModule, EventHandler, AceComm-3.0
+local Inspect = ns.Addon:NewModule('Inspect', 'AceComm-3.0')
+ns.Events:Embed(Inspect)
 
 function Inspect:OnInitialize()
     self.unitName = nil
@@ -111,8 +112,8 @@ function Inspect:OnEnable()
         return Deal(sender, Serializer:Deserialize(msg))
     end
 
-    self:RegisterEvent('GET_ITEM_INFO_RECEIVED')
-    self:RegisterEvent('INSPECT_READY')
+    self:Event('GET_ITEM_INFO_RECEIVED')
+    self:Event('INSPECT_READY')
     self:RegisterComm(PROTO_PREFIX, OnComm)
     for _, v in ipairs(ALA_PREFIXES) do
         self:RegisterComm(v, 'OnAlaCommand')
@@ -129,13 +130,13 @@ function Inspect:SetUnit(unit, name)
         InspectFrame.unit = unit
     end
 
-    self:UnregisterEvent('PLAYER_TARGET_CHANGED')
-    self:UnregisterEvent('UPDATE_MOUSEOVER_UNIT')
+    self:UnEvent('PLAYER_TARGET_CHANGED')
+    self:UnEvent('UPDATE_MOUSEOVER_UNIT')
 
     if unit == 'target' then
-        self:RegisterEvent('PLAYER_TARGET_CHANGED')
+        self:Event('PLAYER_TARGET_CHANGED')
     elseif unit == 'mouseover' then
-        self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'GROUP_ROSTER_UPDATE')
+        self:Event('UPDATE_MOUSEOVER_UNIT', 'GROUP_ROSTER_UPDATE')
     end
 end
 
@@ -690,10 +691,10 @@ function Inspect:TryFireMessage(unit, name, db)
         return
     end
 
-    self:SendMessage('INSPECT_READY', unit, name)
+    ns.Events:Fire('TDINSPECT_READY', unit, name)
 
     if db and db.talents then
-        self:SendMessage('INSPECT_TALENT_READY', unit, name)
+        ns.Events:Fire('TDINSPECT_TALENT_READY', unit, name)
     end
 end
 
@@ -709,7 +710,7 @@ end
 function Inspect:PLAYER_TARGET_CHANGED()
     if self.unit == 'target' then
         self:SetUnit(nil, self.unitName)
-        self:SendMessage('INSPECT_TARGET_CHANGED')
+        ns.Events:Fire('TDINSPECT_TARGET_CHANGED')
     end
 end
 
@@ -717,7 +718,7 @@ function Inspect:GROUP_ROSTER_UPDATE()
     C_Timer.After(0, function()
         if self.unit and self.unitName ~= ns.UnitName(self.unit) then
             self:SetUnit(nil, self.unitName)
-            self:SendMessage('INSPECT_TARGET_CHANGED')
+            ns.Events:Fire('TDINSPECT_TARGET_CHANGED')
         end
     end)
 end
@@ -752,5 +753,5 @@ function Inspect:GET_ITEM_INFO_RECEIVED(_, id, ok)
         db.equips[slot] = link
     end
 
-    self:SendMessage('INSPECT_READY', self.unit, name)
+    ns.Events:Fire('TDINSPECT_READY', self.unit, name)
 end

@@ -6,7 +6,7 @@
 ---@type ns
 local ns = select(2, ...)
 
----@class UI.BaseItem: AceEvent-3.0, Object, Button
+---@class UI.BaseItem: EventHandler, Object, Button
 local BaseItem = ns.Addon:NewClass('UI.BaseItem', 'Button')
 
 function BaseItem:Constructor()
@@ -14,7 +14,7 @@ function BaseItem:Constructor()
 end
 
 function BaseItem:OnHide()
-    self:UnregisterAllEvents()
+    self:UnAllEvents()
 end
 
 function BaseItem:GET_ITEM_INFO_RECEIVED(_, itemId, ok)
@@ -30,7 +30,7 @@ end
 
 function BaseItem:WaitItem(item)
     self.itemId = ns.ItemLinkToId(item)
-    self:RegisterEvent('GET_ITEM_INFO_RECEIVED')
+    self:Event('GET_ITEM_INFO_RECEIVED')
 end
 
 function BaseItem:OnClick()

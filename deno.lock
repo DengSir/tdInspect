@@ -1,17 +1,28 @@
 {
-  "version": "3",
-  "packages": {
-    "specifiers": {
-      "jsr:@std/path@^1.0.3": "jsr:@std/path@1.0.3"
-    },
-    "jsr": {
-      "@std/path@1.0.3": {
-        "integrity": "cd89d014ce7eb3742f2147b990f6753ee51d95276bfc211bc50c860c1bc7df6f"
-      }
-    }
+  "version": "4",
+  "specifiers": {
+    "jsr:@core/asyncutil@^1.2.0": "1.2.0",
+    "jsr:@miyauci/format@^1.1.0": "1.1.0",
+    "jsr:@std/path@*": "1.0.8",
+    "jsr:@std/path@^1.0.8": "1.0.8",
+    "jsr:@std/regexp@0.221": "0.221.0"
   },
-  "redirects": {
-    "https://deno.land/x/format/mod.ts": "https://deno.land/x/format@1.0.1/mod.ts"
+  "jsr": {
+    "@core/asyncutil@1.2.0": {
+      "integrity": "9967f15190c60df032c13f72ce5ac73d185c34f31c53dc918d8800025854c118"
+    },
+    "@miyauci/format@1.1.0": {
+      "integrity": "28467f7b2f50c3bef19bdb73f3e0ee348e4171883c37fcf7bf2ae5277c45925a",
+      "dependencies": [
+        "jsr:@std/regexp"
+      ]
+    },
+    "@std/path@1.0.8": {
+      "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
+    },
+    "@std/regexp@0.221.0": {
+      "integrity": "6ef49d56386414ed448252aeda15573087b69eb2c4b59dd7390506cc76ac7f6d"
+    }
   },
   "remote": {
     "https://deno.land/x/async@v2.1.0/notify.ts": "8b4150ca1063586084825a34e997b845ccbe5014aed69327489e1fc89569ec0e",
@@ -23,7 +34,9 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/path@^1.0.3"
+      "jsr:@core/asyncutil@^1.2.0",
+      "jsr:@miyauci/format@^1.1.0",
+      "jsr:@std/path@^1.0.8"
     ]
   }
 }

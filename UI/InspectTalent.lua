@@ -15,7 +15,7 @@ local PanelTemplates_SetNumTabs = PanelTemplates_SetNumTabs
 local PanelTemplates_UpdateTabs = PanelTemplates_UpdateTabs
 local PanelTemplates_TabResize = PanelTemplates_TabResize
 
----@class UI.InspectTalent: AceEvent-3.0, Object, Frame
+---@class UI.InspectTalent: EventHandler, Object, Frame
 local InspectTalent = ns.Addon:NewClass('UI.InspectTalent', 'Frame')
 
 function InspectTalent:Constructor()
@@ -83,12 +83,12 @@ function InspectTalent:Constructor()
 end
 
 function InspectTalent:OnShow()
-    self:RegisterMessage('INSPECT_TALENT_READY', 'UpdateInfo')
+    self:Event('TDINSPECT_TALENT_READY', 'UpdateInfo')
     self:UpdateInfo()
 end
 
 function InspectTalent:OnHide()
-    self:UnregisterMessage('INSPECT_TALENT_READY')
+    self:UnEvent('INSPECT_TALENT_READY')
 end
 
 local function TabOnClick(self)
