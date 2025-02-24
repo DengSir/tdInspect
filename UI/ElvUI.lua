@@ -38,6 +38,7 @@ hooksecurefunc(ns.Addon, 'SetupUI', function(self)
             break
         end
         S:HandleTab(tab)
+        tab:Point('TOPLEFT', _G['InspectFrameTab' .. (i - 1)], 'TOPRIGHT', -19, 0)
 
         i = i + 1
     end
