@@ -1,3 +1,14 @@
+## [2.4.1](https://github.com/DengSir/tdInspect/compare/v2.4.0...v2.4.1) (2025-02-24)
+
+
+### Features
+
+* full support ElvUI ([81c9b74](https://github.com/DengSir/tdInspect/commit/81c9b7421afbf9091dc975b761b7a86d62b2a6f4))
+* full support ElvUI ([600c455](https://github.com/DengSir/tdInspect/commit/600c4558ffafd573cb78d23c4339bb94785a5a23))
+* full support ElvUI ([98e0f77](https://github.com/DengSir/tdInspect/commit/98e0f77c1189856c2d04d0a9e67985d6b0ca23da))
+
+
+
 # [2.4.0](https://github.com/DengSir/tdInspect/compare/v2.3.3...v2.4.0) (2025-02-16)
 
 
