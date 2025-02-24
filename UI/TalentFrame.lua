@@ -209,57 +209,37 @@ function TalentFrame:ShowTooltip(button)
     GameTooltip:Show()
 end
 
--- function TalentFrame:ShowTooltip(button)
---     if not button.link then
---         return
---     end
---     GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
---     GameTooltip:SetHyperlink(button.link)
+function TalentFrame:CreateTalentButton(id)
+    local button = CreateFrame('Button', nil, self.ScrollChild, 'ItemButtonTemplate')
+    button:SetSize(self.talentButtonSize, self.talentButtonSize)
+    button:SetID(id)
+    button:SetScript('OnEnter', TalentOnEnter)
+    button:SetScript('OnLeave', GameTooltip_Hide)
+    button:SetScript('OnClick', TalentOnClick)
 
---     local id = button:GetID()
---     local name, _, row, _, rank, maxRank = self.talent:GetTalentInfo(self.tabIndex, id)
---     if rank == 0 and row > 1 then
---         local pointsReq = (row - 1) * 5
---         local tabName, _, pointsSpent = self.talent:GetTabInfo(self.tabIndex)
+    local Slot = button:CreateTexture(nil, 'BACKGROUND')
+    Slot:SetSize(64, 64)
+    Slot:SetPoint('CENTER', 0, -1)
+    Slot:SetTexture([[Interface\Buttons\UI-EmptySlot-White]])
 
---         if pointsSpent < pointsReq then
---             local prereqs = self.talent:GetTalentPrereqs(self.tabIndex, id)
---             local line = prereqs and 4 or 3
+    local RankBorder = button:CreateTexture(nil, 'OVERLAY')
+    RankBorder:SetSize(32, 32)
+    RankBorder:SetPoint('CENTER', button, 'BOTTOMRIGHT')
+    RankBorder:SetTexture([[Interface\TalentFrame\TalentFrame-RankBorder]])
 
---             GameTooltip:AppendLineFront(line, format(TOOLTIP_TALENT_TIER_POINTS, pointsReq, tabName))
---         end
---     end
+    local Rank = button:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
+    Rank:SetPoint('CENTER', RankBorder, 'CENTER')
 
---     GameTooltip:Show()
--- end
+    button.Slot = Slot
+    button.RankBorder = RankBorder
+    button.Rank = Rank
+
+    return button
+end
 
 function TalentFrame:GetTalentButton(i)
     if not self.buttons[i] then
-        local button = CreateFrame('Button', nil, self.ScrollChild, 'ItemButtonTemplate')
-        button:SetSize(self.talentButtonSize, self.talentButtonSize)
-        button:SetID(i)
-        button:SetScript('OnEnter', TalentOnEnter)
-        button:SetScript('OnLeave', GameTooltip_Hide)
-        button:SetScript('OnClick', TalentOnClick)
-
-        local Slot = button:CreateTexture(nil, 'BACKGROUND')
-        Slot:SetSize(64, 64)
-        Slot:SetPoint('CENTER', 0, -1)
-        Slot:SetTexture([[Interface\Buttons\UI-EmptySlot-White]])
-
-        local RankBorder = button:CreateTexture(nil, 'OVERLAY')
-        RankBorder:SetSize(32, 32)
-        RankBorder:SetPoint('CENTER', button, 'BOTTOMRIGHT')
-        RankBorder:SetTexture([[Interface\TalentFrame\TalentFrame-RankBorder]])
-
-        local Rank = button:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
-        Rank:SetPoint('CENTER', RankBorder, 'CENTER')
-
-        button.Slot = Slot
-        button.RankBorder = RankBorder
-        button.Rank = Rank
-
-        self.buttons[i] = button
+        self.buttons[i] = self:CreateTalentButton(i)
     end
     return self.buttons[i]
 end

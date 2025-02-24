@@ -130,12 +130,6 @@ function CharacterGearFrame:GetTalentInfo(group)
     return maxName, maxIcon, maxBg, table.concat(counts, '/')
 end
 
-function CharacterGearFrame:TapTo(frame, ...)
-    self:SetParent(frame)
-    self:ClearAllPoints()
-    self:SetPoint(...)
-end
-
 function CharacterGearFrame:UpdateOption(_, key, value)
     if key == 'showTalentBackground' then
         if value then

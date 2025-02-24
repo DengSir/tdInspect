@@ -206,7 +206,7 @@ function Addon:OpenInspectGearFrame()
         if self.db.profile.inspectCompare then
             local characterGearFrame = self:GetCharacterGearFrame()
 
-            characterGearFrame:TapTo(inspectGearFrame, 'TOPLEFT', inspectGearFrame, 'TOPRIGHT', 0, 0)
+            characterGearFrame:TapTo(inspectGearFrame, 'TOPRIGHT')
             characterGearFrame:Show()
         end
     end

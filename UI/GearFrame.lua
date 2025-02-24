@@ -31,12 +31,13 @@ local EQUIP_SLOTS = {
 local SPACING_V = 3
 local SPACING_H = 5
 local PADDING = 10
-local BG_PADDING = 4
 
 ---@class UI.GearFrame : EventHandler, Frame, tdInspectGearFrameTemplate
 ---@field unit? UnitToken
 ---@field name? string
 local GearFrame = ns.Addon:NewClass('UI.GearFrame', 'Frame')
+
+GearFrame.BG_PADDING = 4
 
 function GearFrame:Create(parent, inspect)
     return self:Bind(CreateFrame('Frame', nil, parent, 'tdInspectGearFrameTemplate'), inspect)
@@ -93,8 +94,8 @@ function GearFrame:RequestUpdateSize()
 end
 
 function GearFrame:OnSizeChanged(width, height)
-    width = width - BG_PADDING * 2
-    height = height - BG_PADDING * 2
+    width = width - self.BG_PADDING * 2
+    height = height - self.BG_PADDING * 2
     self.TopLeft:SetSize(width * 256 / 300, height * 256 / 330)
     self.TopRight:SetSize(width * 44 / 300, height * 256 / 330)
     self.BottomLeft:SetSize(width * 256 / 300, height * 74 / 330)
@@ -251,4 +252,15 @@ end
 
 function GearFrame:UpdateOptionButton(value)
     self.Option:SetShown(value)
+end
+
+function GearFrame:TapTo(frame, position)
+    self:SetParent(frame)
+    self:ClearAllPoints()
+
+    if position == 'TOPLEFT' then
+        self:SetPoint('TOPLEFT', frame, 'TOPLEFT')
+    elseif position == 'TOPRIGHT' then
+        self:SetPoint('TOPLEFT', frame, 'TOPRIGHT')
+    end
 end
