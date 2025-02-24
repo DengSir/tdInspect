@@ -20,6 +20,10 @@ local function hook(t, m, f)
     end
 end
 
+hooksecurefunc(ns.Addon, 'OnInitialize', function(self)
+    self.CharacterGearParent:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -30, -12)
+end)
+
 hooksecurefunc(ns.Addon, 'SetupUI', function(self)
     self.InspectFrame.TalentFrame:StripTextures()
     self.InspectFrame.TalentFrame.TalentFrame:StripTextures()
@@ -58,7 +62,6 @@ hooksecurefunc(ns.Addon, 'SetupUI', function(self)
     end
 
     S:HandleScrollBar(self.InspectFrame.TalentFrame.TalentFrame.ScrollBar)
-    -- S:HandleCheckBox(self.InspectFrame.PaperDoll.ToggleButton)
 
     self.InspectFrame.TalentFrame.Summary:GetParent():StripTextures()
 
@@ -73,8 +76,6 @@ hooksecurefunc(ns.Addon, 'SetupUI', function(self)
     InspectMainHandSlot:StripTextures()
     InspectSecondaryHandSlot:StripTextures()
     InspectRangedSlot:StripTextures()
-
-    self.CharacterGearParent:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -30, -11)
 end)
 
 hooksecurefunc(ns.UI.SlotItem, 'UpdateBorder', function(self, r, g, b)
@@ -111,6 +112,16 @@ hooksecurefunc(ns.UI.GearFrame, 'Constructor', function(self)
     self.TopLeft:SetPoint('TOPLEFT', 0, 0)
 end)
 
+hooksecurefunc(ns.UI.GearFrame, 'SetBackground', function(self, background)
+    if not background then
+        return self:SetBackdropColor(unpack(E.media.backdropfadecolor))
+    end
+end)
+
+hooksecurefunc(ns.UI.GearFrame, 'UpdateClass', function(self)
+    return self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+end)
+
 function ns.UI.GearFrame:TapTo(frame, position)
     self:SetParent(frame)
     self:ClearAllPoints()
@@ -127,7 +138,7 @@ do
 
     function ns.Addon:GetInspectGearFrame()
         local f = orig(self)
-        f:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', -30, -11)
+        f:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', -30, -12)
         ns.Addon.GetInspectGearFrame = orig
         return f
     end
