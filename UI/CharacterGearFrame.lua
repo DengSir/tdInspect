@@ -22,6 +22,25 @@ function CharacterGearFrame:Constructor()
             SetActiveTalentGroup(button.id)
         end
     end)
+
+    self.Portrait:SetScript('OnMouseUp', function()
+        -- ns.Inspect:Query(nil, '出门带棍-范沃森')
+
+        local menu = {}
+
+        local characters = ns.Addon:GetCharacters()
+        print('characters', characters)
+        for _, character in ipairs(characters) do
+            tinsert(menu, {
+                text = character,
+                func = function()
+                    ns.Inspect:Query(nil, character, true)
+                end,
+            })
+        end
+
+        ns.CallMenu(self.Portrait, menu)
+    end)
 end
 
 function CharacterGearFrame:OnShow()

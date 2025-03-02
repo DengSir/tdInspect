@@ -47,6 +47,7 @@ function Addon:OnInitialize()
     ---@class tdInspectProfile: table
     local profile = { --
         global = { --
+            characters = {},
             userCache = {},
         },
         profile = { --
@@ -79,6 +80,8 @@ function Addon:OnInitialize()
     end
 
     self.db.global.version = ns.VERSION
+
+    self.db.global.characters[ns.UnitName('player')] = true
 
     self.CharacterGearParent = CreateFrame('Frame', nil, PaperDollFrame)
     self.CharacterGearParent:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -33, -12)
@@ -210,4 +213,12 @@ function Addon:OpenInspectGearFrame()
             characterGearFrame:Show()
         end
     end
+end
+
+function Addon:GetCharacters()
+    local result = {}
+    for k in pairs(self.db.global.characters) do
+        tinsert(result, k)
+    end
+    return result
 end

@@ -112,12 +112,15 @@ function Inspect:OnEnable()
         return Deal(sender, Serializer:Deserialize(msg))
     end
 
+    self:Event('UNIT_INVENTORY_CHANGED')
     self:Event('GET_ITEM_INFO_RECEIVED')
     self:Event('INSPECT_READY')
     self:RegisterComm(PROTO_PREFIX, OnComm)
     for _, v in ipairs(ALA_PREFIXES) do
         self:RegisterComm(v, 'OnAlaCommand')
     end
+
+    self:SaveCurrentCharacter()
 end
 
 function Inspect:SetUnit(unit, name)
@@ -377,7 +380,7 @@ function Inspect:CanOurInspect(unit)
     return true
 end
 
-function Inspect:Query(unit, name)
+function Inspect:Query(unit, name, onlyCache)
     if unit and not UnitIsPlayer(unit) then
         return
     end
@@ -403,7 +406,7 @@ function Inspect:Query(unit, name)
         -- @build>3@
         queryGlyph = true
         -- @end-build>3@
-    elseif self:CanOurInspect(unit) then
+    elseif self:CanOurInspect(unit) and not onlyCache then
         queryEquip = true
         queryTalent = true
         -- @build>3@
@@ -517,7 +520,7 @@ function Inspect:INSPECT_READY(_, guid)
         db.race = select(3, UnitRace(self.unit))
         db.level = UnitLevel(self.unit)
         -- @build>2@
-        db.talents = Encoder:PackTalents(true)
+        db.talents = Encoder:PackTalents(true, true)
         db.numGroups = GetNumTalentGroups and GetNumTalentGroups(true) or 1
         db.activeGroup = GetActiveTalentGroup and GetActiveTalentGroup(true) or 1
         -- @end-build>2@
@@ -723,6 +726,14 @@ function Inspect:GROUP_ROSTER_UPDATE()
     end)
 end
 
+function Inspect:UNIT_INVENTORY_CHANGED(_, unit)
+    if unit ~= 'player' then
+        return
+    end
+    print(1111)
+    self:SaveCurrentCharacter()
+end
+
 function Inspect:GET_ITEM_INFO_RECEIVED(_, id, ok)
     if not ok then
         return
@@ -754,4 +765,39 @@ function Inspect:GET_ITEM_INFO_RECEIVED(_, id, ok)
     end
 
     ns.Events:Fire('TDINSPECT_READY', self.unit, name)
+end
+
+function Inspect:SaveCurrentCharacter()
+    local db = self:BuildCharacterDb(ns.UnitName('player'))
+
+    db.proto = db.proto or {}
+    db.proto.tdInspect = true
+    db.class = select(3, UnitClass('player'))
+    db.race = select(3, UnitRace('player'))
+    db.level = UnitLevel('player')
+    db.numGroups = GetNumTalentGroups and GetNumTalentGroups() or 1
+    db.activeGroup = GetActiveTalentGroup and GetActiveTalentGroup() or 1
+
+    for slot = 1, 18 do
+        local link = GetInventoryItemLink('player', slot)
+        if link then
+            link = link:match('(item:[%-0-9:]+)')
+        else
+            local id = GetInventoryItemID('player', slot)
+            if id then
+                link = 'item:' .. id
+                GetItemInfo(id)
+                -- self.waitingItems[id] = self.waitingItems[id] or {}
+                -- tinsert(self.waitingItems[id], slot)
+            end
+        end
+
+        db.equips = db.equips or {}
+        db.equips[slot] = link
+    end
+
+    db.talents = Encoder:PackTalents(false, true)
+    db.glyphs = Encoder:PackGlyphs(true)
+
+    print(db)
 end

@@ -117,26 +117,37 @@ function Encoder:UnpackEquips(code)
     return equips
 end
 
-function Encoder:PackGlyph(group)
+function Encoder:PackGlyph(group, noEncode)
     group = group or 1
     local data = {}
     for i = 1, 6 do
         local link = GetGlyphLink(i, group)
         local glyphId = link and tonumber(link:match('glyph:%d+:(%d+)'))
 
-        data[i] = glyphId and Encoder:EncodeInteger(glyphId) or ''
+        if noEncode then
+            data[i] = glyphId
+        else
+            data[i] = glyphId and self:EncodeInteger(glyphId) or ''
+        end
     end
-    return tconcat(data, MINOR_SEP)
+    if noEncode then
+        return data
+    else
+        return tconcat(data, MINOR_SEP)
+    end
 end
 
-function Encoder:PackGlyphs()
+function Encoder:PackGlyphs(noEncode)
     -- @build>3@
     local data = {}
     for i = 1, GetNumTalentGroups() do
-        data[i] = self:PackGlyph(i)
+        data[i] = self:PackGlyph(i, noEncode)
     end
-    local r = tconcat(data, MAJOR_SEP)
-    return r
+    if noEncode then
+        return data
+    else
+        return tconcat(data, MAJOR_SEP)
+    end
     -- @end-build>3@
 end
 
@@ -327,13 +338,13 @@ function Encoder:PackTalent(isInspect, group, noEncode)
     end
 end
 
-function Encoder:PackTalents(isInspect)
+function Encoder:PackTalents(isInspect, noEncode)
     local data = {}
     local numGroups = GetNumTalentGroups and GetNumTalentGroups(isInspect) or 1
     for i = 1, numGroups do
-        data[i] = self:PackTalent(isInspect, i, isInspect)
+        data[i] = self:PackTalent(isInspect, i, noEncode)
     end
-    if isInspect then
+    if noEncode then
         return data
     else
         return tconcat(data, MAJOR_SEP)

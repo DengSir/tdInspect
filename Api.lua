@@ -80,6 +80,9 @@ function ns.GetFullName(name, realm)
     if not realm or realm == '' then
         realm = GetNormalizedRealmName()
     end
+    if not realm or realm == '' then
+        realm = GetRealmName():gsub(' +', '')
+    end
     return name .. '-' .. realm
 end
 
@@ -279,3 +282,34 @@ ns.GetTalentTabInfo = function(...)
     return name, icon, pointsSpent, background
 end
 -- @end-classic@
+
+do
+    local menu
+    function ns.CallMenu(anchor, menuList)
+        if not menu then
+            menu = CreateFrame('Frame', 'tdInspectDropdown', UIParent, 'UIDropDownMenuTemplate')
+        end
+
+        menu.displayMode = 'MENU'
+        menu.initialize = EasyMenu_Initialize
+        menu.relativeTo = anchor
+        CloseDropDownMenus()
+        ToggleDropDownMenu(1, nil, menu, anchor, 0, 0, menuList)
+    end
+
+    function ns.CloseMenu(anchor)
+        if not menu then
+            return
+        end
+        if not DropDownList1:IsShown() then
+            return
+        end
+        if menu ~= UIDROPDOWNMENU_OPEN_MENU then
+            return
+        end
+        if menu.relativeTo == anchor then
+            CloseDropDownMenus()
+            return true
+        end
+    end
+end
