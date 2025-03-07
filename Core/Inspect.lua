@@ -730,7 +730,6 @@ function Inspect:UNIT_INVENTORY_CHANGED(_, unit)
     if unit ~= 'player' then
         return
     end
-    print(1111)
     self:SaveCurrentCharacter()
 end
 
@@ -798,6 +797,4 @@ function Inspect:SaveCurrentCharacter()
 
     db.talents = Encoder:PackTalents(false, true)
     db.glyphs = Encoder:PackGlyphs(true)
-
-    print(db)
 end

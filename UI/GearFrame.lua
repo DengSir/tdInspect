@@ -71,6 +71,20 @@ function GearFrame:Constructor(_, inspect)
 
     self:SetUnit('player')
     self:SetClass(UnitClassBase('player'))
+
+    self.Portrait:SetScript('OnMouseUp', function()
+        local menu = {}
+        local characters = ns.Addon:GetCharacters()
+        for _, item in ipairs(characters) do
+            tinsert(menu, {
+                text = item.coloredName,
+                func = function()
+                    ns.Inspect:Query(nil, item.name, true)
+                end,
+            })
+        end
+        ns.CallMenu(self.Portrait, menu)
+    end)
 end
 
 function GearFrame:Clear()

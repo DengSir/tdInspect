@@ -83,6 +83,17 @@ function Addon:OnInitialize()
 
     self.db.global.characters[ns.UnitName('player')] = true
 
+    self.characters = {}
+    for k in pairs(self.db.global.characters) do
+        local db = self.db.global.userCache[k]
+        if db and db.class then
+            local class = select(2, GetClassInfo(db.class))
+            local color = select(4, GetClassColor(class))
+            local coloredName = format('|c%s%s|r', color, Ambiguate(k, 'none'))
+            tinsert(self.characters, {name = k, coloredName = coloredName, class = db.class})
+        end
+    end
+
     self.CharacterGearParent = CreateFrame('Frame', nil, PaperDollFrame)
     self.CharacterGearParent:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -33, -12)
     self.CharacterGearParent:SetSize(1, 1)
@@ -216,9 +227,9 @@ function Addon:OpenInspectGearFrame()
 end
 
 function Addon:GetCharacters()
-    local result = {}
-    for k in pairs(self.db.global.characters) do
-        tinsert(result, k)
-    end
-    return result
+    return self.characters
+end
+
+if not InspectTalentFrameSpentPoints then
+    InspectTalentFrameSpentPoints = {SetPoint = nop}
 end
