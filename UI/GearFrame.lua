@@ -64,10 +64,10 @@ local function SpecOnEnter(self)
     local parent = self:GetParent()
 
     local name, icon, _, points = parent:GetTalentInfo(self.id)
-    GameTooltip:AddLine(name, 1, 1, 1)
-    GameTooltip:AddLine(points, 1, 1, 1)
+    GameTooltip:AddLine(name .. '  ' .. points, HIGHLIGHT_FONT_COLOR:GetRGB())
 
     if not parent.isInspect then
+        GameTooltip:AddLine(' ')
         if not self.isActive then
             GameTooltip:AddLine(ns.LEFT_MOUSE_BUTTON .. L['Switch talent'], HIGHLIGHT_FONT_COLOR:GetRGB())
         end
@@ -160,8 +160,8 @@ function GearFrame:CreateCharecterMenu()
         local characters = ns.Addon:GetCharacters()
         for _, item in ipairs(characters) do
             if item.low and not touchedLow then
-                tinsert(menu, 1, {text = L['Max level characters'], isTitle = true})
-                tinsert(menu, {text = L['Low level characters'], isTitle = true})
+                tinsert(menu, 1, {text = L['Max level characters'], isTitle = true, notCheckable = true})
+                tinsert(menu, {text = L['Low level characters'], isTitle = true, notCheckable = true})
                 touchedLow = true
             end
             tinsert(menu, {
@@ -173,14 +173,14 @@ function GearFrame:CreateCharecterMenu()
         end
 
         if not ns.hasAnyAccount then
-            tinsert(menu, ns.DROPDOWN_SEPARATOR)
-            tinsert(menu, {
-                text = [[|TInterface\Common\help-i:24:24:0:0:64:64:10:54:10:54|t]] .. L['See other account character?'],
-                notCheckable = true,
-                func = function()
-
-                end,
-            })
+            -- tinsert(menu, ns.DROPDOWN_SEPARATOR)
+            -- tinsert(menu, {
+            --     text = [[|TInterface\Common\help-i:24:24:0:0:64:64:10:54:10:54|t]] .. L['See other account character?'],
+            --     notCheckable = true,
+            --     func = function()
+            --         LibStub('tdOptions'):OpenSupport()
+            --     end,
+            -- })
         end
 
         GearFrame.CharacterMenu = menu

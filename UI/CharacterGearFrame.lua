@@ -29,6 +29,15 @@ local function SpecRightClick(self)
             end,
         })
     end
+
+    tinsert(menu, {
+        text = ns.L['Clear Spec Equipment'],
+        notCheckable = true,
+        func = function()
+            ns.SpecGear:SetSpecGear(self.id, nil)
+        end,
+    })
+
     ns.CallMenu(self, menu)
 end
 

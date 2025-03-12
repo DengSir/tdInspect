@@ -44,9 +44,10 @@ _G.BINDING_NAME_TDINSPECT_VIEW_MOUSEOVER = ns.L['Inspect mouseover']
 ---@class Addon: AceAddon, LibClass-2.0, EventHandler
 local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0')
 ns.Addon = Addon
-ns.Events:Embed(Addon)
 
 function Addon:OnInitialize()
+    ns.Events:Embed(Addon)
+
     self:SetupDatabase()
     self:SetupCharacterProfile()
     self:SetupAnyAccount()
@@ -133,11 +134,22 @@ function Addon:SetupAnyAccount()
 
     ns.hasAnyAccount = true
 
+    self.otherCharacters = {}
+
     for _, v in pairs(_G.TDDB_INSPECT_ANYACCOUNT) do
-        if v.global and v.global.userCache then
-            for name, p in pairs(v.global.userCache) do
-                if not ns.db.global.userCache[name] or p.timestamp > ns.db.global.userCache[name].timestamp then
-                    ns.db.global.userCache[name] = p
+        if v.global then
+            if v.global.userCache then
+                for name, p in pairs(v.global.userCache) do
+                    if not ns.db.global.userCache[name] or p.timestamp > ns.db.global.userCache[name].timestamp then
+                        ns.db.global.userCache[name] = p
+                    end
+                end
+            end
+            if v.global.characters then
+                for name, p in pairs(v.global.characters) do
+                    if not ns.db.global.characters[name] then
+                        self.otherCharacters[name] = p
+                    end
                 end
             end
         end
@@ -259,18 +271,33 @@ end
 function Addon:GetCharacters()
     if not self.characters then
         self.characters = {}
-        for k in pairs(ns.db.global.characters) do
-            local db = ns.db.global.userCache[k]
-            if db and db.class then
-                local class = select(2, GetClassInfo(db.class))
-                local color = select(4, GetClassColor(class))
-                local coloredName = format('|c%s%s|r', color, Ambiguate(k, 'none'))
-                local low = db.level < ns.MAX_LEVEL
 
-                tinsert(self.characters,
-                        {name = k, coloredName = coloredName, class = db.class, level = db.level, low = low})
+        local function TouchCharacter(name)
+            local db = ns.db.global.userCache[name]
+            if not db or not db.class then
+                return
+            end
+
+            local class = select(2, GetClassInfo(db.class))
+            local color = select(4, GetClassColor(class))
+            local coloredName = format('|c%s%s|r', color, Ambiguate(name, 'none'))
+            local low = db.level < ns.MAX_LEVEL
+
+            tinsert(self.characters,
+                    {name = name, coloredName = coloredName, class = db.class, level = db.level, low = low})
+        end
+
+        local function TouchCharacters(characters)
+            if not characters then
+                return
+            end
+            for k in pairs(characters) do
+                TouchCharacter(k)
             end
         end
+
+        TouchCharacters(ns.db.global.characters)
+        TouchCharacters(self.otherCharacters)
 
         sort(self.characters, function(a, b)
             if a.level == b.level then

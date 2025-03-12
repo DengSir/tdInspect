@@ -11,7 +11,7 @@ local SpecGear = ns.Addon:NewModule('SpecGear')
 ns.Events:Embed(SpecGear)
 
 function SpecGear:OnInitialize()
-    self.gears = ns.Addon.charProfile.gears
+    self.gears = ns.char.gears
     self:Event('ACTIVE_TALENT_GROUP_CHANGED')
 end
 
