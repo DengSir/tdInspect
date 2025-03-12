@@ -6,6 +6,38 @@
 ---@class ns
 local ns = select(2, ...)
 
+ns.LEFT_MOUSE_BUTTON = [[|TInterface\TutorialFrame\UI-Tutorial-Frame:12:12:0:0:512:512:10:65:228:283|t]]
+ns.RIGHT_MOUSE_BUTTON = [[|TInterface\TutorialFrame\UI-Tutorial-Frame:12:12:0:0:512:512:10:65:330:385|t]]
+
+ns.MAX_LEVEL = MAX_PLAYER_LEVEL_TABLE[LE_EXPANSION_LEVEL_CURRENT]
+
+ns.DROPDOWN_SEPARATOR = {
+    text = '',
+    hasArrow = false,
+    dist = 0,
+    isTitle = true,
+    isUninteractable = true,
+    notCheckable = true,
+    iconOnly = true,
+    icon = [[Interface\Common\UI-TooltipDivider-Transparent]],
+    tCoordLeft = 0,
+    tCoordRight = 1,
+    tCoordTop = 0,
+    tCoordBottom = 1,
+    tSizeX = 0,
+    tSizeY = 8,
+    tFitDropDownSizeX = true,
+    iconInfo = {
+        tCoordLeft = 0,
+        tCoordRight = 1,
+        tCoordTop = 0,
+        tCoordBottom = 1,
+        tSizeX = 0,
+        tSizeY = 8,
+        tFitDropDownSizeX = true,
+    },
+}
+
 local tonumber = tonumber
 local format = string.format
 
@@ -86,6 +118,7 @@ function ns.GetFullName(name, realm)
     return name .. '-' .. realm
 end
 
+---@return string
 function ns.UnitName(unit)
     return ns.GetFullName(UnitFullName(unit))
 end
@@ -312,4 +345,16 @@ do
             return true
         end
     end
+end
+
+function ns.CopyDefaults(dest, src)
+    dest = dest or {}
+    for k, v in pairs(src) do
+        if type(v) == 'table' then
+            dest[k] = ns.CopyDefaults(dest[k], v)
+        elseif dest[k] == nil then
+            dest[k] = v
+        end
+    end
+    return dest
 end

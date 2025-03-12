@@ -151,7 +151,7 @@ end
 
 function GearItem:ApplyEnhancement()
     local x = 0
-    if ns.Addon.db.profile.showGemsFront then
+    if ns.db.profile.showGemsFront then
         x = self:UpdateSockets(x)
         x = self:UpdateEnchant(x)
     else
@@ -164,7 +164,7 @@ end
 function GearItem:UpdateEnchant(x)
     local enchant = ns.GetItemEnchantInfo(self.item)
     if enchant then
-        if ns.Addon.db.profile.showEnchant then
+        if ns.db.profile.showEnchant then
             x = x + SPACING
 
             local tex = ns.UI.EnchantItem:Alloc(self)
@@ -177,7 +177,7 @@ function GearItem:UpdateEnchant(x)
 
             x = x + tex:GetWidth()
         end
-    elseif ns.Addon.db.profile.showLost and ns.IsCanEnchant(self.item, self.inspect) then
+    elseif ns.db.profile.showLost and ns.IsCanEnchant(self.item, self.inspect) then
         x = x + SPACING
 
         local tex = ns.UI.EnchantItem:Alloc(self)
@@ -190,7 +190,7 @@ function GearItem:UpdateEnchant(x)
 end
 
 function GearItem:UpdateSockets(x)
-    if ns.Addon.db.profile.showGem then
+    if ns.db.profile.showGem then
         for i = 1, 3 do
             local gemId = ns.GetItemGem(self.item, i)
             local socketType = ns.GetItemSocket(self.item, i)
@@ -207,7 +207,7 @@ function GearItem:UpdateSockets(x)
         end
     end
 
-    if ns.Addon.db.profile.showLost and ns.IsCanSocket(self.item, self.inspect) then
+    if ns.db.profile.showLost and ns.IsCanSocket(self.item, self.inspect) then
         x = x + SPACING
 
         local tex = ns.UI.GemItem:Alloc(self)

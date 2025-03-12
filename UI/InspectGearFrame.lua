@@ -20,6 +20,8 @@ function InspectGearFrame:Constructor()
     DataSource:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 10, 0)
     DataSource:SetFont(DataSource:GetFont(), 12, 'OUTLINE')
     self.DataSource = DataSource
+
+    self.isInspect = true
 end
 
 function InspectGearFrame:OnShow()
@@ -29,7 +31,7 @@ function InspectGearFrame:OnShow()
     self:Event('TDINSPECT_READY', 'Update')
     self:Event('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
 
-    self:UpdateOptionButton(ns.Addon.db.profile.showOptionButtonInInspect)
+    self:UpdateOptionButton(ns.db.profile.showOptionButtonInInspect)
 
     self:Update()
 end

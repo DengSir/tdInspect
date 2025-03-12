@@ -53,11 +53,11 @@ function Addon:SetupOptionFrame()
         type = 'group',
         name = format('tdInspect - |cff00ff00%s|r', C_AddOns.GetAddOnMetadata('tdInspect', 'Version')),
         get = function(item)
-            return self.db.profile[item[#item]]
+            return ns.db.profile[item[#item]]
         end,
         set = function(item, value)
             local key = item[#item]
-            self.db.profile[key] = value
+            ns.db.profile[key] = value
             ns.Events:Fire('TDINSPECT_OPTION_CHANGED', key, value)
         end,
         args = {

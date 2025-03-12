@@ -26,6 +26,7 @@
     <Script file="Core\Glyph.lua" />
     <Script file="Core\Ala.lua" />
     <Script file="Core\Pool.lua" />
+    <Script file="Core\SpecGear.lua" />
 
     <Script file="Tooltip\FixItemSet.lua" />
     <Script file="Tooltip\FixMetaGem.lua" />

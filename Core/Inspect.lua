@@ -57,7 +57,7 @@ ns.Events:Embed(Inspect)
 function Inspect:OnInitialize()
     self.unitName = nil
     self.waitingItems = {}
-    self.userCache = ns.Addon.db.global.userCache
+    self.userCache = ns.db.global.userCache
     self.stepTimer = {}
     self.itemLevelCalculator = ns.ItemLevelCalculator:New(function(slot)
         return self:GetItemLink(slot)

@@ -10,7 +10,7 @@ local ipairs = ipairs
 local select = select
 local max, min = math.max, math.min
 
----@class ItemLevelCalculator
+---@class ItemLevelCalculator: Object
 local ItemLevelCalculator = ns.Addon:NewClass('ItemLevelCalculator')
 
 local SLOTS = {

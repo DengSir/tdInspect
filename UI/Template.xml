@@ -1,6 +1,6 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
-    <Frame name="tdInspectPortraitTemplate" scale="0.8" virtual="true">
+    <Button name="tdInspectPortraitTemplate" scale="0.8" virtual="true">
         <Size x="52" y="60"/>
         <Layers>
             <Layer level="BORDER">
@@ -47,7 +47,7 @@
                 </Texture>
             </Layer>
         </Layers>
-    </Frame>
+    </Button>
 
     <Button name="tdInspectGearTalentTemplate" virtual="true">
         <Size x="48" y="48"/>
@@ -96,11 +96,11 @@
     <Frame name="tdInspectGearFrameTemplate" inherits="BackdropTemplate" enableMouse="true" virtual="true">
         <Size x="200" y="424"/>
         <Frames>
-            <Frame parentKey="Portrait" inherits="tdInspectPortraitTemplate">
+            <Button parentKey="Portrait" inherits="tdInspectPortraitTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" x="18" y="-16"/>
                 </Anchors>
-            </Frame>
+            </Button>
             <Button parentKey="Talent1" inherits="tdInspectGearTalentTemplate">
                 <Anchors>
                     <Anchor point="TOPRIGHT" x="-10" y="-10" />

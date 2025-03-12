@@ -1,13 +1,9 @@
-#@debug@
-## Interface: 11306
-## Version: 1.0.0
-#@end-debug@
-#@project-interface@
+## Interface: @project-interface@
 ## Title: tdInspect
 ## IconTexture: 132092
 ## Author: Dencer
 ## Version: @project-version@
-## OptionalDeps: LibCompress
+## OptionalDeps: tdSync
 ## SavedVariables: TDDB_INSPECT2
 
 Load.xml

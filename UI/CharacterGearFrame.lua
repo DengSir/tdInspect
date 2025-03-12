@@ -9,6 +9,37 @@ local ns = select(2, ...)
 ---@class UI.CharacterGearFrame : UI.GearFrame
 local CharacterGearFrame = ns.Addon:NewClass('UI.CharacterGearFrame', ns.UI.GearFrame)
 
+local function SpecLeftClick(self)
+    if not self.isActive and not InCombatLockdown() then
+        SetActiveTalentGroup(self.id)
+    end
+end
+
+local function SpecRightClick(self)
+    local menu = {}
+    tinsert(menu, {text = ns.L['Set Spec Equipment'], isTitle = true, notCheckable = true})
+
+    for _, equipmentSetId in ipairs(C_EquipmentSet.GetEquipmentSetIDs()) do
+        local name = C_EquipmentSet.GetEquipmentSetInfo(equipmentSetId)
+        tinsert(menu, {
+            text = name,
+            checked = ns.SpecGear:GetSpecGear(self.id) == equipmentSetId,
+            func = function()
+                ns.SpecGear:SetSpecGear(self.id, equipmentSetId)
+            end,
+        })
+    end
+    ns.CallMenu(self, menu)
+end
+
+local function SpecOnClick(self, button)
+    if button == 'LeftButton' then
+        return SpecLeftClick(self)
+    elseif button == 'RightButton' then
+        return SpecRightClick(self)
+    end
+end
+
 function CharacterGearFrame:Constructor()
     self:SetScript('OnShow', self.OnShow)
     self:SetScript('OnHide', self.OnHide)
@@ -17,11 +48,8 @@ function CharacterGearFrame:Constructor()
     self:UpdateName()
     self:UpdateClass()
 
-    self.Talent2:SetScript('OnClick', function(button)
-        if not InCombatLockdown() then
-            SetActiveTalentGroup(button.id)
-        end
-    end)
+    self.Talent1:SetScript('OnClick', SpecOnClick)
+    self.Talent2:SetScript('OnClick', SpecOnClick)
 end
 
 function CharacterGearFrame:OnShow()
@@ -33,7 +61,7 @@ function CharacterGearFrame:OnShow()
     self:Event('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateItemLevel')
     self:Event('TDINSPECT_OPTION_CHANGED', 'UpdateOption')
 
-    self:UpdateOptionButton(ns.Addon.db.profile.showOptionButtonInCharacter)
+    self:UpdateOptionButton(ns.db.profile.showOptionButtonInCharacter)
 
     self:Update()
 

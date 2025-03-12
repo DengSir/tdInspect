@@ -43,6 +43,40 @@ function GearFrame:Create(parent, inspect)
     return self:Bind(CreateFrame('Frame', nil, parent, 'tdInspectGearFrameTemplate'), inspect)
 end
 
+local function PortraitOnClick(self)
+    return self:GetParent():PortraitOnClick()
+end
+
+local function PortraitOnEnter(self)
+    GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+    GameTooltip:SetText(CHARACTER, NORMAL_FONT_COLOR:GetRGB())
+    GameTooltip:AddLine(ns.LEFT_MOUSE_BUTTON .. L['Click to switch characters'], HIGHLIGHT_FONT_COLOR:GetRGB())
+    GameTooltip:Show()
+end
+
+local function SpecOnEnter(self)
+    GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+    GameTooltip:SetText(self.id == 1 and TALENT_SPEC_PRIMARY or TALENT_SPEC_SECONDARY)
+    if self.isActive then
+        GameTooltip:AddLine(L['Active'], GREEN_FONT_COLOR:GetRGB())
+    end
+
+    local parent = self:GetParent()
+
+    local name, icon, _, points = parent:GetTalentInfo(self.id)
+    GameTooltip:AddLine(name, 1, 1, 1)
+    GameTooltip:AddLine(points, 1, 1, 1)
+
+    if not parent.isInspect then
+        if not self.isActive then
+            GameTooltip:AddLine(ns.LEFT_MOUSE_BUTTON .. L['Click to switch'], HIGHLIGHT_FONT_COLOR:GetRGB())
+        end
+        GameTooltip:AddLine(ns.RIGHT_MOUSE_BUTTON .. L['Bind with EquipmentSet'], HIGHLIGHT_FONT_COLOR:GetRGB())
+    end
+
+    GameTooltip:Show()
+end
+
 function GearFrame:Constructor(_, inspect)
     self.inspect = inspect
     self:Hide()
@@ -72,19 +106,17 @@ function GearFrame:Constructor(_, inspect)
     self:SetUnit('player')
     self:SetClass(UnitClassBase('player'))
 
-    self.Portrait:SetScript('OnMouseUp', function()
-        local menu = {}
-        local characters = ns.Addon:GetCharacters()
-        for _, item in ipairs(characters) do
-            tinsert(menu, {
-                text = item.coloredName,
-                func = function()
-                    ns.Inspect:Query(nil, item.name, true)
-                end,
-            })
-        end
-        ns.CallMenu(self.Portrait, menu)
-    end)
+    self.Portrait:SetScript('OnClick', PortraitOnClick)
+    self.Portrait:SetScript('OnEnter', PortraitOnEnter)
+    self.Portrait:SetScript('OnLeave', GameTooltip_Hide)
+
+    self.Talent1:SetScript('OnEnter', SpecOnEnter)
+    self.Talent1:SetScript('OnLeave', GameTooltip_Hide)
+    self.Talent2:SetScript('OnEnter', SpecOnEnter)
+    self.Talent2:SetScript('OnLeave', GameTooltip_Hide)
+
+    self.Talent1:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
+    self.Talent2:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 end
 
 function GearFrame:Clear()
@@ -119,6 +151,45 @@ end
 function GearFrame:OnUpdate()
     self:SetScript('OnUpdate', nil)
     self:UpdateSize()
+end
+
+function GearFrame:CreateCharecterMenu()
+    if not GearFrame.CharacterMenu then
+        local menu = {}
+        local touchedLow = false
+        local characters = ns.Addon:GetCharacters()
+        for _, item in ipairs(characters) do
+            if item.low and not touchedLow then
+                tinsert(menu, 1, {text = L['Max level characters'], isTitle = true})
+                tinsert(menu, {text = L['Low level characters'], isTitle = true})
+                touchedLow = true
+            end
+            tinsert(menu, {
+                text = item.coloredName,
+                func = function()
+                    ns.Inspect:Query(nil, item.name, true)
+                end,
+            })
+        end
+
+        if not ns.hasAnyAccount then
+            tinsert(menu, ns.DROPDOWN_SEPARATOR)
+            tinsert(menu, {
+                text = [[|TInterface\Common\help-i:24:24:0:0:64:64:10:54:10:54|t]] .. L['See other account character?'],
+                notCheckable = true,
+                func = function()
+
+                end,
+            })
+        end
+
+        GearFrame.CharacterMenu = menu
+    end
+    return GearFrame.CharacterMenu
+end
+
+function GearFrame:PortraitOnClick()
+    return ns.CallMenu(self.Portrait, self.CharacterMenu or self:CreateCharecterMenu())
 end
 
 function GearFrame:UpdateSize()
@@ -252,7 +323,7 @@ function GearFrame:UpdateTalent(button, group, isActive, onlyOne)
     end
 
     if isActive then
-        if ns.Addon.db.profile.showTalentBackground then
+        if ns.db.profile.showTalentBackground then
             self:SetBackground(bg)
         else
             self:SetBackground()

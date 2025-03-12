@@ -8,6 +8,8 @@
 ---@field Talent Talent
 ---@field Glyph Glyph
 ---@field ItemLevelCalculator ItemLevelCalculator
+---@field Events Events
+---@field SpecGear SpecGear
 local ns = select(2, ...)
 
 local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
@@ -42,65 +44,13 @@ _G.BINDING_NAME_TDINSPECT_VIEW_MOUSEOVER = ns.L['Inspect mouseover']
 ---@class Addon: AceAddon, LibClass-2.0, EventHandler
 local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0')
 ns.Addon = Addon
+ns.Events:Embed(Addon)
 
 function Addon:OnInitialize()
-    ---@class tdInspectProfile: table
-    local profile = { --
-        global = { --
-            characters = {},
-            userCache = {},
-        },
-        profile = { --
-            characterGear = true,
-            inspectGear = true,
-            inspectCompare = true,
-            showTalentBackground = true,
-            showOptionButtonInCharacter = true,
-            showOptionButtonInInspect = true,
-            showGem = true,
-            showEnchant = true,
-            showLost = true,
-            showGemsFront = false,
-        },
-    }
-
-    ns.Events:Embed(self)
-
-    ---@type tdInspectProfile | AceDB.Schema
-    self.db = LibStub('AceDB-3.0'):New('TDDB_INSPECT2', profile, true)
-
-    if not self.db.global.version or self.db.global.version < 20000 then
-        wipe(self.db.global.userCache)
-    end
-
-    for k, v in pairs(self.db.global.userCache) do
-        if not v.class then
-            self.db.global.userCache[k] = nil
-        end
-    end
-
-    self.db.global.version = ns.VERSION
-
-    self.db.global.characters[ns.UnitName('player')] = true
-
-    self.characters = {}
-    for k in pairs(self.db.global.characters) do
-        local db = self.db.global.userCache[k]
-        if db and db.class then
-            local class = select(2, GetClassInfo(db.class))
-            local color = select(4, GetClassColor(class))
-            local coloredName = format('|c%s%s|r', color, Ambiguate(k, 'none'))
-            tinsert(self.characters, {name = k, coloredName = coloredName, class = db.class})
-        end
-    end
-
-    self.CharacterGearParent = CreateFrame('Frame', nil, PaperDollFrame)
-    self.CharacterGearParent:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -33, -12)
-    self.CharacterGearParent:SetSize(1, 1)
-    self.CharacterGearParent:SetScript('OnShow', function()
-        self:OpenCharacterGearFrame()
-    end)
-
+    self:SetupDatabase()
+    self:SetupCharacterProfile()
+    self:SetupAnyAccount()
+    self:SetupGearParent()
     self:SetupOptionFrame()
 end
 
@@ -123,6 +73,86 @@ function Addon:OnClassCreated(class, name)
     else
         ns[name] = class
     end
+end
+
+function Addon:SetupDatabase()
+    ---@class tdInspectProfile: table
+    local profile = { --
+        global = { --
+            characters = {},
+            userCache = {},
+        },
+        profile = { --
+            characterGear = true,
+            inspectGear = true,
+            inspectCompare = true,
+            showTalentBackground = true,
+            showOptionButtonInCharacter = true,
+            showOptionButtonInInspect = true,
+            showGem = true,
+            showEnchant = true,
+            showLost = true,
+            showGemsFront = false,
+        },
+    }
+
+    ---@type tdInspectProfile | AceDB.Schema
+    ns.db = LibStub('AceDB-3.0'):New('TDDB_INSPECT2', profile, true)
+
+    if not ns.db.global.version or ns.db.global.version < 20000 then
+        wipe(ns.db.global.userCache)
+    end
+
+    for k, v in pairs(ns.db.global.userCache) do
+        if not v.class then
+            ns.db.global.userCache[k] = nil
+        end
+    end
+
+    ns.db.global.version = ns.VERSION
+end
+
+function Addon:SetupCharacterProfile()
+    ---@class CharacterProfile: table
+    local characterProfile = {gears = {}}
+
+    local name = ns.UnitName('player')
+    local char = ns.db.global.characters[name]
+    if type(char) ~= 'table' then
+        char = nil
+    end
+
+    ns.db.global.characters[name] = ns.CopyDefaults(char, characterProfile)
+    ns.char = ns.db.global.characters[name]
+end
+
+function Addon:SetupAnyAccount()
+    if not _G.TDDB_INSPECT_ANYACCOUNT then
+        return
+    end
+
+    ns.hasAnyAccount = true
+
+    for _, v in pairs(_G.TDDB_INSPECT_ANYACCOUNT) do
+        if v.global and v.global.userCache then
+            for name, p in pairs(v.global.userCache) do
+                if not ns.db.global.userCache[name] or p.timestamp > ns.db.global.userCache[name].timestamp then
+                    ns.db.global.userCache[name] = p
+                end
+            end
+        end
+    end
+
+    _G.TDDB_INSPECT_ANYACCOUNT = nil
+end
+
+function Addon:SetupGearParent()
+    self.CharacterGearParent = CreateFrame('Frame', nil, PaperDollFrame)
+    self.CharacterGearParent:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -33, -12)
+    self.CharacterGearParent:SetSize(1, 1)
+    self.CharacterGearParent:SetScript('OnShow', function()
+        self:OpenCharacterGearFrame()
+    end)
 end
 
 function Addon:SetupUI()
@@ -154,7 +184,7 @@ function Addon:TDINSPECT_OPTION_CHANGED(_, key, value)
                 self:OpenCharacterGearFrame()
             end
         elseif self.CharacterGearFrame then
-            if not self.db.profile.inspectCompare or not self.InspectGearFrame or not self.InspectGearFrame:IsShown() then
+            if not ns.db.profile.inspectCompare or not self.InspectGearFrame or not self.InspectGearFrame:IsShown() then
                 self.CharacterGearFrame:Hide()
             end
         end
@@ -200,7 +230,7 @@ function Addon:GetInspectGearFrame()
 end
 
 function Addon:OpenCharacterGearFrame()
-    if self.db.profile.characterGear then
+    if ns.db.profile.characterGear then
         local characterGearFrame = self:GetCharacterGearFrame()
 
         if characterGearFrame:IsShown() then
@@ -213,11 +243,11 @@ function Addon:OpenCharacterGearFrame()
 end
 
 function Addon:OpenInspectGearFrame()
-    if self.db.profile.inspectGear then
+    if ns.db.profile.inspectGear then
         local inspectGearFrame = self:GetInspectGearFrame()
         inspectGearFrame:Show()
 
-        if self.db.profile.inspectCompare then
+        if ns.db.profile.inspectCompare then
             local characterGearFrame = self:GetCharacterGearFrame()
 
             characterGearFrame:TapTo(inspectGearFrame, 'TOPRIGHT')
@@ -227,6 +257,28 @@ function Addon:OpenInspectGearFrame()
 end
 
 function Addon:GetCharacters()
+    if not self.characters then
+        self.characters = {}
+        for k in pairs(ns.db.global.characters) do
+            local db = ns.db.global.userCache[k]
+            if db and db.class then
+                local class = select(2, GetClassInfo(db.class))
+                local color = select(4, GetClassColor(class))
+                local coloredName = format('|c%s%s|r', color, Ambiguate(k, 'none'))
+                local low = db.level < ns.MAX_LEVEL
+
+                tinsert(self.characters,
+                        {name = k, coloredName = coloredName, class = db.class, level = db.level, low = low})
+            end
+        end
+
+        sort(self.characters, function(a, b)
+            if a.level == b.level then
+                return a.name < b.name
+            end
+            return a.level > b.level
+        end)
+    end
     return self.characters
 end
 
