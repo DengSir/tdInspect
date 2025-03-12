@@ -32,6 +32,14 @@ L['Add socket'] = '添加插槽'
 L.Major = '主'
 L.Minor = '副'
 L['Show gems in front'] = '将宝石排在前面'
+L.Active = true
+L['Bind with EquipmentSet'] = true
+L['Click to switch'] = true
+L['Click to switch characters'] = true
+L['Low level characters'] = true
+L['Max level characters'] = true
+L['See other account character?'] = true
+L['Set Spec Equipment'] = true
 -- @locale-fill@
 
 -- @end-import@

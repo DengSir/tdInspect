@@ -4,7 +4,11 @@ if not L then
 end
 -- @locale:language=enUS@
 L = L or {}
+L["Active"] = true
 L["Add socket"] = true
+L["Bind with EquipmentSet"] = true
+L["Click to switch"] = true
+L["Click to switch characters"] = true
 L["Data source:"] = true
 L["Empty socket"] = true
 L["Help"] = true
@@ -13,9 +17,13 @@ L["iLvl:"] = true
 L["Inspect mouseover"] = true
 L["Inspect target"] = true
 L["Last update:"] = true
+L["Low level characters"] = true
 L["Major"] = true
+L["Max level characters"] = true
 L["Minor"] = true
 L["No Enchant"] = true
+L["See other account character?"] = true
+L["Set Spec Equipment"] = true
 L["Show character gear list"] = true
 L["Show enchant"] = true
 L["Show enchant/gem lost"] = true
@@ -57,6 +65,14 @@ L['Add socket'] = true
 L.Major = true
 L.Minor = true
 L['Show gems in front'] = true
+L.Active = true
+L['Bind with EquipmentSet'] = true
+L['Click to switch'] = true
+L['Click to switch characters'] = true
+L['Low level characters'] = true
+L['Max level characters'] = true
+L['See other account character?'] = true
+L['Set Spec Equipment'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
