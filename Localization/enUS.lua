@@ -7,6 +7,7 @@ L = L or {}
 L["Active talent"] = true
 L["Add socket"] = true
 L["Bind with EquipmentSet"] = true
+L["Clear Spec Equipment"] = true
 L["Data source:"] = true
 L["Empty socket"] = true
 L["Help"] = true
@@ -20,7 +21,6 @@ L["Major"] = true
 L["Max level characters"] = true
 L["Minor"] = true
 L["No Enchant"] = true
-L["See other account character?"] = true
 L["Set Spec Equipment"] = true
 L["Show character gear list"] = true
 L["Show enchant"] = true
@@ -68,11 +68,13 @@ L['Show gems in front'] = true
 L['Bind with EquipmentSet'] = true
 L['Low level characters'] = true
 L['Max level characters'] = true
-L['See other account character?'] = true
+--[====[ never used ]====]
+--[====[ L['See other account character?'] = true ]====]
 L['Set Spec Equipment'] = true
 L['Active talent'] = true
 L['Switch my characters'] = true
 L['Switch talent'] = true
+L['Clear Spec Equipment'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
