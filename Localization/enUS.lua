@@ -65,13 +65,7 @@ L['Add socket'] = true
 L.Major = true
 L.Minor = true
 L['Show gems in front'] = true
---[====[ never used ]====]
---[====[ L.Active = true ]====]
 L['Bind with EquipmentSet'] = true
---[====[ never used ]====]
---[====[ L['Click to switch'] = true ]====]
---[====[ never used ]====]
---[====[ L['Click to switch characters'] = true ]====]
 L['Low level characters'] = true
 L['Max level characters'] = true
 L['See other account character?'] = true
