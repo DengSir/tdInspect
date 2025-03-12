@@ -50,7 +50,7 @@ end
 local function PortraitOnEnter(self)
     GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
     GameTooltip:SetText(CHARACTER, NORMAL_FONT_COLOR:GetRGB())
-    GameTooltip:AddLine(ns.LEFT_MOUSE_BUTTON .. L['Click to switch characters'], HIGHLIGHT_FONT_COLOR:GetRGB())
+    GameTooltip:AddLine(ns.LEFT_MOUSE_BUTTON .. L['Switch my characters'], HIGHLIGHT_FONT_COLOR:GetRGB())
     GameTooltip:Show()
 end
 
@@ -58,7 +58,7 @@ local function SpecOnEnter(self)
     GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
     GameTooltip:SetText(self.id == 1 and TALENT_SPEC_PRIMARY or TALENT_SPEC_SECONDARY)
     if self.isActive then
-        GameTooltip:AddLine(L['Active'], GREEN_FONT_COLOR:GetRGB())
+        GameTooltip:AddLine(L['Active talent'], GREEN_FONT_COLOR:GetRGB())
     end
 
     local parent = self:GetParent()
@@ -69,7 +69,7 @@ local function SpecOnEnter(self)
 
     if not parent.isInspect then
         if not self.isActive then
-            GameTooltip:AddLine(ns.LEFT_MOUSE_BUTTON .. L['Click to switch'], HIGHLIGHT_FONT_COLOR:GetRGB())
+            GameTooltip:AddLine(ns.LEFT_MOUSE_BUTTON .. L['Switch talent'], HIGHLIGHT_FONT_COLOR:GetRGB())
         end
         GameTooltip:AddLine(ns.RIGHT_MOUSE_BUTTON .. L['Bind with EquipmentSet'], HIGHLIGHT_FONT_COLOR:GetRGB())
     end
