@@ -1,3 +1,13 @@
+# [2.5.0](https://github.com/DengSir/tdInspect/compare/v2.4.1...v2.5.0) (2025-03-12)
+
+
+### Features
+
+* 查看我的其它角色功能 ([8853694](https://github.com/DengSir/tdInspect/commit/8853694f2ec6015c4c21f5017817305650c091e5))
+* 添加天赋套装绑定功能 ([a9e9fc5](https://github.com/DengSir/tdInspect/commit/a9e9fc54f36911deac8c336ea064a2cbe0d8d328))
+
+
+
 ## [2.4.1](https://github.com/DengSir/tdInspect/compare/v2.4.0...v2.4.1) (2025-02-24)
 
 
