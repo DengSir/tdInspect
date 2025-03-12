@@ -4,11 +4,9 @@ if not L then
 end
 -- @locale:language=enUS@
 L = L or {}
-L["Active"] = true
+L["Active talent"] = true
 L["Add socket"] = true
 L["Bind with EquipmentSet"] = true
-L["Click to switch"] = true
-L["Click to switch characters"] = true
 L["Data source:"] = true
 L["Empty socket"] = true
 L["Help"] = true
@@ -34,6 +32,8 @@ L["Show inspect gear list"] = true
 L["Show option button in character gear list"] = true
 L["Show option button in inspect gear list"] = true
 L["Show talent background"] = true
+L["Switch my characters"] = true
+L["Switch talent"] = true
 L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] = true
 L["View mouseover hotkey"] = true
 L["View target hotkey"] = true
@@ -65,14 +65,20 @@ L['Add socket'] = true
 L.Major = true
 L.Minor = true
 L['Show gems in front'] = true
-L.Active = true
+--[====[ never used ]====]
+--[====[ L.Active = true ]====]
 L['Bind with EquipmentSet'] = true
-L['Click to switch'] = true
-L['Click to switch characters'] = true
+--[====[ never used ]====]
+--[====[ L['Click to switch'] = true ]====]
+--[====[ never used ]====]
+--[====[ L['Click to switch characters'] = true ]====]
 L['Low level characters'] = true
 L['Max level characters'] = true
 L['See other account character?'] = true
 L['Set Spec Equipment'] = true
+L['Active talent'] = true
+L['Switch my characters'] = true
+L['Switch talent'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
