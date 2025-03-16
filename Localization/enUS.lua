@@ -15,7 +15,6 @@ L["Current realm characters"] = true
 L["Data source:"] = true
 L["Empty socket"] = true
 L["Gear List"] = true
-L["Gear list"] = true
 L["Help"] = true
 L["HELP_SUMMARY"] = true
 L["iLvl:"] = true
@@ -88,7 +87,8 @@ L['Clear Spec Equipment'] = true
 L['Close character frame when inspect'] = true
 L['Character Gear'] = true
 L['Gear List'] = true
-L['Gear list'] = true
+--[====[ never used ]====]
+--[====[ L['Gear list'] = true ]====]
 L['Inspect Gear'] = true
 L['Character List'] = true
 L['Current realm characters'] = true
