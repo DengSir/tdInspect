@@ -78,7 +78,7 @@ function Addon:SetupOptionFrame()
         end,
         args = {
             gearListTitle = treeTitle(L['Gear List']),
-            gearList = treeItem(L['Gear list']) {
+            gearList = treeItem(L['Gear List']) {
                 general = inline(GENERAL) {
                     showTalentBackground = fullToggle(L['Show talent background']),
                     showGem = fullToggle(L['Show gem']),
