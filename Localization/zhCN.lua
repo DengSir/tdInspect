@@ -20,7 +20,7 @@ L.HELP_SUMMARY = [[1. 大部分玩家右键菜单（好友，公会，聊天等�
 2. 若玩家菜单右键没有观察选项，尝试禁用玩家菜单增强插件。
 3. 角色装备列表非当前天赋按钮，点击可切换天赋。
 4. 角色装备列表的天赋按钮，右键可绑定天赋到套装。
-5. 角色和被观察者的装备列表的头像，点击可查看其它角色。]]
+5. 角色和被观察者的装备列表的头像，点击可查看我的其它角色。]]
 L['View mouseover hotkey'] = '观察鼠标悬停目标快捷键'
 L['View target hotkey'] = '观察目标快捷键'
 L['The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?'] =
@@ -44,7 +44,7 @@ L['Active talent'] = '当前天赋'
 L['Switch my characters'] = '切换我的角色'
 L['Switch talent'] = '切换天赋'
 L['Clear Spec Equipment'] = '取消绑定'
-L['Close character frame when inspect'] = true
+L['Close character frame when inspect'] = '观察时关闭角色面板'
 -- @locale-fill@
 
 -- @end-import@
