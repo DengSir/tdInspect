@@ -45,6 +45,10 @@ L['Switch my characters'] = '切换我的角色'
 L['Switch talent'] = '切换天赋'
 L['Clear Spec Equipment'] = '取消绑定'
 L['Close character frame when inspect'] = '观察时关闭角色面板'
+L['Character Gear'] = true
+L['Gear List'] = true
+L['Gear list'] = true
+L['Inspect Gear'] = true
 -- @locale-fill@
 
 -- @end-import@

@@ -7,13 +7,17 @@ L = L or {}
 L["Active talent"] = true
 L["Add socket"] = true
 L["Bind with EquipmentSet"] = true
+L["Character Gear"] = true
 L["Clear Spec Equipment"] = true
 L["Close character frame when inspect"] = true
 L["Data source:"] = true
 L["Empty socket"] = true
+L["Gear List"] = true
+L["Gear list"] = true
 L["Help"] = true
 L["HELP_SUMMARY"] = true
 L["iLvl:"] = true
+L["Inspect Gear"] = true
 L["Inspect mouseover"] = true
 L["Inspect target"] = true
 L["Last update:"] = true
@@ -77,6 +81,10 @@ L['Switch my characters'] = true
 L['Switch talent'] = true
 L['Clear Spec Equipment'] = true
 L['Close character frame when inspect'] = true
+L['Character Gear'] = true
+L['Gear List'] = true
+L['Gear list'] = true
+L['Inspect Gear'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
