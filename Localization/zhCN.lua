@@ -44,6 +44,7 @@ L['Active talent'] = '当前天赋'
 L['Switch my characters'] = '切换我的角色'
 L['Switch talent'] = '切换天赋'
 L['Clear Spec Equipment'] = '取消绑定'
+L['Close character frame when inspect'] = true
 -- @locale-fill@
 
 -- @end-import@

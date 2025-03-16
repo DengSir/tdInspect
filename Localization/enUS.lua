@@ -8,6 +8,7 @@ L["Active talent"] = true
 L["Add socket"] = true
 L["Bind with EquipmentSet"] = true
 L["Clear Spec Equipment"] = true
+L["Close character frame when inspect"] = true
 L["Data source:"] = true
 L["Empty socket"] = true
 L["Help"] = true
@@ -75,6 +76,7 @@ L['Active talent'] = true
 L['Switch my characters'] = true
 L['Switch talent'] = true
 L['Clear Spec Equipment'] = true
+L['Close character frame when inspect'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
