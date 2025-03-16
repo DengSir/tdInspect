@@ -345,7 +345,7 @@ function InspectFrame:UpdateTalentGroups()
         end
     end
 
-    if not self.groupId and activeGroup then
+    if activeGroup then
         self:SetTalentGroup(activeGroup)
     end
 end
