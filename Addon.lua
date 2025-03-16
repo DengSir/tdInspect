@@ -96,6 +96,7 @@ function Addon:SetupDatabase()
             showEnchant = true,
             showLost = true,
             showGemsFront = false,
+            showLowLevelCharacters = false,
         },
     }
 
@@ -287,10 +288,17 @@ function Addon:GetCharacters()
             local class = select(2, GetClassInfo(db.class))
             local color = select(4, GetClassColor(class))
             local coloredName = format('|c%s%s|r', color, Ambiguate(name, 'none'))
+            local sameRealm = ns.IsPlayerInOurRealm(name)
             local low = db.level < ns.MAX_LEVEL
 
-            tinsert(self.characters,
-                    {name = name, coloredName = coloredName, class = db.class, level = db.level, low = low})
+            tinsert(self.characters, {
+                name = name,
+                coloredName = coloredName,
+                class = db.class,
+                level = db.level,
+                low = low,
+                sameRealm = sameRealm,
+            })
         end
 
         local function TouchCharacters(characters)
@@ -306,8 +314,11 @@ function Addon:GetCharacters()
         TouchCharacters(self.otherCharacters)
 
         sort(self.characters, function(a, b)
-            if a.level == b.level then
-                return a.name < b.name
+            if a.level ~= b.level then
+                return a.level > b.level
+            end
+            if a.sameRealm ~= b.sameRealm then
+                return a.sameRealm
             end
             return a.level > b.level
         end)

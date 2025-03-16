@@ -123,6 +123,20 @@ function ns.UnitName(unit)
     return ns.GetFullName(UnitFullName(unit))
 end
 
+local IsOurRealm = ns.memorize(function(realm)
+    local realms = GetAutoCompleteRealms()
+    for _, v in ipairs(realms) do
+        if v == realm then
+            return true
+        end
+    end
+    return realm == realm == GetNormalizedRealmName() or realm == GetRealmName():gsub(' +', '')
+end)
+
+function ns.IsPlayerInOurRealm(name)
+    return IsOurRealm(select(2, strsplit('-', name)))
+end
+
 function ns.FixInspectItemTooltip(tip, slot, item)
     local id = ns.ItemLinkToId(item)
     if not id then

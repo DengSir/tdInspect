@@ -153,39 +153,49 @@ function GearFrame:OnUpdate()
     self:UpdateSize()
 end
 
+local function Checked(button)
+    return button.arg1 == ns.Inspect.unitName
+end
+
+local function Execute(_, name)
+    ns.Inspect:Query(nil, name, true)
+end
+
 function GearFrame:CreateCharecterMenu()
-    if not GearFrame.CharacterMenu then
-        local menu = {}
-        local touchedLow = false
-        local characters = ns.Addon:GetCharacters()
-        for _, item in ipairs(characters) do
-            if item.low and not touchedLow then
-                tinsert(menu, 1, {text = L['Max level characters'], isTitle = true, notCheckable = true})
-                tinsert(menu, {text = L['Low level characters'], isTitle = true, notCheckable = true})
-                touchedLow = true
-            end
-            tinsert(menu, {
-                text = item.coloredName,
-                func = function()
-                    ns.Inspect:Query(nil, item.name, true)
-                end,
-            })
+    local menu = {}
+    local lowLevelMenu = {}
+    local characters = ns.Addon:GetCharacters()
+    local touchedOther = false
+
+    tinsert(menu, {text = L['Current realm characters'], isTitle = true, notCheckable = true})
+
+    for _, item in ipairs(characters) do
+        local targetMenu = item.low and lowLevelMenu or menu
+
+        if not item.sameRealm and not touchedOther then
+            tinsert(menu, {text = L['Other realm characters'], isTitle = true, notCheckable = true})
+            touchedOther = true
         end
 
-        if not ns.hasAnyAccount then
-            -- tinsert(menu, ns.DROPDOWN_SEPARATOR)
-            -- tinsert(menu, {
-            --     text = [[|TInterface\Common\help-i:24:24:0:0:64:64:10:54:10:54|t]] .. L['See other account character?'],
-            --     notCheckable = true,
-            --     func = function()
-            --         LibStub('tdOptions'):OpenSupport()
-            --     end,
-            -- })
-        end
-
-        GearFrame.CharacterMenu = menu
+        tinsert(targetMenu, {text = item.coloredName, arg1 = item.name, checked = Checked, func = Execute})
     end
-    return GearFrame.CharacterMenu
+
+    if ns.db.profile.showLowLevelCharacters and #lowLevelMenu > 0 then
+        tinsert(menu, {text = L['Low level characters'], notCheckable = true, hasArrow = true, menuList = lowLevelMenu})
+    end
+
+    if not ns.hasAnyAccount then
+        tinsert(menu, ns.DROPDOWN_SEPARATOR)
+        tinsert(menu, {
+            text = [[|TInterface\Common\help-i:24:24:0:0:64:64:10:54:10:54|t]] .. L['See other account character?'],
+            notCheckable = true,
+            func = function()
+                LibStub('tdOptions'):OpenSupport()
+            end,
+        })
+    end
+
+    return menu
 end
 
 function GearFrame:PortraitOnClick()

@@ -96,6 +96,9 @@ function Addon:SetupOptionFrame()
                     closeCharacterFrameWhenInspect = fullToggle(L['Close character frame when inspect']),
                     showOptionButtonInInspect = fullToggle(L['Show option button in inspect gear list']),
                 },
+                characterList = inline(L['Character List']) {
+                    showLowLevelCharacters = fullToggle(L['Show low level characters']),
+                },
             },
             keybindingsTitle = treeTitle(SETTINGS_KEYBINDINGS_LABEL),
             keybindings = treeItem(SETTINGS_KEYBINDINGS_LABEL) {
