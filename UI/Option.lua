@@ -28,7 +28,7 @@ function Addon:SetupOptionFrame()
             type = 'keybinding',
             name = name,
             order = orderGen(),
-            width = 'double',
+            -- width = 'double',
             get = function(item)
                 return GetBindingKey(item[#item])
             end,
@@ -51,6 +51,7 @@ function Addon:SetupOptionFrame()
 
     local options = {
         type = 'group',
+        inline = true,
         name = format('tdInspect - |cff00ff00%s|r', C_AddOns.GetAddOnMetadata('tdInspect', 'Version')),
         get = function(item)
             return ns.db.profile[item[#item]]
@@ -71,6 +72,7 @@ function Addon:SetupOptionFrame()
             showEnchant = fullToggle(L['Show enchant']),
             showLost = fullToggle(L['Show enchant/gem lost']),
             showGemsFront = fullToggle(L['Show gems in front']),
+            closeCharacterFrameWhenInspect = fullToggle(L['Close character frame when inspect']),
             TDINSPECT_VIEW_TARGET = keybinding(L['View target hotkey']),
             TDINSPECT_VIEW_MOUSEOVER = keybinding(L['View mouseover hotkey']),
             help = {

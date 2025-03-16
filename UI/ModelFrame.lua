@@ -61,6 +61,6 @@ function ModelFrame:Update()
 
     self.modelName = nil
     self.Modal:Hide()
-    self.Faction:SetTexture(factionLogoTextures[UnitFactionGroup(unit or 'player')])
+    self.Faction:SetTexture(factionLogoTextures[Inspect:GetUnitFactionGroup()])
     self.Faction:Show()
 end

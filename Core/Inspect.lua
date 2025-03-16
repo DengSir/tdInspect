@@ -312,6 +312,14 @@ function Inspect:GetUnitLevel()
     end
 end
 
+function Inspect:GetUnitFactionGroup()
+    if self.unit then
+        return (UnitFactionGroup(self.unit))
+    else
+        return self.db.faction or UnitFactionGroup('player')
+    end
+end
+
 function Inspect:GetDataSource()
     if self.db.proto then
         if self.db.proto.tdInspect then
@@ -776,6 +784,7 @@ function Inspect:SaveCurrentCharacter()
     db.level = UnitLevel('player')
     db.numGroups = GetNumTalentGroups and GetNumTalentGroups() or 1
     db.activeGroup = GetActiveTalentGroup and GetActiveTalentGroup() or 1
+    db.faction = UnitFactionGroup('player')
 
     for slot = 1, 18 do
         local link = GetInventoryItemLink('player', slot)

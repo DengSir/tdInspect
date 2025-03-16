@@ -13,6 +13,7 @@
 local ns = select(2, ...)
 
 local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
+local HideUIPanel = LibStub('LibShowUIPanel-1.0').HideUIPanel
 
 ---@class UI
 ---@field BaseItem UI.BaseItem
@@ -37,9 +38,9 @@ ns.VERSION = tonumber((GetAddOnMetadata('tdInspect', 'Version'):gsub('(%d+)%.?',
     return format('%02d', tonumber(x))
 end))) or 0
 
-_G.BINDING_HEADER_TDINSPECT = 'tdInspect'
 _G.BINDING_NAME_TDINSPECT_VIEW_TARGET = ns.L['Inspect target']
 _G.BINDING_NAME_TDINSPECT_VIEW_MOUSEOVER = ns.L['Inspect mouseover']
+_G.BINDING_CATEGORY_TDINSPECT = GetAddOnMetadata('tdInspect', 'Title')
 
 ---@class Addon: AceAddon, LibClass-2.0, EventHandler
 local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0')
@@ -88,6 +89,7 @@ function Addon:SetupDatabase()
             inspectGear = true,
             inspectCompare = true,
             showTalentBackground = true,
+            closeCharacterFrameWhenInspect = true,
             showOptionButtonInCharacter = true,
             showOptionButtonInInspect = true,
             showGem = true,
@@ -186,6 +188,10 @@ function Addon:TDINSPECT_READY(_, unit, name)
     end
     if unit == ns.Inspect.unit or name == ns.Inspect.unitName then
         ShowUIPanel(self.InspectFrame)
+
+        if ns.db.profile.closeCharacterFrameWhenInspect then
+            HideUIPanel(CharacterFrame)
+        end
     end
 end
 
@@ -212,7 +218,7 @@ function Addon:TDINSPECT_OPTION_CHANGED(_, key, value)
         end
     elseif key == 'inspectCompare' and InspectPaperDollFrame then
         if value then
-            if InspectPaperDollFrame:IsShown() then
+            if InspectPaperDollFrame:IsVisible() then
                 self:OpenInspectGearFrame()
             end
         elseif self.CharacterGearFrame then
