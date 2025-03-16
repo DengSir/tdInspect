@@ -8,8 +8,10 @@ L["Active talent"] = true
 L["Add socket"] = true
 L["Bind with EquipmentSet"] = true
 L["Character Gear"] = true
+L["Character List"] = true
 L["Clear Spec Equipment"] = true
 L["Close character frame when inspect"] = true
+L["Current realm characters"] = true
 L["Data source:"] = true
 L["Empty socket"] = true
 L["Gear List"] = true
@@ -23,9 +25,10 @@ L["Inspect target"] = true
 L["Last update:"] = true
 L["Low level characters"] = true
 L["Major"] = true
-L["Max level characters"] = true
 L["Minor"] = true
 L["No Enchant"] = true
+L["Other realm characters"] = true
+L["See other account character?"] = true
 L["Set Spec Equipment"] = true
 L["Show character gear list"] = true
 L["Show enchant"] = true
@@ -34,6 +37,7 @@ L["Show gem"] = true
 L["Show gems in front"] = true
 L["Show inspect compare"] = true
 L["Show inspect gear list"] = true
+L["Show low level characters"] = true
 L["Show option button in character gear list"] = true
 L["Show option button in inspect gear list"] = true
 L["Show talent background"] = true
@@ -72,7 +76,8 @@ L.Minor = true
 L['Show gems in front'] = true
 L['Bind with EquipmentSet'] = true
 L['Low level characters'] = true
-L['Max level characters'] = true
+--[====[ never used ]====]
+--[====[ L['Max level characters'] = true ]====]
 --[====[ never used ]====]
 --[====[ L['See other account character?'] = true ]====]
 L['Set Spec Equipment'] = true
@@ -85,6 +90,11 @@ L['Character Gear'] = true
 L['Gear List'] = true
 L['Gear list'] = true
 L['Inspect Gear'] = true
+L['Character List'] = true
+L['Current realm characters'] = true
+L['Other realm characters'] = true
+L['See other account character?'] = true
+L['Show low level characters'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@

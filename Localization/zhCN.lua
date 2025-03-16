@@ -36,7 +36,8 @@ L.Minor = '副'
 L['Show gems in front'] = '将宝石排在前面'
 L['Bind with EquipmentSet'] = '绑定到套装'
 L['Low level characters'] = '低等级角色'
-L['Max level characters'] = '满级角色'
+--[====[ never used ]====]
+--[====[ L['Max level characters'] = '满级角色' ]====]
 --[====[ never used ]====]
 --[====[ L['See other account character?'] = '查看其他账号角色？' ]====]
 L['Set Spec Equipment'] = '设置天赋套装'
@@ -49,6 +50,11 @@ L['Character Gear'] = true
 L['Gear List'] = true
 L['Gear list'] = true
 L['Inspect Gear'] = true
+L['Character List'] = true
+L['Current realm characters'] = true
+L['Other realm characters'] = true
+L['See other account character?'] = true
+L['Show low level characters'] = true
 -- @locale-fill@
 
 -- @end-import@
