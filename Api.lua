@@ -319,16 +319,10 @@ function ns.GetSocketColor(socketType)
     end
 end
 
--- @wlk@
-ns.GetTalentTabInfo = GetTalentTabInfo
--- @end-wlk@
-
--- @classic@
 ns.GetTalentTabInfo = function(...)
     local id, name, description, icon, pointsSpent, background, previewPointsSpent, isUnlocked = GetTalentTabInfo(...)
     return name, icon, pointsSpent, background
 end
--- @end-classic@
 
 do
     local menu
