@@ -31,9 +31,6 @@ function Events.events:OnUnused(_, event)
     end
 end
 
-function Events:OnEnable()
-end
-
 function Events:Embed(target)
     for _, v in ipairs(METHODS) do
         target[v] = self.handler[v]

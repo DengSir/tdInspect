@@ -388,7 +388,7 @@ function Inspect:CanOurInspect(unit)
     return true
 end
 
-function Inspect:Query(unit, name, onlyCache)
+function Inspect:Query(unit, name, _, onlyCache)
     if unit and not UnitIsPlayer(unit) then
         return
     end
@@ -399,73 +399,75 @@ function Inspect:Query(unit, name, onlyCache)
 
     self:SetUnit(unit, name)
 
-    local queryTalent = false
-    local queryEquip = false
-    local queryGlyph = false
-    local queryRune = false
+    if not onlyCache then
+        local queryTalent = false
+        local queryEquip = false
+        local queryGlyph = false
+        local queryRune = false
 
-    if self:CanBlizzardInspect(unit) then
-        NotifyInspect(unit)
+        if self:CanBlizzardInspect(unit) then
+            NotifyInspect(unit)
 
-        -- @build<2@
-        queryTalent = true
-        queryRune = C_Engraving.IsEngravingEnabled()
-        -- @end-build<2@
-        -- @build>3@
-        queryGlyph = true
-        -- @end-build>3@
-    elseif self:CanOurInspect(unit) and not onlyCache then
-        queryEquip = true
-        queryTalent = true
-        -- @build>3@
-        queryGlyph = true
-        -- @end-build>3@
-        -- @build<2@
-        queryRune = C_Engraving.IsEngravingEnabled()
-        -- @end-build<2@
-    end
+            -- @build<2@
+            queryTalent = true
+            queryRune = C_Engraving.IsEngravingEnabled()
+            -- @end-build<2@
+            -- @build>3@
+            queryGlyph = true
+            -- @end-build>3@
+        elseif self:CanOurInspect(unit) and not onlyCache then
+            queryEquip = true
+            queryTalent = true
+            -- @build>3@
+            queryGlyph = true
+            -- @end-build>3@
+            -- @build<2@
+            queryRune = C_Engraving.IsEngravingEnabled()
+            -- @end-build<2@
+        end
 
-    if queryEquip or queryTalent or queryGlyph or queryRune then
+        if queryEquip or queryTalent or queryGlyph or queryRune then
 
-        local co = coroutine.create(function()
-            local unitName = self.unitName
-            local me = self:IsCharacterHasProto(unitName, 'tdInspect')
-            local ala = self:IsCharacterHasProto(unitName, 'TalentEmu')
+            local co = coroutine.create(function()
+                local unitName = self.unitName
+                local me = self:IsCharacterHasProto(unitName, 'tdInspect')
+                local ala = self:IsCharacterHasProto(unitName, 'TalentEmu')
 
-            self:ClearCharacterProto(unitName, 'tdInspect')
-            self:SendCommMessage(PROTO_PREFIX, Serializer:Serialize('Q', queryTalent, queryEquip, PROTO_VERSION,
-                                                                    queryGlyph, queryRune), 'WHISPER', self.unitName)
+                self:ClearCharacterProto(unitName, 'tdInspect')
+                self:SendCommMessage(PROTO_PREFIX, Serializer:Serialize('Q', queryTalent, queryEquip, PROTO_VERSION,
+                                                                        queryGlyph, queryRune), 'WHISPER', self.unitName)
 
-            if me then
-                sleep(1)
-            end
+                if me then
+                    sleep(1)
+                end
 
-            if self:IsCharacterHasProto(unitName, 'tdInspect') then
-                return
-            end
+                if self:IsCharacterHasProto(unitName, 'tdInspect') then
+                    return
+                end
 
-            self:ClearCharacterProto(unitName, 'TalentEmu')
-            self:SendCommMessage(ALA_PREFIX, ns.Ala:PackQuery(queryEquip, queryTalent, queryGlyph, queryRune),
-                                 'WHISPER', self.unitName)
+                self:ClearCharacterProto(unitName, 'TalentEmu')
+                self:SendCommMessage(ALA_PREFIX, ns.Ala:PackQuery(queryEquip, queryTalent, queryGlyph, queryRune),
+                                     'WHISPER', self.unitName)
 
-            if ala then
-                sleep(1)
-            end
+                if ala then
+                    sleep(1)
+                end
 
-            if self:IsCharacterHasProto(unitName, 'TalentEmu') then
-                return
-            end
+                if self:IsCharacterHasProto(unitName, 'TalentEmu') then
+                    return
+                end
 
-            if queryTalent then
-                self:SendCommMessage(ALA_PREFIX, '_q_tal', 'WHISPER', self.unitName)
-            end
+                if queryTalent then
+                    self:SendCommMessage(ALA_PREFIX, '_q_tal', 'WHISPER', self.unitName)
+                end
 
-            if queryEquip then
-                self:SendCommMessage(ALA_PREFIX, '_q_equ', 'WHISPER', self.unitName)
-            end
-        end)
+                if queryEquip then
+                    self:SendCommMessage(ALA_PREFIX, '_q_equ', 'WHISPER', self.unitName)
+                end
+            end)
 
-        coroutine.resume(co)
+            coroutine.resume(co)
+        end
     end
 
     self:CheckQuery()

@@ -43,10 +43,6 @@ function GearFrame:Create(parent, inspect)
     return self:Bind(CreateFrame('Frame', nil, parent, 'tdInspectGearFrameTemplate'), inspect)
 end
 
-local function PortraitOnClick(self)
-    return self:GetParent():PortraitOnClick()
-end
-
 local function PortraitOnEnter(self)
     GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
     GameTooltip:SetText(CHARACTER, NORMAL_FONT_COLOR:GetRGB())
@@ -106,7 +102,11 @@ function GearFrame:Constructor(_, inspect)
     self:SetUnit('player')
     self:SetClass(UnitClassBase('player'))
 
-    self.Portrait:SetScript('OnClick', PortraitOnClick)
+    ns.UI.MenuButton:Bind(self.Portrait, function()
+        return self:CreateCharecterMenu()
+    end)
+
+    self.Portrait:SetScript('OnClick', self.Portrait.ToggleMenu)
     self.Portrait:SetScript('OnEnter', PortraitOnEnter)
     self.Portrait:SetScript('OnLeave', GameTooltip_Hide)
 
@@ -157,8 +157,12 @@ local function Checked(button)
     return button.arg1 == ns.Inspect.unitName
 end
 
-local function Execute(_, name)
-    ns.Inspect:Query(nil, name, true)
+local function EquipmentSetChecked(button)
+    return button.arg1 == ns.Inspect.unitName and button.arg2 == ns.Inspect.setName
+end
+
+local function Execute(_, name, setName)
+    ns.Inspect:Query(nil, name, setName, true)
 end
 
 function GearFrame:CreateCharecterMenu()
@@ -172,12 +176,34 @@ function GearFrame:CreateCharecterMenu()
     for _, item in ipairs(characters) do
         local targetMenu = item.low and lowLevelMenu or menu
 
+        local char = ns.db.global.characters[item.name] or ns.otherCharacters[item.name]
+        -- local hasArrow = not not (char and char.equipmentSets and next(char.equipmentSets))
+
         if not item.sameRealm and not touchedOther then
             tinsert(menu, {text = L['Other realm characters'], isTitle = true, notCheckable = true})
             touchedOther = true
         end
 
-        tinsert(targetMenu, {text = item.coloredName, arg1 = item.name, checked = Checked, func = Execute})
+        tinsert(targetMenu, {
+            text = item.coloredName,
+            arg1 = item.name,
+            checked = Checked,
+            func = Execute,
+            -- hasArrow = hasArrow,
+            -- menuList = hasArrow and (function()
+            --     local subMenu = {}
+            --     for setName in pairs(char.equipmentSets) do
+            --         tinsert(subMenu, {
+            --             text = setName,
+            --             arg1 = item.name,
+            --             arg2 = setName,
+            --             checked = EquipmentSetChecked,
+            --             func = Execute,
+            --         })
+            --     end
+            --     return subMenu
+            -- end)(),
+        })
     end
 
     if ns.db.profile.showLowLevelCharacters and #lowLevelMenu > 0 then
@@ -190,16 +216,12 @@ function GearFrame:CreateCharecterMenu()
             text = [[|TInterface\Common\help-i:24:24:0:0:64:64:10:54:10:54|t]] .. L['See other account character?'],
             notCheckable = true,
             func = function()
-                LibStub('tdOptions'):OpenSupport()
+                LibStub('tdOptions'):Open('tdSupport')
             end,
         })
     end
 
     return menu
-end
-
-function GearFrame:PortraitOnClick()
-    return ns.CallMenu(self.Portrait, self.CharacterMenu or self:CreateCharecterMenu())
 end
 
 function GearFrame:UpdateSize()
@@ -243,6 +265,10 @@ end
 function GearFrame:UpdateName()
     local name = self.name or ns.UnitName('player')
     self.Name:SetText(name and Ambiguate(name, 'none') or '')
+
+    C_Timer.After(0, function()
+        self.Name:SetWidth(self.Name:GetUnboundedStringWidth() + 10)
+    end)
 end
 
 function GearFrame:UpdateClass()

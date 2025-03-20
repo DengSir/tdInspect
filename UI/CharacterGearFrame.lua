@@ -15,7 +15,15 @@ local function SpecLeftClick(self)
     end
 end
 
-local function SpecRightClick(self)
+local function SpecOnClick(self, button)
+    if button == 'LeftButton' then
+        return SpecLeftClick(self)
+    elseif button == 'RightButton' then
+        return self:ToggleMenu()
+    end
+end
+
+local function CreateMenu(self)
     local menu = {}
     tinsert(menu, {text = ns.L['Set Spec Equipment'], isTitle = true, notCheckable = true})
 
@@ -37,16 +45,7 @@ local function SpecRightClick(self)
             ns.SpecGear:SetSpecGear(self.id, nil)
         end,
     })
-
-    ns.CallMenu(self, menu)
-end
-
-local function SpecOnClick(self, button)
-    if button == 'LeftButton' then
-        return SpecLeftClick(self)
-    elseif button == 'RightButton' then
-        return SpecRightClick(self)
-    end
+    return menu
 end
 
 function CharacterGearFrame:Constructor()
@@ -56,6 +55,9 @@ function CharacterGearFrame:Constructor()
     self:SetUnit('player')
     self:UpdateName()
     self:UpdateClass()
+
+    ns.UI.MenuButton:Bind(self.Talent1, CreateMenu)
+    ns.UI.MenuButton:Bind(self.Talent2, CreateMenu)
 
     self.Talent1:SetScript('OnClick', SpecOnClick)
     self.Talent2:SetScript('OnClick', SpecOnClick)

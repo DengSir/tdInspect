@@ -32,6 +32,7 @@
     <Script file="Tooltip\FixRune.lua" build="Vanilla" />
 
     <Include file="UI\Template.xml" />
+    <Script file="UI\MenuButton.lua" />
     <Script file="UI\BaseItem.lua" />
     <Script file="UI\SlotItem.lua" />
     <Script file="UI\ModelFrame.lua" />

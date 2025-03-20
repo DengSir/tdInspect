@@ -31,6 +31,7 @@ local HideUIPanel = LibStub('LibShowUIPanel-1.0').HideUIPanel
 ---@field InspectTalent UI.InspectTalent
 ---@field ModelFrame UI.ModelFrame
 ---@field SlotItem UI.SlotItem
+---@field MenuButton UI.MenuButton
 ns.UI = {}
 ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
 
@@ -118,7 +119,7 @@ end
 
 function Addon:SetupCharacterProfile()
     ---@class CharacterProfile: table
-    local characterProfile = {gears = {}}
+    local characterProfile = {gears = {}, equipmentSets = {}}
 
     local name = ns.UnitName('player')
     local char = ns.db.global.characters[name]
@@ -127,7 +128,13 @@ function Addon:SetupCharacterProfile()
     end
 
     ns.db.global.characters[name] = ns.CopyDefaults(char, characterProfile)
+    ---@type CharacterProfile
     ns.char = ns.db.global.characters[name]
+end
+
+function Addon:DeleteCharacter(name)
+    ns.db.global.characters[name] = nil
+    self.characters = nil
 end
 
 function Addon:SetupAnyAccount()
@@ -137,7 +144,7 @@ function Addon:SetupAnyAccount()
 
     ns.hasAnyAccount = true
 
-    self.otherCharacters = {}
+    ns.otherCharacters = {}
 
     for _, v in pairs(_G.TDDB_INSPECT_ANYACCOUNT) do
         if v.global then
@@ -151,7 +158,7 @@ function Addon:SetupAnyAccount()
             if v.global.characters then
                 for name, p in pairs(v.global.characters) do
                     if not ns.db.global.characters[name] then
-                        self.otherCharacters[name] = p
+                        ns.otherCharacters[name] = p
                     end
                 end
             end
@@ -279,7 +286,7 @@ function Addon:GetCharacters()
     if not self.characters then
         self.characters = {}
 
-        local function TouchCharacter(name)
+        local function TouchCharacter(name, otherAccount)
             local db = ns.db.global.userCache[name]
             if not db or not db.class then
                 return
@@ -287,7 +294,7 @@ function Addon:GetCharacters()
 
             local class = select(2, GetClassInfo(db.class))
             local color = select(4, GetClassColor(class))
-            local coloredName = format('|c%s%s|r', color, Ambiguate(name, 'none'))
+            local coloredName = format('|c%s%s%s|r', color, Ambiguate(name, 'none'), otherAccount and '*' or '')
             local sameRealm = ns.IsPlayerInOurRealm(name)
             local low = db.level < ns.MAX_LEVEL
 
@@ -298,20 +305,21 @@ function Addon:GetCharacters()
                 level = db.level,
                 low = low,
                 sameRealm = sameRealm,
+                otherAccount = otherAccount,
             })
         end
 
-        local function TouchCharacters(characters)
+        local function TouchCharacters(characters, otherAccount)
             if not characters then
                 return
             end
             for k in pairs(characters) do
-                TouchCharacter(k)
+                TouchCharacter(k, otherAccount)
             end
         end
 
         TouchCharacters(ns.db.global.characters)
-        TouchCharacters(self.otherCharacters)
+        TouchCharacters(ns.otherCharacters, true)
 
         sort(self.characters, function(a, b)
             if a.level ~= b.level then
@@ -319,6 +327,12 @@ function Addon:GetCharacters()
             end
             if a.sameRealm ~= b.sameRealm then
                 return a.sameRealm
+            end
+            if a.otherAccount ~= b.otherAccount then
+                return not a.otherAccount
+            end
+            if a.class ~= b.class then
+                return a.class < b.class
             end
             return a.level > b.level
         end)

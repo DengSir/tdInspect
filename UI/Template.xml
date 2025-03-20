@@ -127,7 +127,7 @@
         </Frames>
         <Layers>
             <Layer level="ARTWORK">
-                <FontString parentKey="Name" inherits="GameFontNormalOutline" justifyH="LEFT">
+                <FontString parentKey="Name" inherits="GameFontNormalOutline" wordWrap="false" justifyH="LEFT">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="66" y="-18"/>
                     </Anchors>
