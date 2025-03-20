@@ -1,3 +1,21 @@
+## [2.5.1](https://github.com/DengSir/tdInspect/compare/v2.5.0...v2.5.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* 天赋及雕文面板不会自动选择当前天赋的问题 ([6f1f03c](https://github.com/DengSir/tdInspect/commit/6f1f03cae78ae28ed30ccff3d9776263c823fb80))
+* 天赋问题 ([1269b46](https://github.com/DengSir/tdInspect/commit/1269b467db05fe739fdc9a7d8f53e9871a5b34c7))
+* 修复一些问题 ([24db33d](https://github.com/DengSir/tdInspect/commit/24db33d6a587ccae4906bec8c96d033fdb7d4b32))
+
+
+### Features
+
+* 调整设置界面 ([c239523](https://github.com/DengSir/tdInspect/commit/c23952334a607af8b72717d256baf1ff97b0d6ce))
+* 角色列表默认不显示低等级角色 ([14a509d](https://github.com/DengSir/tdInspect/commit/14a509d57e11868a4aac31aa683f9ea1630cd674))
+* support 3.4.4 ([7897fd4](https://github.com/DengSir/tdInspect/commit/7897fd4b4c5cc9bae49f94d793910dc586596fcd))
+
+
+
 # [2.5.0](https://github.com/DengSir/tdInspect/compare/v2.4.1...v2.5.0) (2025-03-12)
 
 
