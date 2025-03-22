@@ -366,3 +366,19 @@ function ns.CopyDefaults(dest, src)
     end
     return dest
 end
+
+function ns.ShowBlizzardInventoryItem(unit, id)
+    if not unit then
+        return
+    end
+    local link = GetInventoryItemLink(unit, id)
+    if not link then
+        return
+    end
+    local ok = GameTooltip:SetInventoryItem(unit, id)
+    if not ok then
+        return
+    end
+    ns.FixInspectItemTooltip(GameTooltip, id, link)
+    return true
+end

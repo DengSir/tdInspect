@@ -120,13 +120,17 @@ end
 
 function SlotItem:OnEnter()
     GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-    local item = Inspect:GetItemLink(self:GetID())
-    if item then
-        GameTooltip:SetHyperlink(item)
-        ns.FixInspectItemTooltip(GameTooltip, self:GetID(), item)
-    else
-        GameTooltip:SetText(_G[strupper(strsub(self:GetName(), 8))])
+
+    if not ns.ShowBlizzardInventoryItem(Inspect.unit, self:GetID()) then
+        local item = Inspect:GetItemLink(self:GetID())
+        if item then
+            GameTooltip:SetHyperlink(item)
+            ns.FixInspectItemTooltip(GameTooltip, self:GetID(), item)
+        else
+            GameTooltip:SetText(_G[strupper(strsub(self:GetName(), 8))])
+        end
     end
+
     CursorUpdate(self)
 end
 

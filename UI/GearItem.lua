@@ -95,8 +95,10 @@ function GearItem:OnEnter()
         GameTooltip:Show()
     elseif self.item then
         GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-        GameTooltip:SetHyperlink(self.item)
-        ns.FixInspectItemTooltip(GameTooltip, self:GetID(), self.item)
+        if not ns.ShowBlizzardInventoryItem(ns.Inspect.unit, self:GetID()) then
+            GameTooltip:SetHyperlink(self.item)
+            ns.FixInspectItemTooltip(GameTooltip, self:GetID(), self.item)
+        end
         GameTooltip:Show()
     end
 end
