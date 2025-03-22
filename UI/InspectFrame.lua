@@ -76,7 +76,8 @@ function InspectFrame:Constructor()
 
     self.tabDepends = {
         [tIndexOf(INSPECTFRAME_SUBFRAMES, 'InspectPVPFrame') or tIndexOf(INSPECTFRAME_SUBFRAMES, 'InspectHonorFrame')] = function()
-            return Inspect.unit and CheckInteractDistance(Inspect.unit, 1) and CanInspect(Inspect.unit)
+            return Inspect.unit and not InCombatLockdown() and CheckInteractDistance(Inspect.unit, 1) and
+                       CanInspect(Inspect.unit)
         end,
         [talentTab] = function()
             return Inspect:GetUnitClass() and Inspect:GetNumTalentGroups() > 0 and Inspect:GetUnitTalent()

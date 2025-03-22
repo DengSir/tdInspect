@@ -370,7 +370,7 @@ function Inspect:CanBlizzardInspect(unit)
     if InCombatLockdown() then
         return false
     end
-    if not CheckInteractDistance(unit, 1) then
+    if InCombatLockdown() or not CheckInteractDistance(unit, 1) then
         return false
     end
     if not CanInspect(unit) then
