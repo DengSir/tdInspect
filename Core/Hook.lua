@@ -10,8 +10,8 @@ function InspectUnit(unit)
     return ns.Inspect:Query(unit)
 end
 
-Menu.ModifyMenu('MENU_UNIT_FRIEND', function(_, root)
-    local name = root.contextData and root.contextData.chatTarget
+local function HookSetupMenu(_, root)
+    local name = root.contextData and (root.contextData.chatTarget or root.contextData.name)
     if name then
         root:CreateDivider()
         root:CreateTitle('tdInspect')
@@ -19,4 +19,7 @@ Menu.ModifyMenu('MENU_UNIT_FRIEND', function(_, root)
             ns.Inspect:Query(nil, name)
         end)
     end
-end)
+end
+
+Menu.ModifyMenu('MENU_UNIT_FRIEND', HookSetupMenu)
+Menu.ModifyMenu('MENU_UNIT_COMMUNITIES_GUILD_MEMBER', HookSetupMenu)
