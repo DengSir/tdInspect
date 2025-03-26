@@ -1,3 +1,13 @@
+## [2.5.3](https://github.com/DengSir/tdInspect/compare/v2.5.2...v2.5.3) (2025-03-26)
+
+
+### Features
+
+* 尽可能使用暴雪的接口展示鼠标提示 ([18c7a5b](https://github.com/DengSir/tdInspect/commit/18c7a5b8bebffc034815d33cda62bc76703cd9d8))
+* 战斗中不再调用CheckInteractDistance ([4448239](https://github.com/DengSir/tdInspect/commit/44482397c8d8d0831936f9c888d0f646bc8a4a4e))
+
+
+
 ## [2.5.2](https://github.com/DengSir/tdInspect/compare/v2.5.1...v2.5.2) (2025-03-21)
 
 
