@@ -3,6 +3,9 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 5/18/2020, 11:25:23 AM
 --
+---@type string, ns
+local ADDON, NS = ...
+
 ---@class ns
 ---@field Inspect Inspect
 ---@field Talent Talent
@@ -10,7 +13,7 @@
 ---@field ItemLevelCalculator ItemLevelCalculator
 ---@field Events Events
 ---@field SpecGear SpecGear
-local ns = select(2, ...)
+local ns = NS
 
 local ShowUIPanel = LibStub('LibShowUIPanel-1.0').ShowUIPanel
 local HideUIPanel = LibStub('LibShowUIPanel-1.0').HideUIPanel
@@ -33,18 +36,18 @@ local HideUIPanel = LibStub('LibShowUIPanel-1.0').HideUIPanel
 ---@field SlotItem UI.SlotItem
 ---@field MenuButton UI.MenuButton
 ns.UI = {}
-ns.L = LibStub('AceLocale-3.0'):GetLocale('tdInspect')
+ns.L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
 
-ns.VERSION = tonumber((GetAddOnMetadata('tdInspect', 'Version'):gsub('(%d+)%.?', function(x)
+ns.VERSION = tonumber((C_AddOns.GetAddOnMetadata(ADDON, 'Version'):gsub('(%d+)%.?', function(x)
     return format('%02d', tonumber(x))
 end))) or 0
 
 _G.BINDING_NAME_TDINSPECT_VIEW_TARGET = ns.L['Inspect target']
 _G.BINDING_NAME_TDINSPECT_VIEW_MOUSEOVER = ns.L['Inspect mouseover']
-_G.BINDING_CATEGORY_TDINSPECT = GetAddOnMetadata('tdInspect', 'Title')
+_G.BINDING_CATEGORY_TDINSPECT = C_AddOns.GetAddOnMetadata(ADDON, 'Title')
 
 ---@class Addon: AceAddon, LibClass-2.0, EventHandler
-local Addon = LibStub('AceAddon-3.0'):NewAddon('tdInspect', 'LibClass-2.0')
+local Addon = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'LibClass-2.0')
 ns.Addon = Addon
 
 function Addon:OnInitialize()
@@ -338,6 +341,30 @@ function Addon:GetCharacters()
         end)
     end
     return self.characters
+end
+
+function Addon:InspectTarget()
+    InspectUnit('target')
+end
+
+function Addon:InspectMouseover()
+    local unit = select(2, GameTooltip:GetUnit())
+    if unit and not UnitExists(unit) then
+        unit = 'mouseover'
+    end
+    if not UnitExists(unit) then
+        unit = 'target'
+    end
+    if unit == 'mouseover' then
+        local guid = UnitGUID(unit)
+        if guid then
+            unit = UnitTokenFromGUID(guid) or unit
+        end
+    end
+    if not unit then
+        return
+    end
+    InspectUnit(unit)
 end
 
 if not InspectTalentFrameSpentPoints then

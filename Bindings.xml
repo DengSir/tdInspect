@@ -1,15 +1,8 @@
 <Bindings>
     <Binding name="TDINSPECT_VIEW_TARGET" category="BINDING_CATEGORY_TDINSPECT">
-        InspectUnit('target')
+        LibStub('AceAddon-3.0'):GetAddon('tdInspect'):InspectTarget()
     </Binding>
     <Binding name="TDINSPECT_VIEW_MOUSEOVER" category="BINDING_CATEGORY_TDINSPECT">
-        local unit = select(2, GameTooltip:GetUnit())
-        if not UnitExists(unit) then
-            unit = 'mouseover'
-        end
-        if not UnitExists(unit) then
-            unit = 'target'
-        end
-        InspectUnit(unit)
+        LibStub('AceAddon-3.0'):GetAddon('tdInspect'):InspectMouseover()
     </Binding>
 </Bindings>

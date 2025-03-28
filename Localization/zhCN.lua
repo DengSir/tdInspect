@@ -1,4 +1,5 @@
-local L = LibStub('AceLocale-3.0'):NewLocale('tdInspect', 'zhCN')
+local ADDON = ...
+local L = LibStub('AceLocale-3.0'):NewLocale(ADDON, 'zhCN')
 if not L then
     return
 end

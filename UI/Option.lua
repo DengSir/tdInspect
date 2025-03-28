@@ -3,8 +3,8 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/5/2024, 1:39:10 PM
 --
----@type ns
-local ns = select(2, ...)
+---@type string, ns
+local ADDON, ns = ...
 
 local L = ns.L
 local tdOptions = LibStub('tdOptions')
@@ -67,7 +67,8 @@ function Addon:SetupOptionFrame()
 
     local options = {
         type = 'group',
-        name = format('tdInspect - |cff00ff00%s|r', C_AddOns.GetAddOnMetadata('tdInspect', 'Version')),
+        name = format('%s - |cff00ff00%s|r', C_AddOns.GetAddOnMetadata(ADDON, 'Title'),
+                      C_AddOns.GetAddOnMetadata(ADDON, 'Version')),
         get = function(item)
             return ns.db.profile[item[#item]]
         end,
@@ -110,9 +111,9 @@ function Addon:SetupOptionFrame()
         },
     }
 
-    tdOptions:Register('tdInspect', options)
+    tdOptions:Register(ADDON, options)
 end
 
 function Addon:OpenOptionFrame()
-    tdOptions:Open('tdInspect')
+    return tdOptions:Open(ADDON)
 end
