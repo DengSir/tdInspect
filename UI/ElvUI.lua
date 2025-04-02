@@ -11,6 +11,11 @@ end
 local ns = select(2, ...)
 
 local E = unpack(ElvUI)
+
+if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.inspect then
+    return
+end
+
 local S = E:GetModule('Skins')
 
 local function hook(t, m, f)

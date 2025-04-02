@@ -6,7 +6,7 @@
 ## IconTexture: 132092
 ## Author: Dencer
 ## Version: @project-version@
-## OptionalDeps: tdSync
+## OptionalDeps: tdSync, ElvUI
 ## SavedVariables: TDDB_INSPECT2
 
 Load.xml
