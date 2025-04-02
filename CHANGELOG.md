@@ -1,3 +1,17 @@
+## [2.5.4](https://github.com/DengSir/tdInspect/compare/v2.5.3...v2.5.4) (2025-04-02)
+
+
+### Bug Fixes
+
+* 修复ElvUI没开启观察界面美化时报错的问题 ([f0258e9](https://github.com/DengSir/tdInspect/commit/f0258e949ead742d7b8a2963999d195b1a894f75))
+
+
+### Features
+
+* 支持新的公会界面 ([d92cdea](https://github.com/DengSir/tdInspect/commit/d92cdea7b6896794b71dc25eb95a2b318bec495f))
+
+
+
 ## [2.5.3](https://github.com/DengSir/tdInspect/compare/v2.5.2...v2.5.3) (2025-03-26)
 
 
