@@ -6,6 +6,7 @@
  */
 import { format } from "@miyauci/format";
 import { Semaphore } from "@core/asyncutil/semaphore";
+import { Html5Entities } from 'https://deno.land/x/html_entities@v1.0/mod.js';
 
 export enum ProjectId {
     Vanilla,
@@ -45,7 +46,21 @@ export class WowToolsClient {
         this.pro = data as ProjectData;
     }
 
+    private async fetchVersions() {
+        const resp = await fetch('https://wago.tools/db2');
+        const body = await resp.text();
+        const match = [...body.matchAll(/data-page="([^"]+)"/g)];
+        if (!match || match.length < 1) {
+            throw Error('');
+        }
+
+        const data = JSON.parse(Html5Entities.decode(match[0][1]));
+        const versions = data?.props?.versions;
+        return new Set(versions)
+    }
+
     private async fetchVersion() {
+        const exists = await this.fetchVersions();
         const resp = await fetch('https://wago.tools/api/builds');
         const data = await resp.json();
 
@@ -56,12 +71,16 @@ export class WowToolsClient {
 
         if (this.pro.version_pattern) {
             for (const v of versions) {
-                if (this.pro.version_pattern.test(v.version)) {
+                if (exists.has(v.version) && this.pro.version_pattern.test(v.version)) {
                     return v.version as string;
                 }
             }
         } else {
-            return versions[0].version as string;
+            for (const v of versions) {
+                if (exists.has(v.version)) {
+                    return v.version as string;
+                }
+            }
         }
         return '';
     }
@@ -122,6 +141,7 @@ export class WowToolsClient {
     async fetchTable(name: string, locale = 'enUS', source = 2) {
         if (!this.pro.version) {
             this.pro.version = await this.fetchVersion();
+            console.log('version', this.pro.version);
         }
 
         const url = (() => {

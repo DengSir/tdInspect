@@ -30,7 +30,11 @@
     "https://deno.land/x/escape_string_regexp@v0.0.1/mod.ts": "23a8025f4567d5bc0ab5dee2d976212bb66173bb1a80cb6aa72a5a6d7443ed7a",
     "https://deno.land/x/format@1.0.1/deps.ts": "b2902931ff2a5702a54408b2d2cf70ccb7b0a7d1eb8eb529250ab1c1841823cf",
     "https://deno.land/x/format@1.0.1/format.ts": "c286d668b01100740c15293ea3e6c1faeddbb08693a5b826c8bf5bc97706f696",
-    "https://deno.land/x/format@1.0.1/mod.ts": "e549cef7e2710a09ae306183b6dc14f4e573b361c4c0743f0814b990ddc012c6"
+    "https://deno.land/x/format@1.0.1/mod.ts": "e549cef7e2710a09ae306183b6dc14f4e573b361c4c0743f0814b990ddc012c6",
+    "https://deno.land/x/html_entities@v1.0/lib/html4-entities.js": "785ec3cf742704512fb95ac56dcc8219045d5a414b12736bb4ce43619aedd5e6",
+    "https://deno.land/x/html_entities@v1.0/lib/html5-entities.js": "e3c9aee1358a9390ad5b790bbeeeb3baed73f86d9f3534636dbcce8100a9b5c2",
+    "https://deno.land/x/html_entities@v1.0/lib/xml-entities.js": "cbbc40f7b6fd1f925508ff7d43a52d2383a57a64d0aaa3a7a1eca9d4155e4bde",
+    "https://deno.land/x/html_entities@v1.0/mod.js": "1abee52d273ed6ee1a43a3af47d4f2fa98e9e98ba6c519ea32259780daa0b3b6"
   },
   "workspace": {
     "dependencies": [
