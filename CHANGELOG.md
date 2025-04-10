@@ -1,3 +1,19 @@
+## [2.5.5](https://github.com/DengSir/tdInspect/compare/v2.5.4...v2.5.5) (2025-04-10)
+
+
+### Bug Fixes
+
+* scripts ([82ea5f3](https://github.com/DengSir/tdInspect/commit/82ea5f33bf69432febb117891018746eb1f6f464))
+
+
+### Features
+
+* 60级不再提示添加插槽 ([ae0383e](https://github.com/DengSir/tdInspect/commit/ae0383e35779d08fa4256ab676fb1fe84a8eee47))
+* 添加60级附魔数据 ([8878d8c](https://github.com/DengSir/tdInspect/commit/8878d8cf0ee9940e5ef66629e9a2f48acd9c5125))
+* 添加团队面板的右键菜单 ([1592d58](https://github.com/DengSir/tdInspect/commit/1592d58f3ea38b25961e007e2a10d11bf0377aa9))
+
+
+
 ## [2.5.4](https://github.com/DengSir/tdInspect/compare/v2.5.3...v2.5.4) (2025-04-02)
 
 
