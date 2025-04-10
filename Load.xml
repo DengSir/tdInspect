@@ -9,6 +9,7 @@
 
     <Script file="Data\Vanilla\Talents.lua" build="Vanilla" />
     <Script file="Data\Vanilla\ItemSet.lua" build="Vanilla" />
+    <Script file="Data\Vanilla\ItemEnchant.lua" build="Vanilla" />
 
     <Script file="Data\Wrath\Talents.lua" build="Wrath" />
     <Script file="Data\Wrath\ItemSet.lua" build="Wrath" />
