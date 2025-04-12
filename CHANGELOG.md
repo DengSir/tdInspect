@@ -1,3 +1,13 @@
+## [2.5.6](https://github.com/DengSir/tdInspect/compare/v2.5.5...v2.5.6) (2025-04-12)
+
+
+### Features
+
+* 添加格子上的装等显示 ([85a7805](https://github.com/DengSir/tdInspect/commit/85a78055b49969d602a421399341ea594a261df8))
+* 添加格子上的装等显示 ([ac7428d](https://github.com/DengSir/tdInspect/commit/ac7428de4e8103f8bb900bf85ba17a4cff35f45b))
+
+
+
 ## [2.5.5](https://github.com/DengSir/tdInspect/compare/v2.5.4...v2.5.5) (2025-04-10)
 
 
