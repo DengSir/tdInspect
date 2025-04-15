@@ -1,3 +1,12 @@
+## [2.5.7](https://github.com/DengSir/tdInspect/compare/v2.5.6...v2.5.7) (2025-04-15)
+
+
+### Features
+
+* 添加隐藏装等选项 ([ac478da](https://github.com/DengSir/tdInspect/commit/ac478da484f9a8abf437e021c0e89701e1cbd178))
+
+
+
 ## [2.5.6](https://github.com/DengSir/tdInspect/compare/v2.5.5...v2.5.6) (2025-04-12)
 
 
