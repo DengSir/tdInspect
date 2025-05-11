@@ -9,4 +9,54 @@
 ## OptionalDeps: tdSync, ElvUI
 ## SavedVariables: TDDB_INSPECT2
 
-Load.xml
+Libs\Libs.xml
+Localization\Localization.xml
+Api.lua
+Addon.lua
+
+Data\DataLoader.lua
+
+Data\Vanilla\Talents.lua [AllowLoadGameType Vanilla]
+Data\Vanilla\ItemSet.lua [AllowLoadGameType Vanilla]
+Data\Vanilla\ItemEnchant.lua [AllowLoadGameType Vanilla]
+
+Data\Wrath\Talents.lua [AllowLoadGameType Wrath]
+Data\Wrath\ItemSet.lua [AllowLoadGameType Wrath]
+Data\Wrath\Glyph.lua [AllowLoadGameType Wrath]
+Data\Wrath\ItemEnchant.lua [AllowLoadGameType Wrath]
+Data\Wrath\ItemGemOrder.lua [AllowLoadGameType Wrath]
+
+Core\Events.lua
+Core\ItemLevelCalculator.lua
+Core\Encoder.lua
+Core\Inspect.lua
+Core\Hook.lua
+Core\Talent.lua
+Core\Glyph.lua
+Core\Ala.lua
+Core\Pool.lua
+Core\SpecGear.lua
+
+Tooltip\FixItemSet.lua
+Tooltip\FixMetaGem.lua
+Tooltip\FixRune.lua [AllowLoadGameType Vanilla]
+
+UI\Template.xml
+UI\MenuButton.lua
+UI\BaseItem.lua
+UI\SlotItem.lua
+UI\ModelFrame.lua
+UI\PaperDoll.lua
+UI\InspectFrame.lua
+UI\TalentFrame.lua
+UI\GlyphItem.lua
+UI\GlyphFrame.lua
+UI\InspectTalent.lua
+UI\GemItem.lua
+UI\EnchantItem.lua
+UI\GearItem.lua
+UI\GearFrame.lua
+UI\InspectGearFrame.lua
+UI\CharacterGearFrame.lua
+UI\Option.lua
+UI\ElvUI.lua
