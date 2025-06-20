@@ -1,3 +1,17 @@
+## [2.5.9](https://github.com/DengSir/tdInspect/compare/v2.5.8...v2.5.9) (2025-06-20)
+
+
+### Bug Fixes
+
+* error ([d303297](https://github.com/DengSir/tdInspect/commit/d303297dc17edd39689883aa62a0ef9b51fe3d31))
+
+
+### Features
+
+* 单包模式 ([f181b8a](https://github.com/DengSir/tdInspect/commit/f181b8ab179ff3113593a7c38d60999279c4a970))
+
+
+
 ## [2.5.8](https://github.com/DengSir/tdInspect/compare/v2.5.7...v2.5.8) (2025-04-16)
 
 
