@@ -1,3 +1,12 @@
+## [2.5.11](https://github.com/DengSir/tdInspect/compare/v2.5.10...v2.5.11) (2025-06-21)
+
+
+### Bug Fixes
+
+* 修复鼠标提示2件套效果激活是灰色的问题 ([c81da3c](https://github.com/DengSir/tdInspect/commit/c81da3ccd5522783955c6e7f229ee6acbcecc5b7))
+
+
+
 ## [2.5.10](https://github.com/DengSir/tdInspect/compare/v2.5.9...v2.5.10) (2025-06-20)
 
 
