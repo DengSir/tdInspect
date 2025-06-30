@@ -75,6 +75,8 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show enchant"] = "Show enchant"--]] 
 --[[Translation missing --]]
+--[[ L["Show enchant for ranged weapon only for hunter"] = "Show enchant for ranged weapon only for hunter"--]] 
+--[[Translation missing --]]
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
@@ -172,6 +174,8 @@ L = L or {}
 --[[ L["Show character gear list"] = "Show character gear list"--]] 
 --[[Translation missing --]]
 --[[ L["Show enchant"] = "Show enchant"--]] 
+--[[Translation missing --]]
+--[[ L["Show enchant for ranged weapon only for hunter"] = "Show enchant for ranged weapon only for hunter"--]] 
 --[[Translation missing --]]
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
@@ -271,6 +275,8 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show enchant"] = "Show enchant"--]] 
 --[[Translation missing --]]
+--[[ L["Show enchant for ranged weapon only for hunter"] = "Show enchant for ranged weapon only for hunter"--]] 
+--[[Translation missing --]]
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
@@ -368,6 +374,8 @@ L = L or {}
 --[[ L["Show character gear list"] = "Show character gear list"--]] 
 --[[Translation missing --]]
 --[[ L["Show enchant"] = "Show enchant"--]] 
+--[[Translation missing --]]
+--[[ L["Show enchant for ranged weapon only for hunter"] = "Show enchant for ranged weapon only for hunter"--]] 
 --[[Translation missing --]]
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
@@ -467,6 +475,8 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show enchant"] = "Show enchant"--]] 
 --[[Translation missing --]]
+--[[ L["Show enchant for ranged weapon only for hunter"] = "Show enchant for ranged weapon only for hunter"--]] 
+--[[Translation missing --]]
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
@@ -565,6 +575,8 @@ L = L or {}
 --[[Translation missing --]]
 --[[ L["Show enchant"] = "Show enchant"--]] 
 --[[Translation missing --]]
+--[[ L["Show enchant for ranged weapon only for hunter"] = "Show enchant for ranged weapon only for hunter"--]] 
+--[[Translation missing --]]
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
 --[[ L["Show gem"] = "Show gem"--]] 
@@ -633,6 +645,8 @@ L["See other account character?"] = "Видите другого персона�
 L["Set Spec Equipment"] = "Набор экипировки"
 L["Show character gear list"] = "Показать список экипировки персонажа"
 L["Show enchant"] = "Показать чары"
+--[[Translation missing --]]
+--[[ L["Show enchant for ranged weapon only for hunter"] = "Show enchant for ranged weapon only for hunter"--]] 
 L["Show enchant/gem lost"] = "Показать чары/камни"
 L["Show gem"] = "Показать камни"
 L["Show gems in front"] = "Показать камни на переднем плане"
@@ -716,6 +730,8 @@ L = L or {}
 --[[ L["Show character gear list"] = "Show character gear list"--]] 
 --[[Translation missing --]]
 --[[ L["Show enchant"] = "Show enchant"--]] 
+--[[Translation missing --]]
+--[[ L["Show enchant for ranged weapon only for hunter"] = "Show enchant for ranged weapon only for hunter"--]] 
 --[[Translation missing --]]
 --[[ L["Show enchant/gem lost"] = "Show enchant/gem lost"--]] 
 --[[Translation missing --]]
