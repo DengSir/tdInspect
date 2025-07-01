@@ -39,7 +39,11 @@ select(2,...).ItemGemOrderMake()
         );
 
         for (const item of items.filter((x) => x.SocketType.length > 0)) {
-            write(`D(${item.ID},${item.SocketType.join(',')})\n`);
+            if (item.SocketType.length === 1) {
+                write(`D(${item.ID},${item.SocketType[0]})\n`);
+            } else {
+                write(`D(${item.ID},'${item.SocketType.join('/')}')\n`);
+            }
         }
 
         if (this.projectId === ProjectId.Wrath) {
