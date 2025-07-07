@@ -1,3 +1,13 @@
+## [2.5.12](https://github.com/DengSir/tdInspect/compare/v2.5.11...v2.5.12) (2025-07-07)
+
+
+### Features
+
+* 默认只提醒猎人的远程武器附魔缺失 ([a711d88](https://github.com/DengSir/tdInspect/commit/a711d8879fed10e9a51f7b9837e207ca085b3670))
+* 优化宝石槽数据 ([7424120](https://github.com/DengSir/tdInspect/commit/7424120a9a882fdb8f181669b9d343ec10bb09c4))
+
+
+
 ## [2.5.11](https://github.com/DengSir/tdInspect/compare/v2.5.10...v2.5.11) (2025-06-21)
 
 
