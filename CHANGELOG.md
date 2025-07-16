@@ -1,3 +1,13 @@
+## [2.5.14](https://github.com/DengSir/tdInspect/compare/v2.5.13...v2.5.14) (2025-07-16)
+
+
+### Bug Fixes
+
+* 登录第一次切天赋，换套装可能会失败的问题 ([768ecdd](https://github.com/DengSir/tdInspect/commit/768ecddbe2458f42cd244f994a6da0168425174d))
+* 战斗中打不开观察界面的问题 ([d5bffdd](https://github.com/DengSir/tdInspect/commit/d5bffdd1e8e336abe72ea7e89def4248716d39c3))
+
+
+
 ## [2.5.13](https://github.com/DengSir/tdInspect/compare/v2.5.12...v2.5.13) (2025-07-10)
 
 
