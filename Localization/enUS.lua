@@ -102,6 +102,7 @@ L['Quality by blizzard'] = true
 L.White = true
 L.Hidden = true
 L['Show enchant for ranged weapon only for hunter'] = true
+L['Set alias name'] = true
 -- @locale-fill@
 -- @end-import@
 -- @end-debug@
