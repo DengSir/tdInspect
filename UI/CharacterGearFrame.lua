@@ -198,8 +198,6 @@ function CharacterGearFrame:GetTalentInfo(group)
         tinsert(counts, pointsSpent)
     end
 
-    maxName = ns.SpecGear:GetSpecAliasName(group) or maxName
-
     return maxName, maxIcon, maxBg, table.concat(counts, '/')
 end
 
