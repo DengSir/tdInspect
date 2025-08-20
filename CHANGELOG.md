@@ -1,3 +1,13 @@
+# [2.6.0](https://github.com/DengSir/tdInspect/compare/v2.5.14...v2.6.0) (2025-08-20)
+
+
+### Features
+
+* 添加天赋别名功能 ([1603a9c](https://github.com/DengSir/tdInspect/commit/1603a9c90d1538a8db8f78ca89c736229d22f216))
+* 添加天赋别名功能 ([1248b27](https://github.com/DengSir/tdInspect/commit/1248b2744b1a72db9853c3e36bc5967008ca54ab))
+
+
+
 ## [2.5.14](https://github.com/DengSir/tdInspect/compare/v2.5.13...v2.5.14) (2025-07-16)
 
 
