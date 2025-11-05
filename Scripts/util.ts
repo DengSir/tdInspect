@@ -13,6 +13,7 @@ export enum ProjectId {
     BCC,
     Wrath,
     Cata,
+    Mists,
 }
 
 interface ProjectData {
@@ -27,6 +28,7 @@ const PROJECTS = new Map([
     [ProjectId.Vanilla, { product: 'wow_classic_era' }],
     [ProjectId.Wrath, { product: 'wow_classic', version_pattern: /^3\..+/ }],
     [ProjectId.Cata, { product: 'wow_classic', version_pattern: /^4\..+/ }],
+    [ProjectId.Mists, { product: 'wow_classic', version_pattern: /^5\..+/ }],
 ]);
 
 export function mapLimit<T, U>(array: T[], limit: number, fn: (value: T, index: number, array: T[]) => U) {
@@ -85,8 +87,39 @@ export class WowToolsClient {
         return '';
     }
 
+    splitColumns(data: string) {
+        // 分割csv行
+        const result: string[] = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < data.length; i++) {
+            const char = data[i];
+            const nextChar = data[i + 1];
+
+            if (char === '"') {
+                if (inQuotes && nextChar === '"') {
+                    // 双引号转义
+                    current += '"';
+                    i++; // 跳过下一个引号
+                } else {
+                    inQuotes = !inQuotes; // 切换引号状态
+                }
+            } else if (char === ',' && !inQuotes) {
+                // 非引号内的逗号表示字段分隔
+                result.push(current);
+                current = '';
+            } else {
+                current += char; // 普通字符
+            }
+        }
+        result.push(current); // 添加最后一个字段
+
+        return result;
+    }
+
     decodeFields(data: string) {
-        const fields = data.split(',').map((x, i) => ({ name: x, index: i }));
+        const fields = this.splitColumns(data).map((x, i) => ({ name: x, index: i }));
         const info: any = {};
 
         for (const field of fields) {
@@ -106,7 +139,7 @@ export class WowToolsClient {
     }
 
     decodeRow(fields: any[], data: string) {
-        const row = data.split(',').map((x) => this.parseString(x));
+        const row = this.splitColumns(data);
         const obj: any = {};
 
         for (const [name, index] of Object.entries(fields)) {
@@ -124,18 +157,6 @@ export class WowToolsClient {
         const fields = this.decodeFields(rows.splice(0, 1)[0]);
 
         return rows.map((x) => this.decodeRow(fields, x));
-    }
-
-    private parseString(x: string) {
-        try {
-            const v = JSON.parse(x);
-            if (typeof v === 'string') {
-                return v;
-            }
-        } catch {
-            //
-        }
-        return x;
     }
 
     async fetchTable(name: string, locale = 'enUS', source = 2) {
