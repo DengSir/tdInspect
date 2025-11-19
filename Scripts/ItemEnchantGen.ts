@@ -74,5 +74,9 @@ ${codes.join('\n')}`;
     }
 }
 
-new App(ProjectId.Wrath).run('Data/Wrath/ItemEnchant.lua');
-new App(ProjectId.Vanilla).run('Data/Vanilla/ItemEnchant.lua');
+
+async function main() {
+    await new App(ProjectId.Vanilla).run('Data/Vanilla/ItemEnchant.lua');
+    await new App(ProjectId.Wrath).run('Data/Wrath/ItemEnchant.lua');
+}
+main();

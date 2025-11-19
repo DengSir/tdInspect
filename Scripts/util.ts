@@ -19,16 +19,15 @@ export enum ProjectId {
 interface ProjectData {
     version: string;
     product: string;
-    version_pattern?: RegExp;
+    // version_pattern?: RegExp;
 }
 
 const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
 const WOW_TOOLS2 = 'https://wago.tools/db2/{name}/csv';
 const PROJECTS = new Map([
     [ProjectId.Vanilla, { product: 'wow_classic_era' }],
-    [ProjectId.Wrath, { product: 'wow_classic', version_pattern: /^3\..+/ }],
-    [ProjectId.Cata, { product: 'wow_classic', version_pattern: /^4\..+/ }],
-    [ProjectId.Mists, { product: 'wow_classic', version_pattern: /^5\..+/ }],
+    [ProjectId.Wrath, { product: 'wow_classic_titan' }],
+    [ProjectId.Mists, { product: 'wow_classic'}],
 ]);
 
 export function mapLimit<T, U>(array: T[], limit: number, fn: (value: T, index: number, array: T[]) => U) {
@@ -62,7 +61,7 @@ export class WowToolsClient {
     }
 
     private async fetchVersion() {
-        const exists = await this.fetchVersions();
+        // const exists = await this.fetchVersions();
         const resp = await fetch('https://wago.tools/api/builds');
         const data = await resp.json();
 
@@ -71,19 +70,19 @@ export class WowToolsClient {
             throw Error();
         }
 
-        if (this.pro.version_pattern) {
+        // if (this.pro.version_pattern) {
+        //     for (const v of versions) {
+        //         if (exists.has(v.version) && this.pro.version_pattern.test(v.version)) {
+        //             return v.version as string;
+        //         }
+        //     }
+        // } else {
             for (const v of versions) {
-                if (exists.has(v.version) && this.pro.version_pattern.test(v.version)) {
+                // if (exists.has(v.version)) {
                     return v.version as string;
-                }
+                // }
             }
-        } else {
-            for (const v of versions) {
-                if (exists.has(v.version)) {
-                    return v.version as string;
-                }
-            }
-        }
+        // }
         return '';
     }
 

@@ -50,7 +50,6 @@ select(2,...).GlyphMake()`
 
 async function main() {
     await new App(ProjectId.Wrath).run('Data/Wrath/Glyph.lua');
-    await new App(ProjectId.Cata).run('Data/Cata/Glyph.lua');
 }
 
 main();
