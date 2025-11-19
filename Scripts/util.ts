@@ -7,6 +7,11 @@
 import { format } from "@miyauci/format";
 import { Semaphore } from "@core/asyncutil/semaphore";
 import { Html5Entities } from 'https://deno.land/x/html_entities@v1.0/mod.js';
+import { crypto } from "@std/crypto";
+import { encodeHex } from "@std/encoding/hex";
+import * as path from '@std/path';
+import * as fs from '@std/fs';
+
 
 export enum ProjectId {
     Vanilla,
@@ -27,7 +32,7 @@ const WOW_TOOLS2 = 'https://wago.tools/db2/{name}/csv';
 const PROJECTS = new Map([
     [ProjectId.Vanilla, { product: 'wow_classic_era' }],
     [ProjectId.Wrath, { product: 'wow_classic_titan' }],
-    [ProjectId.Mists, { product: 'wow_classic'}],
+    [ProjectId.Mists, { product: 'wow_classic' }],
 ]);
 
 export function mapLimit<T, U>(array: T[], limit: number, fn: (value: T, index: number, array: T[]) => U) {
@@ -77,11 +82,11 @@ export class WowToolsClient {
         //         }
         //     }
         // } else {
-            for (const v of versions) {
-                // if (exists.has(v.version)) {
-                    return v.version as string;
-                // }
-            }
+        for (const v of versions) {
+            // if (exists.has(v.version)) {
+            return v.version as string;
+            // }
+        }
         // }
         return '';
     }
@@ -181,8 +186,20 @@ export class WowToolsClient {
             return url;
         })();
 
+        const urlhash = encodeHex(await crypto.subtle.digest('MD5', new TextEncoder().encode(url.toString())));
+
+        const p = path.resolve('.cache', urlhash);
+
+        if (await fs.exists(p)) {
+            const body = await Deno.readTextFile(p);
+            return this.decodeCSV(body);
+        }
+
         const resp = await fetch(url);
         const body = await resp.text();
+
+        await Deno.mkdir(path.dirname(p), { recursive: true });
+        await Deno.writeTextFile(p, body);
         return this.decodeCSV(body);
     }
 }

@@ -2,6 +2,9 @@
   "imports": {
     "@core/asyncutil": "jsr:@core/asyncutil@^1.2.0",
     "@miyauci/format": "jsr:@miyauci/format@^1.1.0",
+    "@std/crypto": "jsr:@std/crypto@^1.0.5",
+    "@std/encoding": "jsr:@std/encoding@^1.0.10",
+    "@std/fs": "jsr:@std/fs@^1.0.20",
     "@std/path": "jsr:@std/path@^1.0.8"
   }
 }
