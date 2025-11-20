@@ -214,9 +214,13 @@ function ns.GetItemEnchantInfo(link)
         local itemId, _, _, _, _, classId, subClassId = GetItemInfoInstant(link)
         local invType = C_Item.GetItemInventoryTypeByID(itemId)
 
-        for _, v in ipairs(ns.ItemEnchants) do
-            if v.enchantId == enchantId and v.classId == classId and
-                (not v.subClassMask or FlagTest(v.subClassMask, subClassId)) and
+        local data = ns.ItemEnchants[enchantId]
+        if not data then
+            return
+        end
+
+        for _, v in ipairs(data) do
+            if v.classId == classId and (not v.subClassMask or FlagTest(v.subClassMask, subClassId)) and
                 (not v.invTypeMask or FlagTest(v.invTypeMask, invType)) then
                 return v
             end

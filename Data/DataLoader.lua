@@ -169,14 +169,22 @@ end
 function ns.ItemEnchantMake()
     ns.ItemEnchantMake = nil
 
+    local function R(v)
+        if v == 0 then
+            return nil
+        end
+        return v
+    end
+
     local Data = function(enchantId, spellId, itemId, classId, subClassMask, invTypeMask)
-        tinsert(ns.ItemEnchants, {
-            enchantId = enchantId,
+        ns.ItemEnchants[enchantId] = ns.ItemEnchants[enchantId] or {}
+
+        tinsert(ns.ItemEnchants[enchantId], {
             spellId = spellId,
-            itemId = itemId,
+            itemId = R(itemId),
             classId = classId,
-            subClassMask = subClassMask,
-            invTypeMask = invTypeMask,
+            subClassMask = R(subClassMask),
+            invTypeMask = R(invTypeMask),
         })
     end
 

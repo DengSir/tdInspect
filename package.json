@@ -9,7 +9,7 @@
     "talent": "deno run --allow-all Scripts/TalentsGen.ts",
     "itemset": "deno run --allow-all Scripts/ItemSetsGen.ts",
     "glyph": "deno run --allow-all Scripts/GlyphGen.ts",
-    "itemenchant": "deno run --allow-all Scripts/ItemEnchantGen.ts",
+    "itemenchant": "deno run --allow-all Scripts/ItemEnchantGen2.ts",
     "itemgems": "deno run --allow-all Scripts/ItemGemsGen.ts"
   },
   "repository": {

@@ -14,9 +14,17 @@ class App {
         this.cli = new WowToolsClient(projectId);
     }
 
+    isAsciiOnly(str: string) {
+        return /^[\x00-\x7F]*$/.test(str);
+    }
+
+    isTestName(name: string) {
+        return this.isAsciiOnly(name) && (name.startsWith('Test') || name.startsWith('QA') || name.startsWith('(DNT)') || name.includes('OLD') || name.includes('TEST') || name.includes('[DNT]'));
+    }
+
     async fetchSpells() {
-        const spells = (await this.cli.fetchTable('SpellName'))
-            .filter(x => x['Name_lang'].length > 0 && !x['Name_lang'].startsWith('QA') && !x['Name_lang'].startsWith('Test'));
+        const spells = (await this.cli.fetchTable('SpellName', 'zhCN'))
+            .filter(x => x['Name_lang'].length > 0 && !this.isTestName(x['Name_lang']));
         return new Set(spells.map(x => Number.parseInt(x.ID) || 0));
     }
 
@@ -37,7 +45,7 @@ class App {
     }
 
     async fetchItems() {
-        const items = (await this.cli.fetchTable('ItemSparse')).filter(x => !x['Display_lang'].startsWith('QA'));
+        const items = (await this.cli.fetchTable('ItemSparse', 'zhCN')).filter(x => Number.parseInt(x.Flags[0]) !== 10).filter(x => !this.isAsciiOnly(x['Display_lang']));
         return new Set(items.map(x => Number.parseInt(x.ID) || 0));
     }
 
@@ -80,9 +88,9 @@ class App {
                 const equippedItem = spellEquippedItemsMap.get(spell.spellId);
 
                 if (equippedItem && (equippedItem.itemClass === 2 || equippedItem.itemClass === 4)) {
-                    const item = itemId && items.has(itemId) ? itemId : 'n';
-                    const itemSubclassMask = equippedItem.itemSubClass || 'n';
-                    const invTypeMask = equippedItem.invType || 'n';
+                    const item = itemId && items.has(itemId) ? itemId : 0;
+                    const itemSubclassMask = equippedItem.itemSubClass || 0;
+                    const invTypeMask = equippedItem.invType || 0;
                     codes.push(
                         `D(${id},${spell.spellId},${item},${equippedItem.itemClass},${itemSubclassMask},${invTypeMask})`
                     );
@@ -100,7 +108,7 @@ ${codes.join('\n')}`;
 }
 
 async function main() {
-    await new App(ProjectId.Vanilla).run('Data/Vanilla/ItemEnchant2.lua');
-    await new App(ProjectId.Wrath).run('Data/Wrath/ItemEnchant2.lua');
+    await new App(ProjectId.Vanilla).run('Data/Vanilla/ItemEnchant.lua');
+    await new App(ProjectId.Wrath).run('Data/Wrath/ItemEnchant.lua');
 }
 main();
