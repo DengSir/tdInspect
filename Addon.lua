@@ -175,7 +175,11 @@ end
 
 function Addon:SetupGearParent()
     self.CharacterGearParent = CreateFrame('Frame', nil, PaperDollFrame)
-    self.CharacterGearParent:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -33, -12)
+    if PaperDollFrame.Inset then
+        self.CharacterGearParent:SetPoint('TOPLEFT', PaperDollFrame, 'TOPRIGHT', 0, 0)
+    else
+        self.CharacterGearParent:SetPoint('TOPLEFT', PaperDollFrame, 'TOPRIGHT', -33, -12)
+    end
     self.CharacterGearParent:SetSize(1, 1)
     self.CharacterGearParent:SetScript('OnShow', function()
         self:OpenCharacterGearFrame()
@@ -183,6 +187,7 @@ function Addon:SetupGearParent()
 end
 
 function Addon:SetupUI()
+    ns.INSPECT_HAS_INSET = not not InspectFrame.Inset
     self.InspectFrame = ns.UI.InspectFrame:Bind(InspectFrame)
 end
 
@@ -255,7 +260,11 @@ end
 function Addon:GetInspectGearFrame()
     if not self.InspectGearFrame then
         self.InspectGearFrame = ns.UI.InspectGearFrame:Create(InspectPaperDollFrame, true)
-        self.InspectGearFrame:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', -33, -12)
+        if ns.INSPECT_HAS_INSET then
+            self.InspectGearFrame:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', 0, 0)
+        else
+            self.InspectGearFrame:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', -33, -12)
+        end
     end
     return self.InspectGearFrame
 end

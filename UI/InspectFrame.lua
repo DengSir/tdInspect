@@ -205,7 +205,8 @@ end
 
 function InspectFrame:AddTab(text, frame)
     local id = self.numTabs + 1
-    local tab = CreateFrame('Button', 'InspectFrameTab' .. id, self, 'CharacterFrameTabButtonTemplate')
+    local name = 'InspectFrameTab' .. id
+    local tab = _G[name] or CreateFrame('Button', name, self, 'CharacterFrameTabButtonTemplate')
     tab:SetPoint('LEFT', _G['InspectFrameTab' .. self.numTabs], 'RIGHT', -16, 0)
     tab:SetID(id)
     tab:SetText(text)
@@ -213,6 +214,7 @@ function InspectFrame:AddTab(text, frame)
     tab:SetScript('OnLeave', GameTooltip_Hide)
     tab:SetScript('OnEnter', TabOnEnter)
     tab:SetFrameLevel(InspectFrameTab1:GetFrameLevel())
+    tab:Show()
     tab.text = text
     PanelTemplates_SetNumTabs(self, id)
 
@@ -227,25 +229,27 @@ function InspectFrame:CreateTabFrame(bgs)
     frame:SetAllPoints(self)
     frame:Hide()
 
-    local tl = frame:CreateTexture(nil, 'BACKGROUND')
-    tl:SetSize(256, 256)
-    tl:SetPoint('TOPLEFT', 2, -1)
-    tl:SetTexture(bgs and bgs.topLeft or [[Interface\PaperDollInfoFrame\UI-Character-General-TopLeft]])
+    if not ns.INSPECT_HAS_INSET then
+        local tl = frame:CreateTexture(nil, 'BACKGROUND')
+        tl:SetSize(256, 256)
+        tl:SetPoint('TOPLEFT', 2, -1)
+        tl:SetTexture(bgs and bgs.topLeft or [[Interface\PaperDollInfoFrame\UI-Character-General-TopLeft]])
 
-    local tr = frame:CreateTexture(nil, 'BACKGROUND')
-    tr:SetSize(128, 256)
-    tr:SetPoint('TOPLEFT', 258, -1)
-    tr:SetTexture(bgs and bgs.topRight or [[Interface\PaperDollInfoFrame\UI-Character-General-TopRight]])
+        local tr = frame:CreateTexture(nil, 'BACKGROUND')
+        tr:SetSize(128, 256)
+        tr:SetPoint('TOPLEFT', 258, -1)
+        tr:SetTexture(bgs and bgs.topRight or [[Interface\PaperDollInfoFrame\UI-Character-General-TopRight]])
 
-    local bl = frame:CreateTexture(nil, 'BACKGROUND')
-    bl:SetSize(256, 256)
-    bl:SetPoint('TOPLEFT', 2, -257)
-    bl:SetTexture(bgs and bgs.bottomLeft or [[Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft]])
+        local bl = frame:CreateTexture(nil, 'BACKGROUND')
+        bl:SetSize(256, 256)
+        bl:SetPoint('TOPLEFT', 2, -257)
+        bl:SetTexture(bgs and bgs.bottomLeft or [[Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft]])
 
-    local br = frame:CreateTexture(nil, 'BACKGROUND')
-    br:SetSize(128, 256)
-    br:SetPoint('TOPLEFT', 258, -257)
-    br:SetTexture(bgs and bgs.bottomRight or [[Interface\PaperDollInfoFrame\UI-Character-General-BottomRight]])
+        local br = frame:CreateTexture(nil, 'BACKGROUND')
+        br:SetSize(128, 256)
+        br:SetPoint('TOPLEFT', 258, -257)
+        br:SetTexture(bgs and bgs.bottomRight or [[Interface\PaperDollInfoFrame\UI-Character-General-BottomRight]])
+    end
 
     return frame
 end
