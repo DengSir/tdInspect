@@ -48,6 +48,9 @@ function InspectFrame:Constructor()
     end
 
     local talentTab, glyphTab
+    local paperTab = tIndexOf(INSPECTFRAME_SUBFRAMES, 'InspectPaperDollFrame')
+    local pvpTab = tIndexOf(INSPECTFRAME_SUBFRAMES, 'InspectPVPFrame') or
+                       tIndexOf(INSPECTFRAME_SUBFRAMES, 'InspectHonorFrame')
 
     self.Portrait = InspectFramePortrait
     self.Name = InspectNameText
@@ -73,8 +76,14 @@ function InspectFrame:Constructor()
         glyphTab = self:AddTab(GLYPHS, self.GlyphFrame)
     end
 
+    self.tabBottoms = { --
+        [paperTab] = false,
+        [pvpTab] = false,
+        [talentTab] = true,
+    }
+
     self.tabDepends = {
-        [tIndexOf(INSPECTFRAME_SUBFRAMES, 'InspectPVPFrame') or tIndexOf(INSPECTFRAME_SUBFRAMES, 'InspectHonorFrame')] = function()
+        [pvpTab] = function()
             return Inspect.unit and not InCombatLockdown() and CheckInteractDistance(Inspect.unit, 1) and
                        CanInspect(Inspect.unit)
         end,
@@ -87,14 +96,18 @@ function InspectFrame:Constructor()
         self.tabDepends[glyphTab] = function()
             return Inspect:GetNumTalentGroups() > 0 and Inspect:GetUnitGlyph()
         end
+        self.tabBottoms[glyphTab] = false
     end
 
     self.groupTabs = {}
     self:AddTalentGroupTab(1)
     self:AddTalentGroupTab(2)
 
-    self.Portrait:SetPoint('TOPLEFT', -7, 8)
-    self.Portrait:SetSize(64, 64)
+    -- self.Portrait:SetPoint('TOPLEFT', -5, 7)
+    -- self.Portrait:SetSize(60, 60)
+
+    -- self.PortraitContainer.CircleMask:ClearAllPoints()
+    -- self.PortraitContainer.CircleMask:SetAllPoints(self.Portrait)
 end
 
 function InspectFrame:OnShow()
@@ -144,6 +157,7 @@ local function SpecOnClick(button)
     ---@type UI.InspectFrame
     local parent = button:GetParent()
     parent:SetTalentGroup(button.id)
+    PlaySound(836) -- SOUNDKIT.IG_ABILITY_PAGE_TURN
 end
 
 function InspectFrame:SetTalentGroup(id)
@@ -284,6 +298,12 @@ function InspectFrame:SetTab(id)
 
     for i, frame in ipairs(self.tabFrames) do
         frame:SetShown(i == id)
+    end
+
+    if self.tabBottoms[id] then
+        ButtonFrameTemplate_ShowButtonBar(self)
+    else
+        ButtonFrameTemplate_HideButtonBar(self)
     end
 
     self:UpdateTalentGroups()

@@ -23,25 +23,26 @@ function ModelFrame:Constructor()
     self.Modal = InspectModelFrame
     self.Faction = InspectFaction
 
+    InspectModelFrameBackgroundTopLeft:Hide()
+    InspectModelFrameBackgroundTopRight:Hide()
+    InspectModelFrameBackgroundBotLeft:Hide()
+    InspectModelFrameBackgroundBotRight:Hide()
+
     for _, region in ipairs({self.Modal:GetRegions()}) do
         region:SetParent(self)
     end
     self.Faction:SetPoint('CENTER')
 
-    ---@type Texture
-    local RaceBackground = self:CreateTexture(nil, 'ARTWORK')
-    RaceBackground:SetAtlas('transmog-background-race-draenei')
-    RaceBackground:SetAllPoints(self)
-
     self.Modal:SetParent(self)
     self.Faction:SetParent(self)
-    self.RaceBackground = RaceBackground
+    self.RaceBackground = InspectModelFrameBackgroundOverlay
+    self.RaceBackground:SetAlpha(1)
 
     self:SetScript('OnShow', self.OnShow)
 end
 
 function ModelFrame:OnShow()
-    self:Event('UNIT_MODEL_CHANGED', 'Update')
+    self:Event('UNIT_MODEL_CHANGED', 'UpdateModal')
     self:Event('TDINSPECT_TARGET_CHANGED', 'Update')
     self:Update()
 end
@@ -52,6 +53,11 @@ function ModelFrame:OnHide()
 end
 
 function ModelFrame:Update()
+    self:UpdateModal()
+    self:UpdateRace()
+end
+
+function ModelFrame:UpdateModal()
     local unit = Inspect.unit
     if unit then
         self.Modal:Show()
@@ -72,4 +78,18 @@ function ModelFrame:Update()
     self.Modal:Hide()
     self.Faction:SetTexture(factionLogoTextures[Inspect:GetUnitFactionGroup()])
     self.Faction:Show()
+end
+
+function ModelFrame:UpdateRace()
+    local raceFileName = Inspect:GetUnitRaceFileName()
+
+    if raceFileName then
+        if raceFileName == 'Scourge' then
+            raceFileName = 'Undead'
+        end
+        self.RaceBackground:SetAtlas('transmog-background-race-' .. raceFileName)
+    else
+        self.RaceBackground:SetAtlas(UnitFactionGroup('player') == 'Alliance' and 'transmog-background-race-draenei' or
+                                         'transmog-background-race-bloodelf')
+    end
 end

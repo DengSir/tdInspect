@@ -37,8 +37,8 @@ function InspectTalent:Constructor()
     self.TalentFrame = TalentFrame
 
     local BottomFrame = CreateFrame('Frame', nil, self)
-    BottomFrame:SetPoint('BOTTOMLEFT', 2, 2)
-    BottomFrame:SetPoint('BOTTOMRIGHT', -4, 2)
+    BottomFrame:SetPoint('BOTTOMLEFT', 2, 3)
+    BottomFrame:SetPoint('BOTTOMRIGHT', -4, 3)
     BottomFrame:SetHeight(24)
 
     local l = BottomFrame:CreateTexture(nil, 'BACKGROUND')
@@ -79,6 +79,7 @@ end
 
 local function TabOnClick(self)
     self:GetParent():SetTab(self:GetID())
+    PlaySound(856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 end
 
 function InspectTalent:AddTab(text)

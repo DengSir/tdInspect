@@ -42,8 +42,6 @@ function PaperDoll:Constructor()
     self.LevelText = InspectLevelText
     self.ModelFrame = ns.UI.ModelFrame:Bind(self:CreateInsetFrame())
 
-    self.RaceBackground = self.ModelFrame.RaceBackground
-
     self:SetScript('OnShow', self.OnShow)
     self:SetScript('OnHide', self.OnHide)
 end
@@ -89,19 +87,7 @@ function PaperDoll:UpdateInfo()
     local class = Inspect:GetUnitClass()
     local race = Inspect:GetUnitRace()
     local classFileName = Inspect:GetUnitClassFileName()
-    local raceFileName = Inspect:GetUnitRaceFileName()
-    local lastUpdate = Inspect:GetLastUpdate()
 
     self.LevelText:SetFormattedText(PLAYER_LEVEL, level or '??', race or '',
                                     class and ns.strcolor(class, GetClassColor(classFileName)) or '')
-
-    if raceFileName then
-        if raceFileName == 'Scourge' then
-            raceFileName = 'Undead'
-        end
-        self.RaceBackground:SetAtlas('transmog-background-race-' .. raceFileName)
-    else
-        self.RaceBackground:SetAtlas(UnitFactionGroup('player') == 'Alliance' and 'transmog-background-race-draenei' or
-                                         'transmog-background-race-bloodelf')
-    end
 end

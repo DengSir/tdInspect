@@ -187,12 +187,10 @@ function Addon:SetupGearParent()
 end
 
 function Addon:SetupUI()
-    ns.INSPECT_HAS_INSET = not not InspectFrame.Inset
-
-    if ns.INSPECT_HAS_INSET and InspectPVPFrame then
+    -- blizzard ui bug
+    if InspectPVPFrame then
         InspectPVPFrame:SetPoint('TOPLEFT', -16, 12)
 
-        ---@param region Region
         for _, region in ipairs({InspectPVPFrame:GetRegions()}) do
             if region:GetObjectType() == 'Texture' and region:GetDrawLayer() == 'BACKGROUND' then
                 region:Hide()
