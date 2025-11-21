@@ -23,10 +23,19 @@ function ModelFrame:Constructor()
     self.Modal = InspectModelFrame
     self.Faction = InspectFaction
 
-    self.Faction:SetPoint('CENTER', InspectPaperDollFrame, 'CENTER', -10, 20)
+    for _, region in ipairs({self.Modal:GetRegions()}) do
+        region:SetParent(self)
+    end
+    self.Faction:SetPoint('CENTER')
+
+    ---@type Texture
+    local RaceBackground = self:CreateTexture(nil, 'ARTWORK')
+    RaceBackground:SetAtlas('transmog-background-race-draenei')
+    RaceBackground:SetAllPoints(self)
 
     self.Modal:SetParent(self)
     self.Faction:SetParent(self)
+    self.RaceBackground = RaceBackground
 
     self:SetScript('OnShow', self.OnShow)
 end

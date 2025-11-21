@@ -93,6 +93,7 @@ function InspectFrame:Constructor()
     self:AddTalentGroupTab(1)
     self:AddTalentGroupTab(2)
 
+    self.Portrait:SetPoint('TOPLEFT', -7, 8)
     self.Portrait:SetSize(64, 64)
 end
 
@@ -228,29 +229,6 @@ function InspectFrame:CreateTabFrame(bgs)
     local frame = CreateFrame('Frame', nil, self)
     frame:SetAllPoints(self)
     frame:Hide()
-
-    if not ns.INSPECT_HAS_INSET then
-        local tl = frame:CreateTexture(nil, 'BACKGROUND')
-        tl:SetSize(256, 256)
-        tl:SetPoint('TOPLEFT', 2, -1)
-        tl:SetTexture(bgs and bgs.topLeft or [[Interface\PaperDollInfoFrame\UI-Character-General-TopLeft]])
-
-        local tr = frame:CreateTexture(nil, 'BACKGROUND')
-        tr:SetSize(128, 256)
-        tr:SetPoint('TOPLEFT', 258, -1)
-        tr:SetTexture(bgs and bgs.topRight or [[Interface\PaperDollInfoFrame\UI-Character-General-TopRight]])
-
-        local bl = frame:CreateTexture(nil, 'BACKGROUND')
-        bl:SetSize(256, 256)
-        bl:SetPoint('TOPLEFT', 2, -257)
-        bl:SetTexture(bgs and bgs.bottomLeft or [[Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft]])
-
-        local br = frame:CreateTexture(nil, 'BACKGROUND')
-        br:SetSize(128, 256)
-        br:SetPoint('TOPLEFT', 258, -257)
-        br:SetTexture(bgs and bgs.bottomRight or [[Interface\PaperDollInfoFrame\UI-Character-General-BottomRight]])
-    end
-
     return frame
 end
 

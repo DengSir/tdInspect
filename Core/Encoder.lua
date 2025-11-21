@@ -7,6 +7,7 @@
 local ns = select(2, ...)
 
 local C_Engraving = C_Engraving
+local GetGlyphLink = GetGlyphLink or (C_GlyphInfo and C_GlyphInfo.GetGlyphLink)
 
 local band, rshift, lshift = bit.band, bit.rshift, bit.lshift
 local tconcat, tinsert = table.concat, table.insert

@@ -188,6 +188,18 @@ end
 
 function Addon:SetupUI()
     ns.INSPECT_HAS_INSET = not not InspectFrame.Inset
+
+    if ns.INSPECT_HAS_INSET and InspectPVPFrame then
+        InspectPVPFrame:SetPoint('TOPLEFT', -16, 12)
+
+        ---@param region Region
+        for _, region in ipairs({InspectPVPFrame:GetRegions()}) do
+            if region:GetObjectType() == 'Texture' and region:GetDrawLayer() == 'BACKGROUND' then
+                region:Hide()
+            end
+        end
+    end
+
     self.InspectFrame = ns.UI.InspectFrame:Bind(InspectFrame)
 end
 
@@ -260,11 +272,7 @@ end
 function Addon:GetInspectGearFrame()
     if not self.InspectGearFrame then
         self.InspectGearFrame = ns.UI.InspectGearFrame:Create(InspectPaperDollFrame, true)
-        if ns.INSPECT_HAS_INSET then
-            self.InspectGearFrame:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', 0, 0)
-        else
-            self.InspectGearFrame:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', -33, -12)
-        end
+        self.InspectGearFrame:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', 0, 0)
     end
     return self.InspectGearFrame
 end

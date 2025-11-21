@@ -14,11 +14,9 @@ local GlyphFrame = ns.Addon:NewClass('UI.GlyphFrame', 'Frame')
 function GlyphFrame:Constructor()
     self.buttons = {}
 
-    if ns.INSPECT_HAS_INSET then
-        self:ClearAllPoints()
-        self:SetPoint('TOPLEFT', -16, 12)
-        self:SetSize(384, 512)
-    end
+    self:ClearAllPoints()
+    self:SetPoint('TOPLEFT', -16, 12)
+    self:SetSize(384, 512)
 
     local left, right, top, bottom = 16, 4, 35, 8
 

@@ -32,38 +32,13 @@ function InspectTalent:Constructor()
     TalentFrame.buttonSpacingX = 63
     TalentFrame.buttonSpacingY = 63
     TalentFrame:SetSize(296, 332)
-    if ns.INSPECT_HAS_INSET then
-        TalentFrame:SetPoint('TOPLEFT', 7, -65)
-    else
-        TalentFrame:SetPoint('TOPRIGHT', -65, -77)
-    end
+    TalentFrame:SetPoint('TOPLEFT', 7, -65)
 
     self.TalentFrame = TalentFrame
 
-    local y = 152
-
-    if ns.BUILD < 3 then
-        local t = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
-        t:SetPoint('TOPLEFT', 2, -257 - y)
-        t:SetSize(256, 256 - y)
-        t:SetTexture([[Interface\FriendsFrame\UI-FriendsFrame-Pending-BotLeft]])
-        t:SetTexCoord(0, 1, y / 256, 1)
-
-        local t = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
-        t:SetPoint('TOPLEFT', 258, -257 - y)
-        t:SetSize(128, 256 - y)
-        t:SetTexture([[Interface\FriendsFrame\UI-FriendsFrame-Pending-BotRight]])
-        t:SetTexCoord(0, 1, y / 256, 1)
-    end
-
     local BottomFrame = CreateFrame('Frame', nil, self)
-    if ns.INSPECT_HAS_INSET then
-        BottomFrame:SetPoint('BOTTOMLEFT', 2, 2)
-        BottomFrame:SetPoint('BOTTOMRIGHT', -4, 2)
-    else
-        BottomFrame:SetPoint('BOTTOMLEFT', 20, 77)
-        BottomFrame:SetPoint('BOTTOMRIGHT', -40, 77)
-    end
+    BottomFrame:SetPoint('BOTTOMLEFT', 2, 2)
+    BottomFrame:SetPoint('BOTTOMRIGHT', -4, 2)
     BottomFrame:SetHeight(24)
 
     local l = BottomFrame:CreateTexture(nil, 'BACKGROUND')
@@ -113,11 +88,7 @@ function InspectTalent:AddTab(text)
     tab:SetScript('OnClick', TabOnClick)
 
     if id == 1 then
-        if ns.INSPECT_HAS_INSET then
-            tab:SetPoint('TOPLEFT', 54, -29)
-        else
-            tab:SetPoint('TOPLEFT', 70, -41)
-        end
+        tab:SetPoint('TOPLEFT', 54, -29)
     else
         tab:SetPoint('LEFT', self.Tabs[id - 1], 'RIGHT')
     end
