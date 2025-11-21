@@ -1,3 +1,18 @@
+## [2.6.1](https://github.com/DengSir/tdInspect/compare/v2.6.0...v2.6.1) (2025-11-21)
+
+
+### Bug Fixes
+
+* API报错 ([1489398](https://github.com/DengSir/tdInspect/commit/14893983ae843ce1c4b1887d5eef2823d5b0ef1b))
+
+
+### Features
+
+* 更新拉数据脚本 ([43856e9](https://github.com/DengSir/tdInspect/commit/43856e933bf1f2773c441eb9c96c5d55c8900a8a))
+* 适配版本 ([3e97da4](https://github.com/DengSir/tdInspect/commit/3e97da47150d47aae204da8a17576a04264c3bc8))
+
+
+
 # [2.6.0](https://github.com/DengSir/tdInspect/compare/v2.5.14...v2.6.0) (2025-08-20)
 
 
