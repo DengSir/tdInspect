@@ -15,7 +15,6 @@ local strsub, strbyte, strchar, strrep = string.sub, string.byte, string.char, s
 local sort = table.sort
 local floor = math.floor
 local ripairs = ipairs_reverse
-local GetGlyphLink = GetGlyphLink or C_GlyphInfo.GetGlyphLink
 
 local Encoder = {}
 ns.Encoder = Encoder
