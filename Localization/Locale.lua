@@ -654,8 +654,7 @@ L["No Enchant"] = "Нет чар"
 L["Other realm characters"] = "Другие персонажи сервера"
 L["Quality by blizzard"] = "Качество от Blizzard"
 L["See other account character?"] = "Видите другого персонажа аккаунта?"
---[[Translation missing --]]
---[[ L["Set alias name"] = "Set alias name"--]] 
+L["Set alias name"] = "Установить псевдоним"
 L["Set Spec Equipment"] = "Набор экипировки"
 L["Show character gear list"] = "Показать список экипировки персонажа"
 L["Show enchant"] = "Показать чары"
