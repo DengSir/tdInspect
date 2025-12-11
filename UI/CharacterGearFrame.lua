@@ -9,6 +9,8 @@ local ns = select(2, ...)
 ---@class UI.CharacterGearFrame : UI.GearFrame
 local CharacterGearFrame = ns.Addon:NewClass('UI.CharacterGearFrame', ns.UI.GearFrame)
 
+local SetActiveTalentGroup = C_SpecializationInfo.SetActiveSpecGroup
+
 local function SpecLeftClick(self)
     if not self.isActive and not InCombatLockdown() then
         SetActiveTalentGroup(self.id)
@@ -54,7 +56,8 @@ local function CreateMenu(self)
         func = function()
             if not StaticPopupDialogs['TDINSPECT_SET_SPEC_ALIAS'] then
                 local function OnAccept(frame)
-                    local text = frame.editBox:GetText()
+                    local editBox = frame.editBox or frame:GetEditBox()
+                    local text = editBox:GetText()
                     ns.SpecGear:SetSpecAliasName(frame.data.specId, text)
                 end
 
@@ -71,9 +74,10 @@ local function CreateMenu(self)
                         parent:Hide()
                     end,
                     OnShow = function(self)
-                        self.editBox:SetText(self.data.specName or '')
-                        self.editBox:SetFocus()
-                        self.editBox:HighlightText()
+                        local editBox = self.editBox or self:GetEditBox()
+                        editBox:SetText(self.data.specName or '')
+                        editBox:SetFocus()
+                        editBox:HighlightText()
                     end,
                 }
             end
@@ -172,11 +176,11 @@ function CharacterGearFrame:Update()
 end
 
 function CharacterGearFrame:GetNumTalentGroups()
-    return GetNumTalentGroups()
+    return ns.GetNumTalentGroups()
 end
 
 function CharacterGearFrame:GetActiveTalentGroup()
-    return GetActiveTalentGroup()
+    return ns.GetActiveTalentGroup()
 end
 
 function CharacterGearFrame:GetTalentInfo(group)

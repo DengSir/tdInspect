@@ -205,7 +205,7 @@ function InspectFrame:AddTalentGroupTab(id)
     button:SetScript('OnLeave', GameTooltip_Hide)
 
     if id == 1 then
-        button:SetPoint('TOPLEFT', self, 'TOPRIGHT', -32, -65)
+        button:SetPoint('TOPLEFT', self, 'TOPRIGHT', 0, -50)
     else
         button:SetPoint('TOPLEFT', self.groupTabs[id - 1], 'BOTTOMLEFT', 0, -22)
     end

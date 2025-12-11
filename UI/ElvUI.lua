@@ -25,10 +25,6 @@ local function hook(t, m, f)
     end
 end
 
-hooksecurefunc(ns.Addon, 'OnInitialize', function(self)
-    self.CharacterGearParent:SetPoint('TOPLEFT', CharacterFrame, 'TOPRIGHT', -30, -12)
-end)
-
 hooksecurefunc(ns.Addon, 'SetupUI', function(self)
     self.InspectFrame.TalentFrame:StripTextures()
     self.InspectFrame.TalentFrame.TalentFrame:StripTextures()
@@ -136,16 +132,5 @@ function ns.UI.GearFrame:TapTo(frame, position)
         self:SetPoint('TOPLEFT', frame, 'TOPLEFT')
     elseif position == 'TOPRIGHT' then
         self:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 2, 0)
-    end
-end
-
-do
-    local orig = ns.Addon.GetInspectGearFrame
-
-    function ns.Addon:GetInspectGearFrame()
-        local f = orig(self)
-        f:SetPoint('TOPLEFT', InspectPaperDollFrame, 'TOPRIGHT', -30, -12)
-        ns.Addon.GetInspectGearFrame = orig
-        return f
     end
 end

@@ -143,7 +143,7 @@ function Encoder:PackGlyphs(noEncode)
         return
     end
     local data = {}
-    for i = 1, GetNumTalentGroups() do
+    for i = 1, ns.GetNumTalentGroups() do
         data[i] = self:PackGlyph(i, noEncode)
     end
     if noEncode then
@@ -315,7 +315,7 @@ end
 
 function Encoder:PackTalent(isInspect, group, noEncode)
     local data = {}
-    group = group or GetActiveTalentGroup(isInspect)
+    group = group or ns.GetActiveTalentGroup(isInspect)
     for i = 1, GetNumTalentTabs(isInspect) do
         local tab = {}
         for j = 1, GetNumTalents(i, isInspect) do
@@ -344,7 +344,7 @@ end
 
 function Encoder:PackTalents(isInspect, noEncode)
     local data = {}
-    local numGroups = GetNumTalentGroups and GetNumTalentGroups(isInspect) or 1
+    local numGroups = ns.GetNumTalentGroups(isInspect)
     for i = 1, numGroups do
         data[i] = self:PackTalent(isInspect, i, noEncode)
     end

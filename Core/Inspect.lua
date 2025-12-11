@@ -530,8 +530,8 @@ function Inspect:INSPECT_READY(_, guid)
         db.level = UnitLevel(self.unit)
         if ns.BUILD >= 2 then
             db.talents = Encoder:PackTalents(true, true)
-            db.numGroups = GetNumTalentGroups and GetNumTalentGroups(true) or 1
-            db.activeGroup = GetActiveTalentGroup and GetActiveTalentGroup(true) or 1
+            db.numGroups = ns.GetNumTalentGroups(true)
+            db.activeGroup = ns.GetActiveTalentGroup(true)
         end
 
         self:TryFireMessage(self.unit, name, db)
@@ -604,8 +604,8 @@ function Inspect:OnComm(cmd, sender, ...)
                     C_Engraving.RefreshRunesList()
                 end
             end
-            local numGroups = GetNumTalentGroups()
-            local activeGroup = GetActiveTalentGroup()
+            local numGroups = ns.GetNumTalentGroups()
+            local activeGroup = ns.GetActiveTalentGroup()
             local equips = queryEquip and Encoder:PackEquips() or nil
             local talents = queryTalent and Encoder:PackTalents() or nil
             local glyphs = queryGlyph and Encoder:PackGlyphs() or nil
@@ -783,8 +783,8 @@ function Inspect:SaveCurrentCharacter()
     db.class = select(3, UnitClass('player'))
     db.race = select(3, UnitRace('player'))
     db.level = UnitLevel('player')
-    db.numGroups = GetNumTalentGroups and GetNumTalentGroups() or 1
-    db.activeGroup = GetActiveTalentGroup and GetActiveTalentGroup() or 1
+    db.numGroups = ns.GetNumTalentGroups()
+    db.activeGroup = ns.GetActiveTalentGroup()
     db.faction = UnitFactionGroup('player')
 
     for slot = 1, 18 do

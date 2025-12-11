@@ -277,6 +277,22 @@ function ns.IsSpellKnown(spellId)
                DoesSpellExist(GetSpellInfo(spellId))
 end
 
+if ns.BUILD >= 5 then
+    ns.GetNumTalentGroups = function(isInspect)
+        return GetNumSpecGroups(isInspect or false)
+    end
+    ns.GetActiveTalentGroup = function(isInspect)
+        return C_SpecializationInfo.GetActiveSpecGroup(isInspect or false)
+    end
+else
+    ns.GetNumTalentGroups = function(isInspect)
+        return GetNumTalentGroups and GetNumTalentGroups(isInspect) or 1
+    end
+    ns.GetActiveTalentGroup = function(isInspect)
+        return GetActiveTalentGroup and GetActiveTalentGroup(isInspect) or 1
+    end
+end
+
 function ns.IsCanEnchant(item, inspect)
     local itemEquipLoc, _, classId, subClassId = select(4, GetItemInfoInstant(item))
     if itemEquipLoc == 'INVTYPE_RANGEDRIGHT' or itemEquipLoc == 'INVTYPE_RANGED' then
