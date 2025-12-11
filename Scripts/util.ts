@@ -4,6 +4,9 @@
  * @Link   : https://dengsir.github.io
  * @Date   : 2022/9/26 18:55:36
  */
+
+
+import { parse } from "@std/csv/parse";
 import { format } from "@miyauci/format";
 import { Semaphore } from "@core/asyncutil/semaphore";
 import { Html5Entities } from 'https://deno.land/x/html_entities@v1.0/mod.js';
@@ -39,6 +42,8 @@ export function mapLimit<T, U>(array: T[], limit: number, fn: (value: T, index: 
     const sem = new Semaphore(limit);
     return array.map((...args) => sem.lock(() => fn(...args)));
 }
+
+type Fields = { [key: string]: number | number[] };
 
 export class WowToolsClient {
     private pro: ProjectData;
@@ -91,40 +96,9 @@ export class WowToolsClient {
         return '';
     }
 
-    splitColumns(data: string) {
-        // 分割csv行
-        const result: string[] = [];
-        let current = '';
-        let inQuotes = false;
-
-        for (let i = 0; i < data.length; i++) {
-            const char = data[i];
-            const nextChar = data[i + 1];
-
-            if (char === '"') {
-                if (inQuotes && nextChar === '"') {
-                    // 双引号转义
-                    current += '"';
-                    i++; // 跳过下一个引号
-                } else {
-                    inQuotes = !inQuotes; // 切换引号状态
-                }
-            } else if (char === ',' && !inQuotes) {
-                // 非引号内的逗号表示字段分隔
-                result.push(current);
-                current = '';
-            } else {
-                current += char; // 普通字符
-            }
-        }
-        result.push(current); // 添加最后一个字段
-
-        return result;
-    }
-
-    decodeFields(data: string) {
-        const fields = this.splitColumns(data).map((x, i) => ({ name: x, index: i }));
-        const info: any = {};
+    decodeFields(row: string[]) {
+        const fields = row.map((x, i) => ({ name: x, index: i }));
+        const info: Fields = {};
 
         for (const field of fields) {
             const m = /^(.+)_(\d+)$/g.exec(field.name);
@@ -142,9 +116,8 @@ export class WowToolsClient {
         return info;
     }
 
-    decodeRow(fields: any[], data: string) {
-        const row = this.splitColumns(data);
-        const obj: any = {};
+    decodeRow(fields: Fields, row: string[]) {
+        const obj: {[key: string]: string | string[]} = {};
 
         for (const [name, index] of Object.entries(fields)) {
             if (Array.isArray(index)) {
@@ -157,9 +130,8 @@ export class WowToolsClient {
     }
 
     decodeCSV(data: string) {
-        const rows = data.split(/[\r\n]+/).filter((x) => x);
+        const rows = parse(data);
         const fields = this.decodeFields(rows.splice(0, 1)[0]);
-
         return rows.map((x) => this.decodeRow(fields, x));
     }
 
@@ -201,5 +173,24 @@ export class WowToolsClient {
         await Deno.mkdir(path.dirname(p), { recursive: true });
         await Deno.writeTextFile(p, body);
         return this.decodeCSV(body);
+    }
+}
+
+export class FileIo {
+    private sb: string[] = [];
+
+    constructor(public fileName: string) { }
+
+    write(content: string) {
+        this.sb.push(content)
+    }
+
+    close() {
+        Deno.mkdirSync(path.dirname(this.fileName), { recursive: true });
+
+        const file = Deno.openSync(this.fileName, { create: true, write: true, truncate: true });
+        const encoder = new TextEncoder();
+        file.writeSync(encoder.encode(this.sb.join('')));
+        file.close();
     }
 }

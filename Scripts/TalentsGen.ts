@@ -5,8 +5,7 @@
  * @Date   : 2022/9/26 14:22:02
  */
 
-import * as path from '@std/path';
-import { ProjectId, WowToolsClient } from './util.ts';
+import { FileIo, ProjectId, WowToolsClient } from './util.ts';
 
 enum TalentType {
     Tree, // 天赋树
@@ -22,9 +21,7 @@ interface Config {
 
 const PROJECTS: { [key: number]: Config } = {
     [ProjectId.Vanilla]: { hasId: false, hasIcon: true, talentType: TalentType.Tree },
-    // [ProjectId.BCC]: { hasId: true, hasIcon: false, talentType: TalentType.Tree },
     [ProjectId.Wrath]: { hasId: true, hasIcon: true, talentType: TalentType.Tree },
-    // [ProjectId.Cata]: { hasId: true, hasIcon: true, talentType: TalentType.Tree },
     [ProjectId.Mists]: { hasId: true, hasIcon: true, talentType: TalentType.Class },
 };
 
@@ -102,7 +99,7 @@ class App {
         }));
     }
 
-    async run(output: string) {
+    async runByTree(output: string) {
         const classes = await this.getClasses();
         const tabs = await this.getTalentTabs();
         const talents = await this.getTalents();
@@ -147,64 +144,59 @@ class App {
 
         console.log(`Generate ${output}`);
 
-        Deno.mkdirSync(path.dirname(output), { recursive: true });
-
-        const file = Deno.openSync(output, { write: true, create: true, truncate: true });
-        const encoder = new TextEncoder();
-        const write = (x: string) => file.writeSync(encoder.encode(x));
-
-        write(
+        const io = new FileIo(output);
+        io.write(
             `---@diagnostic disable: undefined-global
 -- GENERATE BY TalentsGen.ts
 select(2,...).TalentMake()`
         );
 
-        write(`D'${LOCALES.map(([, l]) => l).join('/')}'`);
-        write('\n');
+        io.write(`D'${LOCALES.map(([, l]) => l).join('/')}'`);
+        io.write('\n');
 
         for (const cls of classTabs) {
             console.log(`For ${cls.fileName}`);
 
-            write(`C'${cls.fileName}'\n`);
+            io.write(`C'${cls.fileName}'\n`);
 
             for (const tab of cls.tabs) {
                 {
-                    write(`T(${tab.id},${tab.talents.length},'${tab.bg}'`);
+                    io.write(`T(${tab.id},${tab.talents.length},'${tab.bg}'`);
                     if (this.prj.hasIcon) {
-                        write(`,${tab.icon}`);
+                        io.write(`,${tab.icon}`);
                     }
-                    write(')');
+                    io.write(')');
                 }
 
-                write(`N'${tab.names.join('/')}'`);
-                write('\n');
+                io.write(`N'${tab.names.join('/')}'`);
+                io.write('\n');
 
                 for (const talent of tab.talents) {
                     {
-                        write(`I(${talent.index},${talent.tier + 1},${talent.col + 1},${talent.spells.length}`);
+                        io.write(`I(${talent.index},${talent.tier + 1},${talent.col + 1},${talent.spells.length}`);
                         if (this.prj.hasId) {
-                            write(`,${talent.id}`);
+                            io.write(`,${talent.id}`);
                         }
-                        write(')');
+                        io.write(')');
                     }
 
-                    write(`R{${talent.spells.join(',')}}`);
+                    io.write(`R{${talent.spells.join(',')}}`);
 
                     if (talent.reqs && talent.reqs.length > 0) {
                         for (const req of talent.reqs) {
                             const reqTalent = talentsMap.get(req);
                             if (reqTalent) {
                                 const reqIndex = tab.talents.findIndex((x) => x.id == req);
-                                write(`P(${reqTalent.tier + 1},${reqTalent.col + 1},${reqIndex + 1})`);
+                                io.write(`P(${reqTalent.tier + 1},${reqTalent.col + 1},${reqIndex + 1})`);
                             }
                         }
                     }
-                    write('\n');
+                    io.write('\n');
                 }
             }
         }
 
-        file.close();
+        io.close();
     }
 
     async getSpecTabs() {
@@ -218,56 +210,58 @@ select(2,...).TalentMake()`
         }));
     }
 
-    async run2(output: string) {
+    async runByClass(output: string) {
         const classes = await this.getClasses();
         const tabs = await this.getSpecTabs();
         const talents = await this.getTalents();
 
         console.log(`Generate ${output}`);
 
-        Deno.mkdirSync(path.dirname(output), { recursive: true });
-
-        const file = Deno.openSync(output, { write: true, create: true, truncate: true });
-        const encoder = new TextEncoder();
-        const write = (x: string) => file.writeSync(encoder.encode(x));
-
-        write(
+        const io = new FileIo(output);
+        io.write(
             `---@diagnostic disable: undefined-global
 -- GENERATE BY TalentsGen.ts
 select(2,...).TalentMake()`
         );
 
-        write(`D'${LOCALES.map(([, l]) => l).join('/')}'`);
-        write('\n');
+        io.write(`D'${LOCALES.map(([, l]) => l).join('/')}'`);
+        io.write('\n');
 
         for (const cls of classes) {
             console.log(`For ${cls.fileName} ${cls.id}`);
 
             const specs = tabs.filter((tab) => tab.classId === cls.id).sort((a, b) => a.order - b.order);
-            const classTalents = talents.filter((x) => x.classId === cls.id).sort((a, b) => a.tier !== b.tier ? a.tier - b.tier : a.col - b.col);
 
-            write(`C'${cls.fileName}'\n`);
+            io.write(`C'${cls.fileName}'\n`);
 
             for (const spec of specs) {
-                write(`S(${spec.id},${spec.icon})\n`);
+                io.write(`S(${spec.id},${spec.icon})\n`);
             }
 
-            // 6行3列,每行选1个
             const rows = 6;
             for (let tier = 0; tier < rows; tier++) {
-                const tierTalents = classTalents.filter((x) => x.tier === tier).sort((a, b) => a.col - b.col).splice(0, 3).map((x) => x.spellId);
+                const lineTalents = talents.filter((x) => x.classId === cls.id && x.tier === tier).sort((a, b) => a.col - b.col).map(x => x.spellId)
 
-                write(`T(${tierTalents.join(',')})\n`);
+                io.write(`T(${lineTalents.join(',')})\n`);
             }
         }
 
-        file.close();
+        io.close();
+    }
+
+    async run(output: string) {
+        if (this.prj.talentType === TalentType.Tree) {
+            await this.runByTree(output);
+        } else if (this.prj.talentType === TalentType.Class) {
+            await this.runByClass(output);
+        }
     }
 }
 
 async function main() {
     await new App(ProjectId.Vanilla).run('Data/Vanilla/Talents.lua');
     await new App(ProjectId.Wrath).run('Data/Wrath/Talents.lua');
+    await new App(ProjectId.Mists).run('Data/Mists/Talents.lua');
 }
 
 main();

@@ -5,7 +5,7 @@
  * @Date   : 9/5/2024, 7:10:45 PM
  */
 
-import { ProjectId, WowToolsClient } from './util.ts';
+import { FileIo, ProjectId, WowToolsClient } from './util.ts';
 
 class App {
     private cli: WowToolsClient;
@@ -27,11 +27,10 @@ class App {
 
 
         console.log(output);
-        const file = Deno.openSync(output, { write: true, create: true, truncate: true });
-        const encoder = new TextEncoder();
-        const write = (x: string) => file.writeSync(encoder.encode(x));
 
-        write(
+        const io = new FileIo(output);
+
+        io.write(
             `---@diagnostic disable: undefined-global
 -- GENERATE BY ItemGem.ts
 select(2,...).ItemGemOrderMake()
@@ -40,9 +39,9 @@ select(2,...).ItemGemOrderMake()
 
         for (const item of items.filter((x) => x.SocketType.length > 0)) {
             if (item.SocketType.length === 1) {
-                write(`D(${item.ID},${item.SocketType[0]})\n`);
+                io.write(`D(${item.ID},${item.SocketType[0]})\n`);
             } else {
-                write(`D(${item.ID},'${item.SocketType.join('/')}')\n`);
+                io.write(`D(${item.ID},'${item.SocketType.join('/')}')\n`);
             }
         }
 
@@ -62,12 +61,13 @@ select(2,...).ItemGemOrderMake()
         //     }
         // }
 
-        file.close();
+        io.close();
     }
 }
 
 async function main() {
     await new App(ProjectId.Wrath).run('Data/Wrath/ItemGemOrder.lua');
+    await new App(ProjectId.Mists).run('Data/Mists/ItemGemOrder.lua');
 }
 
 main();

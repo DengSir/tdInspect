@@ -110,5 +110,6 @@ ${codes.join('\n')}`;
 async function main() {
     await new App(ProjectId.Vanilla).run('Data/Vanilla/ItemEnchant.lua');
     await new App(ProjectId.Wrath).run('Data/Wrath/ItemEnchant.lua');
+    await new App(ProjectId.Mists).run('Data/Mists/ItemEnchant.lua');
 }
 main();

@@ -6,7 +6,7 @@
  */
 
 import * as path from '@std/path';
-import { ProjectId, WowToolsClient } from './util.ts';
+import { FileIo, ProjectId, WowToolsClient } from './util.ts';
 
 class App {
     private cli: WowToolsClient;
@@ -55,20 +55,16 @@ class App {
                 .map((i) => i.threshold),
         }));
 
-        Deno.mkdirSync(path.dirname(output), { recursive: true });
-        const file = Deno.openSync(output, { write: true, create: true, truncate: true });
-        const encoder = new TextEncoder();
-        const write = (x: string) => file.writeSync(encoder.encode(x));
-
-        write(`---@diagnostic disable: undefined-global
+        const io = new FileIo(output);
+        io.write(`---@diagnostic disable: undefined-global
 -- GENERATE BY ItemSetGen.ts
 select(2,...).ItemSetMake()`);
 
-        write('\n');
+        io.write('\n');
 
         for (const i of data) {
-            write(`S(${i.id})`);
-            write(`B'${i.threshold.join('/')}'`);
+            io.write(`S(${i.id})`);
+            io.write(`B'${i.threshold.join('/')}'`);
 
             for (const item of i.items) {
                 let slot = itemSlots.get(item);
@@ -80,18 +76,19 @@ select(2,...).ItemSetMake()`);
                     slot = 5;
                 }
 
-                write(`I(${slot},${item})`);
+                io.write(`I(${slot},${item})`);
             }
-            write('\n');
+            io.write('\n');
         }
 
-        file.close();
+        io.close();
     }
 }
 
 async function main() {
     await new App(ProjectId.Vanilla).run('Data/Vanilla/ItemSet.lua');
     await new App(ProjectId.Wrath).run('Data/Wrath/ItemSet.lua');
+    await new App(ProjectId.Mists).run('Data/Mists/ItemSet.lua');
 }
 
 main();
