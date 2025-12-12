@@ -1,3 +1,13 @@
+## [2.6.2](https://github.com/DengSir/tdInspect/compare/v2.6.1...v2.6.2) (2025-12-12)
+
+
+### Features
+
+* 更新脚本 ([8af18d9](https://github.com/DengSir/tdInspect/commit/8af18d9061f5a1f700d8ca7b609b10429e4c8556))
+* 修复一些bug ([a41bd99](https://github.com/DengSir/tdInspect/commit/a41bd992d79ba79f046e56d28c920204c9c862c9))
+
+
+
 ## [2.6.1](https://github.com/DengSir/tdInspect/compare/v2.6.0...v2.6.1) (2025-11-21)
 
 
