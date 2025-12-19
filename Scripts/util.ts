@@ -46,7 +46,7 @@ export function mapLimit<T, U>(array: T[], limit: number, fn: (value: T, index: 
 type Fields = { [key: string]: number | number[] };
 
 export class WowToolsClient {
-    private pro: ProjectData;
+    pro: ProjectData;
 
     constructor(projectId: ProjectId) {
         const data = PROJECTS.get(projectId);
@@ -117,7 +117,7 @@ export class WowToolsClient {
     }
 
     decodeRow(fields: Fields, row: string[]) {
-        const obj: {[key: string]: string | string[]} = {};
+        const obj: { [key: string]: string | string[] } = {};
 
         for (const [name, index] of Object.entries(fields)) {
             if (Array.isArray(index)) {

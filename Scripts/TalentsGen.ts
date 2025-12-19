@@ -42,7 +42,7 @@ class App {
     private prj: Config;
     private cli: WowToolsClient;
 
-    constructor(projectId: number) {
+    constructor(private projectId: number) {
         this.prj = PROJECTS[projectId];
         this.cli = new WowToolsClient(projectId);
     }
@@ -84,7 +84,30 @@ class App {
     }
 
     async getTalents() {
-        const csv = await this.cli.fetchTable('talent');
+        const csv = await this.cli.fetchTable('talent') as any[];
+
+        // hotfixes for wrath
+        if (this.projectId == ProjectId.Wrath && this.cli.pro.version === '3.80.0.64859') {
+            {
+                const item = csv.find((x) => x.ID === '901');
+                item.ColumnIndex = '3';
+            }
+            {
+                const item = csv.find((x) => x.ID === '2054');
+                item.ColumnIndex = '3';
+            }
+
+            csv.push({
+                'ID': '23706',
+                'TierID': '6',
+                'ColumnIndex': '2',
+                'SpellRank': ['1283508', '1283509', '1283510'],
+                'TabID': '263',
+                'ClassID': '7',
+                'SpellID': '23706',
+                'PrereqTalent': ['1690'],
+            })
+        }
 
         return csv.map((x, i) => ({
             index: i,
