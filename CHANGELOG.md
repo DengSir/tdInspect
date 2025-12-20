@@ -1,3 +1,12 @@
+## [2.6.3](https://github.com/DengSir/tdInspect/compare/v2.6.2...v2.6.3) (2025-12-20)
+
+
+### Features
+
+* add new talent ([1ac303f](https://github.com/DengSir/tdInspect/commit/1ac303f6f1b9f4b82ea1afb03533e67517ba72eb))
+
+
+
 ## [2.6.2](https://github.com/DengSir/tdInspect/compare/v2.6.1...v2.6.2) (2025-12-12)
 
 
