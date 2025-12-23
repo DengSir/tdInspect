@@ -40,6 +40,8 @@ ns.DROPDOWN_SEPARATOR = {
     },
 }
 
+ns.NUM_GLYPH_SLOTS = NUM_GLYPH_SLOTS or ns.BUILD >= 5 and 9 or ns.BUILD >= 3 and 6 or 0
+
 local tonumber = tonumber
 local format = string.format
 

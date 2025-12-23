@@ -26,7 +26,7 @@ function GlyphFrame:Constructor()
     Background:SetTexture([[Interface\Spellbook\UI-GlyphFrame]])
     Background:SetTexCoord(left / 512, 0.6875 - right / 512, top / 512, 0.861328125 - bottom / 512)
 
-    for i = 1, 6 do
+    for i = 1, ns.NUM_GLYPH_SLOTS do
         self.buttons[i] = ns.UI.GlyphItem:New(self, i)
     end
 
@@ -47,7 +47,7 @@ function GlyphFrame:UpdateInfo()
     local activeGroup = Inspect:GetActiveTalentGroup()
     local glyph = Inspect:GetUnitGlyph(self.groupId or activeGroup)
 
-    for i = 1, 6 do
+    for i = 1, ns.NUM_GLYPH_SLOTS do
         self.buttons[i]:UpdateInfo(glyph)
     end
 

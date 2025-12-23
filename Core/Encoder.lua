@@ -7,7 +7,8 @@
 local ns = select(2, ...)
 
 local C_Engraving = C_Engraving
-local GetGlyphLink = GetGlyphLink or (C_GlyphInfo and C_GlyphInfo.GetGlyphLink)
+local GetGlyphSocketInfo = GetGlyphSocketInfo
+local GetGlyphLink = GetGlyphLink
 
 local band, rshift, lshift = bit.band, bit.rshift, bit.lshift
 local tconcat, tinsert = table.concat, table.insert
@@ -120,10 +121,17 @@ end
 
 function Encoder:PackGlyph(group, noEncode)
     group = group or 1
+
     local data = {}
-    for i = 1, 6 do
-        local link = GetGlyphLink(i, group)
-        local glyphId = link and tonumber(link:match('glyph:%d+:(%d+)'))
+    for i = 1, ns.NUM_GLYPH_SLOTS do
+        local glyphId
+        if GetGlyphSocketInfo then
+            glyphId = select(6, GetGlyphSocketInfo(i, group))
+        end
+        if not glyphId and GetGlyphLink then
+            local link = GetGlyphLink(i, group)
+            glyphId = link and tonumber(link:match('glyph:%d+:(%d+)'))
+        end
 
         if noEncode then
             data[i] = glyphId

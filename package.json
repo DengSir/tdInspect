@@ -28,8 +28,7 @@
     "changelog": "CHANGELOG.md",
     "builds": {
       "Vanilla": "11508",
-      "Wrath": "38000",
-      "Mists": "50502"
+      "Wrath": "38000"
     },
     "scan-locale-ignores": [
       "Localization/**",
