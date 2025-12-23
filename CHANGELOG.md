@@ -1,3 +1,12 @@
+## [2.6.4](https://github.com/DengSir/tdInspect/compare/v2.6.3...v2.6.4) (2025-12-23)
+
+
+### Bug Fixes
+
+* 雕文数据不发的问题 ([172fa7f](https://github.com/DengSir/tdInspect/commit/172fa7fbb65328b777d2b580c701f65b851ccd10))
+
+
+
 ## [2.6.3](https://github.com/DengSir/tdInspect/compare/v2.6.2...v2.6.3) (2025-12-20)
 
 
