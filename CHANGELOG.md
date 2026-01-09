@@ -1,3 +1,12 @@
+## [2.6.5](https://github.com/DengSir/tdInspect/compare/v2.6.4...v2.6.5) (2026-01-09)
+
+
+### Features
+
+* 更新怀旧服天赋数据 ([7ac55af](https://github.com/DengSir/tdInspect/commit/7ac55af91c44dbe0a0b022a3435144942ee97dc7))
+
+
+
 ## [2.6.4](https://github.com/DengSir/tdInspect/compare/v2.6.3...v2.6.4) (2025-12-23)
 
 
