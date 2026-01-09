@@ -89,12 +89,36 @@ class App {
         // hotfixes for wrath
         if (this.projectId == ProjectId.Wrath && this.cli.pro.version === '3.80.0.64859') {
             {
-                const item = csv.find((x) => x.ID === '901');
+                const item = csv.find((x) => x.ID === '901')
                 item.ColumnIndex = '3';
             }
             {
-                const item = csv.find((x) => x.ID === '2054');
+                const item = csv.find((x) => x.ID === '2054')
                 item.ColumnIndex = '3';
+            }
+
+            {
+                const item = csv.find((x) => x.ID === '2078')
+                item.SpellRank = ['51701']
+            }
+            {
+                const item = csv.find((x) => x.ID === '2140')
+                item.TierID = '10'
+                item.ColumnIndex = '1'
+                item.SpellRank = ['1284198']
+            }
+            {
+                const item = csv.find((x) => x.ID === '2139')
+                item.TierID = '9'
+                item.ColumnIndex = '2'
+                item.PrereqTalent = ['2227']
+                item.PrereqRank = ['4'];
+            }
+            {
+                const item = csv.find((x) => x.ID === '2136')
+                item.SpellRank = ['1284199']
+                item.PrereqTalent = ['1800'];
+                item.PrereqRank = ['2'];
             }
 
             csv.push({
@@ -107,6 +131,24 @@ class App {
                 'SpellID': '23706',
                 'PrereqTalent': ['1690'],
             })
+            csv.push({
+                'ID': '23707',
+                'TierID': '6',
+                'ColumnIndex': '3',
+                'SpellRank': ['1284398'],
+                'TabID': '183',
+                'ClassID': '4',
+                'PrereqTalent': [],
+            });
+            csv.push({
+                'ID': '23708',
+                'TierID': '7',
+                'ColumnIndex': '3',
+                'SpellRank': ['1284400'],
+                'PrereqTalent': ['23707'],
+                'TabID': '183',
+                'ClassID': '4',
+            });
         }
 
         return csv.map((x, i) => ({
