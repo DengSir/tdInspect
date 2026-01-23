@@ -1,3 +1,14 @@
+## [2.6.8](https://github.com/DengSir/tdInspect/compare/v2.6.7...v2.6.8) (2026-01-23)
+
+
+### Features
+
+* 更新tbc数据 ([d853241](https://github.com/DengSir/tdInspect/commit/d8532413e6e73c936e5470f22eaf07513d5442d5))
+* 拉取tbc数据 ([725e193](https://github.com/DengSir/tdInspect/commit/725e193a279c6f01f1407010a084c3ffa039ed53))
+* 支持tbc ([b8e94a0](https://github.com/DengSir/tdInspect/commit/b8e94a015ac11727d4e7152cefb6f20cba30de23))
+
+
+
 ## [2.6.7](https://github.com/DengSir/tdInspect/compare/v2.6.6...v2.6.7) (2026-01-23)
 
 
