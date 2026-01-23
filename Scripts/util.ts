@@ -34,6 +34,7 @@ const WOW_TOOLS = 'https://wow.tools/dbc/api/export/';
 const WOW_TOOLS2 = 'https://wago.tools/db2/{name}/csv';
 const PROJECTS = new Map([
     [ProjectId.Vanilla, { product: 'wow_classic_era' }],
+    [ProjectId.BCC, { product: 'wow_anniversary' }],
     [ProjectId.Wrath, { product: 'wow_classic_titan' }],
     [ProjectId.Mists, { product: 'wow_classic' }],
 ]);

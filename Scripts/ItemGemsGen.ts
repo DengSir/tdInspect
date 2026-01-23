@@ -66,6 +66,7 @@ select(2,...).ItemGemOrderMake()
 }
 
 async function main() {
+    await new App(ProjectId.BCC).run('Data/TBC/ItemGemOrder.lua');
     await new App(ProjectId.Wrath).run('Data/Wrath/ItemGemOrder.lua');
     await new App(ProjectId.Mists).run('Data/Mists/ItemGemOrder.lua');
 }

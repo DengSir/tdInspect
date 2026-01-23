@@ -21,6 +21,7 @@ interface Config {
 
 const PROJECTS: { [key: number]: Config } = {
     [ProjectId.Vanilla]: { hasId: false, hasIcon: true, talentType: TalentType.Tree },
+    [ProjectId.BCC]: { hasId: false, hasIcon: true, talentType: TalentType.Tree },
     [ProjectId.Wrath]: { hasId: true, hasIcon: true, talentType: TalentType.Tree },
     [ProjectId.Mists]: { hasId: true, hasIcon: true, talentType: TalentType.Class },
 };
@@ -260,6 +261,7 @@ select(2,...).TalentMake()`
 
 async function main() {
     await new App(ProjectId.Vanilla).run('Data/Vanilla/Talents.lua');
+    await new App(ProjectId.BCC).run('Data/TBC/Talents.lua');
     await new App(ProjectId.Wrath).run('Data/Wrath/Talents.lua');
     await new App(ProjectId.Mists).run('Data/Mists/Talents.lua');
 }
