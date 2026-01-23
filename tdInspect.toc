@@ -20,6 +20,11 @@ Data\Vanilla\Talents.lua [AllowLoadGameType Vanilla]
 Data\Vanilla\ItemSet.lua [AllowLoadGameType Vanilla]
 Data\Vanilla\ItemEnchant.lua [AllowLoadGameType Vanilla]
 
+Data\TBC\Talents.lua [AllowLoadGameType TBC]
+Data\TBC\ItemSet.lua [AllowLoadGameType TBC]
+Data\TBC\ItemEnchant.lua [AllowLoadGameType TBC]
+Data\TBC\ItemGemOrder.lua [AllowLoadGameType TBC]
+
 Data\Wrath\Talents.lua [AllowLoadGameType Wrath]
 Data\Wrath\ItemSet.lua [AllowLoadGameType Wrath]
 Data\Wrath\Glyph.lua [AllowLoadGameType Wrath]

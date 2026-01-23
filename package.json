@@ -28,6 +28,7 @@
     "changelog": "CHANGELOG.md",
     "builds": {
       "Vanilla": "11508",
+      "TBC": "20505",
       "Wrath": "38000"
     },
     "scan-locale-ignores": [
