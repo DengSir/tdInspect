@@ -158,20 +158,68 @@ export class WowToolsClient {
             return url;
         })();
 
-        const urlhash = encodeHex(await crypto.subtle.digest('MD5', new TextEncoder().encode(url.toString())));
-
-        const p = path.resolve('.cache', urlhash);
-
-        if (await fs.exists(p)) {
-            const body = await Deno.readTextFile(p);
-            return this.decodeCSV(body);
-        }
+        // const urlhash = name + '_' + encodeHex(await crypto.subtle.digest('MD5', new TextEncoder().encode(url.toString())));
+        // const p = path.resolve('.cache', urlhash);
+        // if (await fs.exists(p)) {
+        //     const body = await Deno.readTextFile(p);
+        //     return this.decodeCSV(body);
+        // }
 
         const resp = await fetch(url);
-        const body = await resp.text();
+        let body = await resp.text();
 
-        await Deno.mkdir(path.dirname(p), { recursive: true });
-        await Deno.writeTextFile(p, body);
+        if (name === 'talent' && this.pro.version === '3.80.0.65301') {
+            console.log('fetched talent for wrath hotfix');
+
+            const lines = body.split('\n');
+
+            const patch = (id: number, newLine: string) => {
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+
+                    if (line.startsWith(`${id},`)) {
+                        lines[i] = newLine;
+                        return;
+                    }
+                }
+
+                lines.push(newLine);
+            }
+
+            const remove = (id: number) => {
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+
+                    if (line.startsWith(`${id},`)) {
+                        lines.splice(i, 1);
+                        return;
+                    }
+                }
+            }
+
+            patch(64, '64, , 4, 0, 2, 61, 8, 0, 0, 0, 0, 0, 0, 11190, 12489, 12490, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(1740, '1740, , 7, 0, 1, 61, 8, 0, 0, 0, 0, 0, 0, 31682, 31683, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(1854, '1854, , 8, 0, 0, 61, 8, 0, 0, 0, 0, 0, 0, 44546, 44548, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(1855, '1855, , 8, 0, 2, 61, 8, 0, 0, 0, 0, 0, 0, 44561, 0, 0, 0, 0, 0, 0, 0, 0, 1741, 0, 0, 0, 0, 0 ')
+            patch(23709, '23709, , 8, 1, 3, 61, 8, 0, 0, 0, 0, 0, 0, 1284421, 0, 0, 0, 0, 0, 0, 0, 0, 23710, 0, 0, 4, 0, 0 ')
+            patch(23710, '23710, , 6, 0, 3, 61, 8, 0, 0, 0, 0, 0, 0, 1284510, 1284521, 1284522, 1285506, 1285507, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(23711, '23711, , 0, 0, 3, 61, 8, 0, 0, 0, 0, 0, 0, 1284534, 1284535, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(23712, '23712, , 7, 0, 0, 61, 8, 0, 0, 0, 0, 0, 0, 1284602, 0, 0, 0, 0, 0, 0, 0, 0, 1740, 0, 0, 1, 0, 0 ')
+            patch(2136, '2136, , 7, 1, 0, 361, 3, 0, 0, 0, 0, 0, 0, 1284199, 0, 0, 0, 0, 0, 0, 0, 0, 1800, 0, 0, 2, 0, 0 ')
+            patch(2139, '2139, , 9, 1, 2, 361, 3, 0, 0, 0, 0, 0, 0, 53270, 0, 0, 0, 0, 0, 0, 0, 0, 2227, 0, 0, 4, 0, 0 ')
+            patch(2140, '2140, , 10, 1, 1, 361, 3, 0, 0, 0, 0, 0, 0, 1284198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(2227, '2227, , 9, 0, 1, 361, 3, 0, 0, 0, 0, 0, 0, 56314, 56315, 56316, 56317, 56318, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(2078, '2078, , 8, 0, 0, 183, 4, 0, 0, 0, 0, 0, 0, 51701, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(23707, '23707, , 6, 1, 3, 183, 4, 0, 0, 0, 0, 0, 0, 1284398, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
+            patch(23708, '23708, , 7, 1, 3, 183, 4, 0, 0, 0, 0, 0, 0, 1284400, 0, 0, 0, 0, 0, 0, 0, 0, 23707, 0, 0, 0, 0, 0 ')
+
+            remove(23713)
+
+            body = lines.join('\n');
+        }
+
+        // await Deno.mkdir(path.dirname(p), { recursive: true });
+        // await Deno.writeTextFile(p, body);
         return this.decodeCSV(body);
     }
 }
