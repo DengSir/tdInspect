@@ -1,3 +1,12 @@
+## [2.6.7](https://github.com/DengSir/tdInspect/compare/v2.6.6...v2.6.7) (2026-01-23)
+
+
+### Features
+
+* 补天赋数据 ([d9a7b09](https://github.com/DengSir/tdInspect/commit/d9a7b091a69977fdba11a2494b75480ca74b8dd1))
+
+
+
 ## [2.6.6](https://github.com/DengSir/tdInspect/compare/v2.6.5...v2.6.6) (2026-01-11)
 
 
