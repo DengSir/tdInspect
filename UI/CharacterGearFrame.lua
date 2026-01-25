@@ -12,8 +12,19 @@ local CharacterGearFrame = ns.Addon:NewClass('UI.CharacterGearFrame', ns.UI.Gear
 local SetActiveTalentGroup = C_SpecializationInfo.SetActiveSpecGroup
 
 local function SpecLeftClick(self)
-    if not self.isActive and not InCombatLockdown() then
+    if InCombatLockdown() then
+        return
+    end
+    if not self.isActive then
         SetActiveTalentGroup(self.id)
+    else
+        local equipmentSetId = ns.SpecGear:GetSpecGear(self.id)
+        if equipmentSetId then
+            local name = C_EquipmentSet.GetEquipmentSetInfo(equipmentSetId)
+            if name then
+                C_EquipmentSet.UseEquipmentSet(equipmentSetId)
+            end
+        end
     end
 end
 
