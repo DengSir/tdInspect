@@ -105,6 +105,18 @@ ns.GetRaceLocale = memorize(function(raceId)
     return raceInfo and raceInfo.raceName
 end)
 
+local function NormalizedRealmName(realm)
+    return realm:gsub('[%s-]+', '')
+end
+
+function ns.GetNormalizedRealmName()
+    local realm = GetNormalizedRealmName()
+    if not realm or realm == '' then
+        realm = NormalizedRealmName(GetRealmName())
+    end
+    return realm
+end
+
 function ns.GetFullName(name, realm)
     if not name then
         return
@@ -114,10 +126,7 @@ function ns.GetFullName(name, realm)
     end
 
     if not realm or realm == '' then
-        realm = GetNormalizedRealmName()
-    end
-    if not realm or realm == '' then
-        realm = GetRealmName():gsub(' +', '')
+        realm = ns.GetNormalizedRealmName()
     end
     return name .. '-' .. realm
 end
@@ -134,11 +143,11 @@ local IsOurRealm = ns.memorize(function(realm)
             return true
         end
     end
-    return realm == realm == GetNormalizedRealmName() or realm == GetRealmName():gsub(' +', '')
+    return realm == ns.GetNormalizedRealmName()
 end)
 
 function ns.IsPlayerInOurRealm(name)
-    return IsOurRealm(select(2, strsplit('-', name)))
+    return IsOurRealm(select(2, strsplit('-', name, 2)))
 end
 
 function ns.FixInspectItemTooltip(tip, slot, item)
