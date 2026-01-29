@@ -1,3 +1,13 @@
+## [2.6.9](https://github.com/DengSir/tdInspect/compare/v2.6.8...v2.6.9) (2026-01-29)
+
+
+### Features
+
+* 当前天赋按钮点击可切换到对应套装 ([45c1b95](https://github.com/DengSir/tdInspect/commit/45c1b95b413249d8f0af4363a5742b99b68b27f9))
+* 规范服务器名 ([8ac43d8](https://github.com/DengSir/tdInspect/commit/8ac43d8eaae5698c9580cec9714ac212a6746279))
+
+
+
 ## [2.6.8](https://github.com/DengSir/tdInspect/compare/v2.6.7...v2.6.8) (2026-01-23)
 
 
