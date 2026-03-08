@@ -3,8 +3,11 @@
 select(2,...).TalentMake()D'enUS/koKR/frFR/deDE/zhCN/zhTW/esES/ruRU/ptBR/itIT'
 C'WARRIOR'
 S(71,132355)
+N'Arms/무기/Armes/Waffen/武器/武器/Armas/Оружие/Armas/Arms'
 S(72,132347)
+N'Fury/분노/Fureur/Furor/狂怒/狂怒/Furia/Неистовство/Fúria/Fury'
 S(73,132341)
+N'Protection/방어/Protection/Schutz/防护/防護/Protección/Защита/Proteção/Protection'
 T(103826,103827,103828,102052)
 T(55694,29838,103840,102052)
 T(107566,12323,102060,102052)
@@ -13,8 +16,11 @@ T(114028,114029,114030,102052)
 T(107574,12292,107570,102052)
 C'PALADIN'
 S(65,135920)
+N'Holy/신성/Sacré/Heilig/神圣/神聖/Sagrado/Свет/Sagrado/Holy'
 S(66,236264)
+N'Protection/보호/Protection/Schutz/防护/防護/Protección/Защита/Proteção/Protection'
 S(70,135873)
+N'Retribution/징벌/Vindicte/Vergeltung/惩戒/懲戒/Reprensión/Воздаяние/Retribuição/Retribution'
 T(85499,87172,26023,102052)
 T(105593,20066,110301,102052)
 T(85804,114163,20925,102052)
@@ -23,8 +29,11 @@ T(105809,53376,86172,102052)
 T(114165,114158,114157,102052)
 C'HUNTER'
 S(253,461112)
+N'Beast Mastery/야수/Maîtrise des bêtes/Tierherrschaft/野兽控制/野獸控制/Bestias/Повелитель зверей/Domínio das Feras/Beast Mastery'
 S(254,236179)
+N'Marksmanship/사격/Précision/Treffsicherheit/射击/射擊/Puntería/Стрельба/Precisão/Marksmanship'
 S(255,461113)
+N'Survival/생존/Survie/Überleben/生存/生存/Supervivencia/Выживание/Sobrevivência/Survival'
 T(109215,109298,118675)
 T(109248,19386,19577)
 T(109304,109260,109212)
@@ -33,8 +42,11 @@ T(131894,130392,120697)
 T(117050,109259,120360)
 C'ROGUE'
 S(259,132292)
+N'Assassination/암살/Assassinat/Meucheln/奇袭/刺殺/Asesinato/Ликвидация/Assassinato/Assassination'
 S(260,132090)
+N'Combat/전투/Combat/Kampf/战斗/戰鬥/Combate/Бой/Combate/Combat'
 S(261,132320)
+N'Subtlety/잠행/Finesse/Täuschung/敏锐/敏銳/Sutileza/Скрытность/Subterfúgio/Subtlety'
 T(14062,108208,108209)
 T(26679,108210,74001)
 T(31230,108211,79008)
@@ -43,8 +55,11 @@ T(131511,108215,108216)
 T(114014,137619,114015)
 C'PRIEST'
 S(256,135940)
+N'Discipline/수양/Discipline/Disziplin/戒律/戒律/Disciplina/Послушание/Disciplina/Discipline'
 S(257,237542)
+N'Holy/신성/Sacré/Heilig/神圣/神聖/Sagrado/Свет/Sagrado/Holy'
 S(258,136207)
+N'Shadow/암흑/Ombre/Schattenkämpfer/暗影/暗影/Sombra/Тьма/Sombra/Shadow'
 T(108920,108921,605)
 T(64129,121536,108942)
 T(109186,123040,139139)
@@ -53,8 +68,11 @@ T(109142,10060,109175)
 T(121135,110744,120517)
 C'DEATHKNIGHT'
 S(250,135770)
+N'Blood/혈기/Sang/Blut/鲜血/血魄/Sangre/Кровь/Sangue/Blood'
 S(251,135773)
+N'Frost/냉기/Givre/Frost/冰霜/冰霜/Escarcha/Лед/Gelo/Frost'
 S(252,135775)
+N'Unholy/부정/Impie/Unheilig/邪恶/穢邪/Profano/Нечестивость/Profano/Unholy'
 T(108170,123693,115989)
 T(49039,51052,114556)
 T(96268,50041,108194)
@@ -63,8 +81,11 @@ T(45529,81229,51462)
 T(108199,108200,108201)
 C'SHAMAN'
 S(262,136048)
+N'Elemental/정기/Élémentaire/Elementar/元素/元素/Elemental/Стихии/Elemental/Elemental'
 S(263,237581)
+N'Enhancement/고양/Amélioration/Verstärkung/增强/增強/Mejora/Совершенствование/Aperfeiçoamento/Enhancement'
 S(264,136052)
+N'Restoration/복원/Restauration/Wiederherstellung/恢复/恢復/Restauración/Исцеление/Restauração/Restoration'
 T(30884,108270,108271)
 T(63374,51485,108273)
 T(108285,108284,108287)
@@ -73,8 +94,11 @@ T(147074,108281,108282)
 T(117012,117013,117014)
 C'MAGE'
 S(62,135932)
+N'Arcane/비전/Arcanes/Arkan/奥术/秘法/Arcano/Тайная магия/Arcano/Arcane'
 S(63,135810)
+N'Fire/화염/Feu/Feuer/火焰/火焰/Fuego/Огонь/Fogo/Fire'
 S(64,135846)
+N'Frost/냉기/Givre/Frost/冰霜/冰霜/Escarcha/Лед/Gelo/Frost'
 T(12043,108843,108839,102052)
 T(115610,140468,11426,102052)
 T(113724,111264,102051,102052)
@@ -83,8 +107,11 @@ T(114923,44457,112948,102052)
 T(114003,116011,1463,102052)
 C'WARLOCK'
 S(265,136145)
+N'Affliction/고통/Affliction/Gebrechen/痛苦/痛苦/Aflicción/Колдовство/Suplício/Affliction'
 S(266,136172)
+N'Demonology/악마/Démonologie/Dämonologie/恶魔学识/惡魔學識/Demonología/Демонология/Demonologia/Demonology'
 S(267,136186)
+N'Destruction/파괴/Destruction/Zerstörung/毁灭/毀滅/Destrucción/Разрушение/Destruição/Destruction'
 T(108359,108370,108371)
 T(47897,6789,30283)
 T(108415,108416,110913)
@@ -93,8 +120,11 @@ T(108499,108501,108503)
 T(108505,137587,108508)
 C'MONK'
 S(268,608951)
+N'Brewmaster/양조/Maître brasseur/Braumeister/酒仙/釀酒/Maestro cervecero/Хмелевар/Mestre Cervejeiro/Brewmaster'
 S(270,608952)
+N'Mistweaver/운무/Tisse-brume/Nebelwirker/织雾/織霧/Tejedor de niebla/Ткач туманов/Tecelão da Névoa/Mistweaver'
 S(269,608953)
+N'Windwalker/풍운/Marche-vent/Windläufer/踏风/御風/Viajero del viento/Танцующая с ветром/Andarilho do Vento/Windwalker'
 T(115173,116841,115174)
 T(115098,124081,123986)
 T(121817,115396,115399)
@@ -103,9 +133,13 @@ T(122280,122278,122783)
 T(116847,123904,115008)
 C'DRUID'
 S(102,136096)
+N'Balance/조화/Équilibre/Gleichgewicht/平衡/平衡/Equilibrio/Баланс/Equilíbrio/Balance'
 S(103,132115)
+N'Feral/야성/Combat farouche/Wildheit/野性/野性戰鬥/Feral/Сила зверя/Feral/Feral'
 S(104,132276)
+N'Guardian/수호/Gardien/Wächter/守护/守護者/Guardián/Страж/Guardião/Guardian'
 S(105,136041)
+N'Restoration/회복/Restauration/Wiederherstellung/恢复/恢復/Restauración/Исцеление/Restauração/Restoration'
 T(131768,102280,102401)
 T(145108,108238,102351)
 T(106707,102359,132469)

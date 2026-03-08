@@ -203,11 +203,25 @@ select(2,...).TalentMake()`
     async getSpecTabs() {
         const csv = await this.cli.fetchTable('ChrSpecialization');
 
+        const getTalentTabNames = async (locale: string) => {
+            const csv = await this.cli.fetchTable('ChrSpecialization', locale);
+            return new Map(csv.map((x) => [Number.parseInt(x.ID), x.Name_lang]));
+        };
+
+        const names = new Map(
+            await Promise.all(
+                LOCALES.map(
+                    async ([, l, r]) => [l, await getTalentTabNames(r ? r : l)] as [string, Map<number, string>]
+                )
+            )
+        );
+
         return csv.filter((x) => Number.parseInt(x.MasterySpellID[0]) !== 0).map((x) => ({
             id: Number.parseInt(x.ID),
             classId: Number.parseInt(x.ClassID),
             order: Number.parseInt(x.OrderIndex),
             icon: Number.parseInt(x.SpellIconFileID),
+            names: LOCALES.map(([, l]) => l).map((l) => names.get(l)?.get(Number.parseInt(x.ID))),
         }));
     }
 
@@ -235,8 +249,11 @@ select(2,...).TalentMake()`
 
             io.write(`C'${cls.fileName}'\n`);
 
+
             for (const spec of specs) {
                 io.write(`S(${spec.id},${spec.icon})\n`);
+                io.write(`N'${spec.names.join('/')}'`);
+                io.write('\n');
             }
 
             const rows = 6;

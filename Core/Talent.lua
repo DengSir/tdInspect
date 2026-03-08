@@ -18,11 +18,38 @@ function Talent:Constructor(class, data)
     self.class = class
     self.data = ns.Talents[class]
 
-    if type(data) == 'string' then
-        self:ParseTalentV1(data)
-    elseif type(data) == 'table' then
-        self:ParseTalentV2(data)
+    if self.data and self.data.tiers then
+        -- MoP tier-based talent system
+        if type(data) == 'string' then
+            self:ParseMistsTalentV1(data)
+        elseif type(data) == 'table' then
+            self:ParseMistsTalentV2(data)
+        end
+    else
+        -- Old tree-based talent system
+        if type(data) == 'string' then
+            self:ParseTalentV1(data)
+        elseif type(data) == 'table' then
+            self:ParseTalentV2(data)
+        end
     end
+end
+
+function Talent:ParseMistsTalent(raw)
+    raw = raw or ''
+    self.specIndex = tonumber(raw:sub(1, 1)) or 0
+    self.tierChoices = {}
+    for i = 1, 6 do
+        self.tierChoices[i] = tonumber(raw:sub(i + 1, i + 1)) or 0
+    end
+end
+
+function Talent:ParseMistsTalentV1(raw)
+    self:ParseMistsTalent(raw)
+end
+
+function Talent:ParseMistsTalentV2(data)
+    self:ParseMistsTalent(data[1])
 end
 
 function Talent:ParseTalentV2(data)
@@ -99,7 +126,45 @@ function Talent:GetTalentData(tab, index)
     return tabData and tabData.talents[index]
 end
 
+function Talent:IsMists()
+    return self.data and self.data.tiers ~= nil
+end
+
+function Talent:GetSpecIndex()
+    return self.specIndex or 0
+end
+
+function Talent:GetSpecInfo()
+    local idx = self.specIndex
+    if not idx or idx == 0 then
+        return nil
+    end
+    return self.data and self.data.specs and self.data.specs[idx]
+end
+
+function Talent:GetNumSpecs()
+    return self.data and self.data.specs and #self.data.specs or 0
+end
+
+function Talent:GetNumTiers()
+    return self.data and self.data.tiers and #self.data.tiers or 0
+end
+
+function Talent:GetTierChoice(tier)
+    return self.tierChoices and self.tierChoices[tier] or 0
+end
+
+function Talent:GetTierSpell(tier, col)
+    local tierData = self.data and self.data.tiers and self.data.tiers[tier]
+    if tierData then
+        return tierData[col]
+    end
+end
+
 function Talent:GetNumTalentTabs()
+    if self.data and self.data.tiers then
+        return 0
+    end
     return #self.data
 end
 
@@ -152,6 +217,18 @@ function Talent:GetTalentRankSpell(tab, index, rank)
 end
 
 function Talent:ToString()
+    if self.data and self.data.tiers then
+        -- MoP: return raw 7-char string
+        if not self.tierChoices then
+            return
+        end
+        local parts = {tostring(self.specIndex or 0)}
+        for i = 1, 6 do
+            tinssert(parts, tostring(self.tierChoices[i] or 0))
+        end
+        return tconcat(parts)
+    end
+
     if not self.talents then
         return
     end

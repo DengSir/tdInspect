@@ -41,51 +41,83 @@ function ns.TalentMake()
         end
     end
 
-    local function CreateClass(classFileName)
-        CURRENT = {}
-        ns.Talents[classFileName] = CURRENT
-    end
+    if ns.BUILD >= 5 then
+        local CURRENT_SPEC
 
-    local function CreateTab(tabId, numTalents, bg, icon)
-        tinsert(CURRENT, {tabId = tabId, numTalents = numTalents, bg = bg, icon = icon, talents = {}})
-    end
+        local function CreateMistsClass(classFileName)
+            CURRENT = {specs = {}, tiers = {}}
+            ns.Talents[classFileName] = CURRENT
+        end
 
-    local function CreateTalentInfo(index, row, column, maxRank, id)
-        local tab = CURRENT[#CURRENT]
-        tinsert(tab.talents, {row = row, column = column, maxRank = maxRank, id = id, index = index})
-    end
+        local function CreateSpec(specId, icon)
+            CURRENT_SPEC = {specId = specId, icon = icon}
+            tinsert(CURRENT.specs, CURRENT_SPEC)
+        end
 
-    local function FillTalentRanks(ranks)
-        local tab = CURRENT[#CURRENT]
-        local talent = tab.talents[#tab.talents]
-        local _
-        talent.ranks = ranks
-        talent.name, _, talent.icon = GetSpellInfo(ranks[1])
-    end
+        local function SetSpecName(names)
+            local locale = GetLocale()
+            local index = LOCAL_INDEX[locale] or LOCAL_INDEX.enUS
+            CURRENT_SPEC.name = strsplittable('/', names)[index]
+        end
 
-    local function FillTalentPrereq(row, column, reqIndex)
-        local tab = CURRENT[#CURRENT]
-        local talent = tab.talents[#tab.talents]
-        talent.prereqs = talent.prereqs or {}
-        tinsert(talent.prereqs, {row = row, column = column, reqIndex = reqIndex})
-    end
+        local function CreateTier(s1, s2, s3, fallback)
+            tinsert(CURRENT.tiers, {s1, s2, s3, fallback = fallback})
+        end
 
-    local function SetTabName(names)
-        local tab = CURRENT[#CURRENT]
-        local locale = GetLocale()
-        local index = LOCAL_INDEX[locale] or LOCAL_INDEX.enUS
-        tab.name = strsplittable('/', names)[index]
-    end
+        setfenv(2, {
+            D = DefineLocalIndexs,
+            C = CreateMistsClass,
+            S = CreateSpec,
+            N = SetSpecName,
+            T = CreateTier,
+        })
+    else
+        local function CreateClass(classFileName)
+            CURRENT = {}
+            ns.Talents[classFileName] = CURRENT
+        end
 
-    setfenv(2, {
-        D = DefineLocalIndexs,
-        C = CreateClass,
-        T = CreateTab,
-        I = CreateTalentInfo,
-        R = FillTalentRanks,
-        P = FillTalentPrereq,
-        N = SetTabName,
-    })
+        local function CreateTab(tabId, numTalents, bg, icon)
+            tinsert(CURRENT, {tabId = tabId, numTalents = numTalents, bg = bg, icon = icon, talents = {}})
+        end
+
+        local function CreateTalentInfo(index, row, column, maxRank, id)
+            local tab = CURRENT[#CURRENT]
+            tinsert(tab.talents, {row = row, column = column, maxRank = maxRank, id = id, index = index})
+        end
+
+        local function FillTalentRanks(ranks)
+            local tab = CURRENT[#CURRENT]
+            local talent = tab.talents[#tab.talents]
+            local _
+            talent.ranks = ranks
+            talent.name, _, talent.icon = GetSpellInfo(ranks[1])
+        end
+
+        local function FillTalentPrereq(row, column, reqIndex)
+            local tab = CURRENT[#CURRENT]
+            local talent = tab.talents[#tab.talents]
+            talent.prereqs = talent.prereqs or {}
+            tinsert(talent.prereqs, {row = row, column = column, reqIndex = reqIndex})
+        end
+
+        local function SetTabName(names)
+            local tab = CURRENT[#CURRENT]
+            local locale = GetLocale()
+            local index = LOCAL_INDEX[locale] or LOCAL_INDEX.enUS
+            tab.name = strsplittable('/', names)[index]
+        end
+
+        setfenv(2, {
+            D = DefineLocalIndexs,
+            C = CreateClass,
+            T = CreateTab,
+            I = CreateTalentInfo,
+            R = FillTalentRanks,
+            P = FillTalentPrereq,
+            N = SetTabName,
+        })
+    end
 end
 
 function ns.ItemSetMake()

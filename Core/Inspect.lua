@@ -532,6 +532,9 @@ function Inspect:INSPECT_READY(_, guid)
             db.talents = Encoder:PackTalents(true, true)
             db.numGroups = ns.GetNumTalentGroups(true)
             db.activeGroup = ns.GetActiveTalentGroup(true)
+            if ns.BUILD >= 5 then
+                db.glyphs = Encoder:PackGlyphs(true, true)
+            end
         end
 
         self:TryFireMessage(self.unit, name, db)
@@ -806,5 +809,5 @@ function Inspect:SaveCurrentCharacter()
     end
 
     db.talents = Encoder:PackTalents(false, true)
-    db.glyphs = Encoder:PackGlyphs(true)
+    db.glyphs = Encoder:PackGlyphs(nil, true)
 end

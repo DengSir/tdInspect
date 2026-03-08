@@ -94,15 +94,22 @@ function InspectGearFrame:GetActiveTalentGroup()
 end
 
 function InspectGearFrame:GetTalentInfo(group)
+    local talent = Inspect:GetUnitTalent(group)
+    if not talent then
+        return
+    end
+    if talent:IsMists() then
+        local specInfo = talent:GetSpecInfo()
+        if not specInfo then
+            return
+        end
+        return specInfo.name, specInfo.icon, nil, ''
+    end
     local maxPoint = 0
     local maxName = nil
     local maxIcon
     local maxBg
     local counts = {}
-    local talent = Inspect:GetUnitTalent(group)
-    if not talent then
-        return
-    end
     for i = 1, talent:GetNumTalentTabs() do
         local name, bg, pointsSpent, icon = talent:GetTabInfo(i)
         if pointsSpent > maxPoint then
@@ -111,7 +118,6 @@ function InspectGearFrame:GetTalentInfo(group)
             maxIcon = icon
             maxBg = bg
         end
-
         tinsert(counts, pointsSpent)
     end
     return maxName, maxIcon, maxBg, table.concat(counts, '/')

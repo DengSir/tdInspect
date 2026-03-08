@@ -22,19 +22,27 @@ function InspectTalent:Constructor()
     self.Tabs = {}
     self.selectedTab = 1
 
-    self:AddTab('Tab1')
-    self:AddTab('Tab2')
-    self:AddTab('Tab3')
+    if ns.BUILD >= 5 then
+        -- MoP: use 6x3 tier grid instead of tree-based TalentFrame
+        local MistsTalentFrame = ns.UI.MistsTalentFrame:New(self)
+        MistsTalentFrame:SetPoint('TOPLEFT', 7, -65)
+        MistsTalentFrame:SetPoint('TOPRIGHT', -7, -65)
+        self.TalentFrame = MistsTalentFrame
+    else
+        self:AddTab('Tab1')
+        self:AddTab('Tab2')
+        self:AddTab('Tab3')
 
-    local TalentFrame = ns.UI.TalentFrame:Bind(CreateFrame('ScrollFrame', nil, self, 'UIPanelScrollFrameTemplate'))
-    TalentFrame.initialOffsetX = INITIAL_TALENT_OFFSET_X
-    TalentFrame.initialOffsetY = INITIAL_TALENT_OFFSET_Y
-    TalentFrame.buttonSpacingX = 63
-    TalentFrame.buttonSpacingY = 63
-    TalentFrame:SetSize(296, 332)
-    TalentFrame:SetPoint('TOPLEFT', 7, -65)
+        local TalentFrame = ns.UI.TalentFrame:Bind(CreateFrame('ScrollFrame', nil, self, 'UIPanelScrollFrameTemplate'))
+        TalentFrame.initialOffsetX = INITIAL_TALENT_OFFSET_X
+        TalentFrame.initialOffsetY = INITIAL_TALENT_OFFSET_Y
+        TalentFrame.buttonSpacingX = 63
+        TalentFrame.buttonSpacingY = 63
+        TalentFrame:SetSize(296, 332)
+        TalentFrame:SetPoint('TOPLEFT', 7, -65)
 
-    self.TalentFrame = TalentFrame
+        self.TalentFrame = TalentFrame
+    end
 
     local BottomFrame = CreateFrame('Frame', nil, self)
     BottomFrame:SetPoint('BOTTOMLEFT', 2, 3)
@@ -112,6 +120,18 @@ function InspectTalent:UpdateInfo()
 
     local activeGroup = Inspect:GetActiveTalentGroup()
     local talent = Inspect:GetUnitTalent(self.groupId or activeGroup)
+
+    if ns.BUILD >= 5 then
+        -- MoP: show spec name in summary, display tier choices
+        if talent then
+            local specInfo = talent:GetSpecInfo()
+            self.Summary:SetText(specInfo and specInfo.name or '')
+            self.TalentFrame:SetTalent(talent)
+            self.TalentFrame:SetActive((self.groupId or activeGroup) == activeGroup)
+        end
+        return
+    end
+
     local summaries = {}
 
     for i = 1, talent:GetNumTalentTabs() do

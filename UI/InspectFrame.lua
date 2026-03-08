@@ -145,10 +145,17 @@ local function SpecOnEnter(button)
         GameTooltip:AddLine(TALENT_ACTIVE_SPEC_STATUS, GREEN_FONT_COLOR:GetRGB())
     end
 
-    for i = 1, talent:GetNumTalentTabs() do
-        local name, _, pointsSpent = talent:GetTabInfo(i)
-        local green = pointsSpent == button.best
-        GameTooltip:AddDoubleLine(name, pointsSpent, 1, 1, 1, green and 0 or 1, 1, green and 0 or 1)
+    if ns.BUILD >= 5 then
+        local specInfo = talent:GetSpecInfo()
+        if specInfo then
+            GameTooltip:AddLine(specInfo.name, 1, 1, 1)
+        end
+    else
+        for i = 1, talent:GetNumTalentTabs() do
+            local name, _, pointsSpent = talent:GetTabInfo(i)
+            local green = pointsSpent == button.best
+            GameTooltip:AddDoubleLine(name, pointsSpent, 1, 1, 1, green and 0 or 1, 1, green and 0 or 1)
+        end
     end
     GameTooltip:Show()
 end
@@ -331,11 +338,19 @@ function InspectFrame:UpdateTalentGroups()
             local talent = Inspect:GetUnitTalent(tab.id)
             local best
             local bestIcon
-            for i = 1, talent:GetNumTalentTabs() do
-                local _, _, pointsSpent, icon = talent:GetTabInfo(i)
-                if not best or best < pointsSpent then
-                    best = pointsSpent
-                    bestIcon = icon
+            if ns.BUILD >= 5 then
+                local specInfo = talent and talent:GetSpecInfo()
+                if specInfo then
+                    bestIcon = specInfo.icon
+                    best = talent:GetSpecIndex()
+                end
+            else
+                for i = 1, talent:GetNumTalentTabs() do
+                    local _, _, pointsSpent, icon = talent:GetTabInfo(i)
+                    if not best or best < pointsSpent then
+                        best = pointsSpent
+                        bestIcon = icon
+                    end
                 end
             end
 

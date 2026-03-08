@@ -29,7 +29,8 @@
     "builds": {
       "Vanilla": "11508",
       "TBC": "20505",
-      "Wrath": "38000"
+      "Wrath": "38000",
+      "Mists": "50503"
     },
     "scan-locale-ignores": [
       "Localization/**",

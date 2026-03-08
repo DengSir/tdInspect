@@ -31,6 +31,12 @@ Data\Wrath\Glyph.lua [AllowLoadGameType Wrath]
 Data\Wrath\ItemEnchant.lua [AllowLoadGameType Wrath]
 Data\Wrath\ItemGemOrder.lua [AllowLoadGameType Wrath]
 
+Data\Mists\Talents.lua [AllowLoadGameType Mists]
+Data\Mists\ItemSet.lua [AllowLoadGameType Mists]
+Data\Mists\Glyph.lua [AllowLoadGameType Mists]
+Data\Mists\ItemEnchant.lua [AllowLoadGameType Mists]
+Data\Mists\ItemGemOrder.lua [AllowLoadGameType Mists]
+
 Core\Events.lua
 Core\ItemLevelCalculator.lua
 Core\Encoder.lua
@@ -56,6 +62,7 @@ UI\InspectFrame.lua
 UI\TalentFrame.lua
 UI\GlyphItem.lua
 UI\GlyphFrame.lua
+UI\MistsTalentFrame.lua [AllowLoadGameType Mists]
 UI\InspectTalent.lua
 UI\GemItem.lua
 UI\EnchantItem.lua

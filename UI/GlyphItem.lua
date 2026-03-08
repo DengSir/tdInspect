@@ -14,13 +14,13 @@ local GLYPH_SLOTS = {
     [1] = {
         coords = {0, 0.12890625, 0.87109375, 1},
         points = {'CENTER', -15, 140},
-        glyphType = GLYPH_MAJOR,
+        glyphType = ns.BUILD >= 5 and GLYPH_MINOR or GLYPH_MAJOR,
         lockedTip = GLYPH_SLOT_TOOLTIP3:gsub('50', '15'),
     },
     [2] = {
         coords = {0.130859375, 0.259765625, 0.87109375, 1},
         points = {'CENTER', -14, -103},
-        glyphType = GLYPH_MINOR,
+        glyphType = ns.BUILD >= 5 and GLYPH_MAJOR or GLYPH_MINOR,
         lockedTip = GLYPH_SLOT_TOOLTIP3:gsub('50', '15'),
     },
     [3] = {

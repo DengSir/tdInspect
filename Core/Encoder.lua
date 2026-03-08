@@ -119,14 +119,18 @@ function Encoder:UnpackEquips(code)
     return equips
 end
 
-function Encoder:PackGlyph(group, noEncode)
+function Encoder:PackGlyph(group, isInspect, noEncode)
     group = group or 1
 
     local data = {}
     for i = 1, ns.NUM_GLYPH_SLOTS do
         local glyphId
         if GetGlyphSocketInfo then
-            glyphId = select(6, GetGlyphSocketInfo(i, group))
+            if isInspect and ns.BUILD >= 5 then
+                glyphId = select(6, GetGlyphSocketInfo(i, group, true, INSPECTED_UNIT))
+            else
+                glyphId = select(6, GetGlyphSocketInfo(i, group))
+            end
         end
         if not glyphId and GetGlyphLink then
             local link = GetGlyphLink(i, group)
@@ -146,13 +150,13 @@ function Encoder:PackGlyph(group, noEncode)
     end
 end
 
-function Encoder:PackGlyphs(noEncode)
+function Encoder:PackGlyphs(isInspect, noEncode)
     if ns.BUILD < 3 then
         return
     end
     local data = {}
-    for i = 1, ns.GetNumTalentGroups() do
-        data[i] = self:PackGlyph(i, noEncode)
+    for i = 1, ns.GetNumTalentGroups(isInspect) do
+        data[i] = self:PackGlyph(i, isInspect, noEncode)
     end
     if noEncode then
         return data
@@ -322,6 +326,46 @@ local function compare(a, b)
 end
 
 function Encoder:PackTalent(isInspect, group, noEncode)
+    if ns.BUILD >= 5 then
+        local class = isInspect and UnitClassBase(INSPECTED_UNIT) or UnitClassBase('player')
+        local classData = ns.Talents[class]
+        group = group or ns.GetActiveTalentGroup(isInspect)
+
+        local specId
+        if isInspect then
+            if group == ns.GetActiveTalentGroup(true) then
+                specId = GetInspectSpecialization(INSPECTED_UNIT)
+            end
+        else
+            if group == ns.GetActiveTalentGroup(false) then
+                specId = GetInspectSpecialization('player')
+            end
+        end
+
+        local specIndex = 0
+        if specId and classData then
+            for i, spec in ipairs(classData.specs) do
+                if spec.specId == specId then
+                    specIndex = i
+                    break
+                end
+            end
+        end
+
+        local parts = {tostring(specIndex)}
+        for tier = 1, 6 do
+            local _, selected = GetTalentTierInfo(tier, group, isInspect)
+            tinsert(parts, tostring(selected or 0))
+        end
+        local raw = tconcat(parts)
+
+        if noEncode then
+            return raw
+        else
+            return self:EncodeTalent(raw)
+        end
+    end
+
     local data = {}
     group = group or ns.GetActiveTalentGroup(isInspect)
     for i = 1, GetNumTalentTabs(isInspect) do

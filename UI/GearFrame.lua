@@ -61,7 +61,9 @@ local function SpecOnEnter(self)
     local parent = self:GetParent()
 
     local name, icon, _, points = parent:GetTalentInfo(self.id)
-    GameTooltip:AddLine(name .. '  ' .. points, HIGHLIGHT_FONT_COLOR:GetRGB())
+    if name then
+        GameTooltip:AddLine((points and points ~= '') and (name .. '  ' .. points) or name, HIGHLIGHT_FONT_COLOR:GetRGB())
+    end
 
     if not parent.isInspect then
         GameTooltip:AddLine(' ')

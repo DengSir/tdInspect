@@ -195,12 +195,20 @@ function CharacterGearFrame:GetActiveTalentGroup()
 end
 
 function CharacterGearFrame:GetTalentInfo(group)
+    if ns.BUILD >= 5 then
+        local raw = ns.Encoder:PackTalent(false, group, true)
+        if not raw then return end
+        local talent = ns.Talent:New(UnitClassBase('player'), raw)
+        if not talent then return end
+        local specInfo = talent:GetSpecInfo()
+        if not specInfo then return end
+        return specInfo.name, specInfo.icon, nil, ''
+    end
     local maxPoint = 0
     local maxName
     local maxIcon
     local maxBg
     local counts = {}
-
     for i = 1, GetNumTalentTabs() do
         local name, icon, pointsSpent, bg = ns.GetTalentTabInfo(i, nil, nil, group)
         if pointsSpent > maxPoint then
@@ -209,10 +217,8 @@ function CharacterGearFrame:GetTalentInfo(group)
             maxIcon = icon
             maxBg = bg
         end
-
         tinsert(counts, pointsSpent)
     end
-
     return maxName, maxIcon, maxBg, table.concat(counts, '/')
 end
 
