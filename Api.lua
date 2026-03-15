@@ -6,6 +6,8 @@
 ---@class ns
 local ns = select(2, ...)
 
+local ripairs = ipairs_reverse
+
 ns.BUILD = tonumber(GetBuildInfo():match('^(%d+)%.'))
 
 ns.LEFT_MOUSE_BUTTON = [[|TInterface\TutorialFrame\UI-Tutorial-Frame:12:12:0:0:512:512:10:65:228:283|t]]
@@ -230,7 +232,7 @@ function ns.GetItemEnchantInfo(link)
             return
         end
 
-        for _, v in ipairs(data) do
+        for _, v in ripairs(data) do
             if v.classId == classId and (not v.subClassMask or FlagTest(v.subClassMask, subClassId)) and
                 (not v.invTypeMask or FlagTest(v.invTypeMask, invType)) then
                 return v
