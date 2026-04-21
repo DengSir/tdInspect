@@ -1,3 +1,12 @@
+## [2.6.12](https://github.com/DengSir/tdInspect/compare/v2.6.11...v2.6.12) (2026-04-21)
+
+
+### Features
+
+* 添加hotfix数据 ([f67869e](https://github.com/DengSir/tdInspect/commit/f67869ec49e82db08846f99202d4fb1058c489ee))
+
+
+
 ## [2.6.11](https://github.com/DengSir/tdInspect/compare/v2.6.10...v2.6.11) (2026-04-12)
 ## [2.6.10](https://github.com/DengSir/tdInspect/compare/v2.6.9...v2.6.10) (2026-02-05)
 
