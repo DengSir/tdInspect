@@ -44,7 +44,10 @@ export function mapLimit<T, U>(array: T[], limit: number, fn: (value: T, index: 
     return array.map((...args) => sem.lock(() => fn(...args)));
 }
 
-type Fields = { [key: string]: number | number[] };
+interface FieldInfo {
+    name: string;
+    index: number[];
+}
 
 export class WowToolsClient {
     pro: ProjectData;
@@ -97,43 +100,57 @@ export class WowToolsClient {
         return '';
     }
 
-    decodeFields(row: string[]) {
-        const fields = row.map((x, i) => ({ name: x, index: i }));
-        const info: Fields = {};
+    decodeFields(row: string[]): FieldInfo[] {
+        const order: string[] = [];
+        const idxMap: { [key: string]: (number | undefined)[] } = {};
 
-        for (const field of fields) {
-            const m = /^(.+)_(\d+)$/g.exec(field.name);
+        for (let i = 0; i < row.length; i++) {
+            const hdr = row[i];
+            const m = /^(.+)_(\d+)$/g.exec(hdr);
+            const key = m ? m[1] : hdr;
 
-            if (!m) {
-                info[field.name] = field.index;
+            if (!idxMap[key]) {
+                idxMap[key] = [];
+                order.push(key);
+            }
+
+            if (m) {
+                idxMap[key][Number(m[2])] = i;
             } else {
-                const arrayName = m[1];
-                const arrayIndex = Number.parseInt(m[2]);
-
-                info[arrayName] = info[arrayName] || [];
-                info[arrayName][arrayIndex] = field.index;
+                idxMap[key] = [i];
             }
         }
-        return info;
+
+        const result: FieldInfo[] = [];
+        for (const key of order) {
+            const arr = idxMap[key];
+            if (arr.length === 1) {
+                result.push({ name: key, index: [arr[0]!] });
+            } else {
+                result.push({ name: key, index: arr.filter((v) => v !== undefined) as number[] });
+            }
+        }
+
+        return result;
     }
 
-    decodeRow(fields: Fields, row: string[]) {
+    decodeRow(fields: FieldInfo[], row: string[]) {
         const obj: { [key: string]: string | string[] } = {};
 
-        for (const [name, index] of Object.entries(fields)) {
-            if (Array.isArray(index)) {
-                obj[name] = index.map((i) => row[i]);
+        for (const f of fields) {
+            if (f.index.length > 1) {
+                obj[f.name] = f.index.map((i) => row[i]);
             } else {
-                obj[name] = row[index];
+                obj[f.name] = row[f.index[0]];
             }
         }
         return obj;
     }
 
-    decodeCSV(data: string) {
+    decodeCSV(data: string): [{ [key: string]: string | string[] }[], FieldInfo[]] {
         const rows = parse(data);
         const fields = this.decodeFields(rows.splice(0, 1)[0]);
-        return rows.map((x) => this.decodeRow(fields, x));
+        return [rows.map((x) => this.decodeRow(fields, x)), fields];
     }
 
     async fetchTable(name: string, locale = 'enUS', source = 2) {
@@ -169,59 +186,38 @@ export class WowToolsClient {
         const resp = await fetch(url);
         let body = await resp.text();
 
-        if (name === 'talent' && this.pro.version === '3.80.0.65301') {
-            console.log('fetched talent for wrath hotfix');
+        const [rows, fields] = this.decodeCSV(body);
 
-            const lines = body.split('\n');
-
-            const patch = (id: number, newLine: string) => {
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-
-                    if (line.startsWith(`${id},`)) {
-                        lines[i] = newLine;
-                        return;
-                    }
+        if (name === 'talent' && this.pro.version === '3.80.1.66991') {
+            const patch = (id: number, values: (string | number | (string | number)[])[]) => {
+                values[0] = id.toString();
+                const row: { [key: string]: string | string[] } = {};
+                for (let i = 0; i < fields.length; i++) {
+                    const v = values[i];
+                    row[fields[i].name] = Array.isArray(v)
+                        ? (v as (string | number)[]).map((x) => x.toString())
+                        : (v ?? '').toString();
                 }
-
-                lines.push(newLine);
-            }
-
-            const remove = (id: number) => {
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-
-                    if (line.startsWith(`${id},`)) {
-                        lines.splice(i, 1);
-                        return;
-                    }
+                const idStr = id.toString();
+                const idx = rows.findIndex((r) => r['ID'] === idStr);
+                if (idx >= 0) {
+                    rows[idx] = row;
+                } else {
+                    rows.push(row);
                 }
-            }
-
-            patch(64, '64, , 4, 0, 2, 61, 8, 0, 0, 0, 0, 0, 0, 11190, 12489, 12490, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(1740, '1740, , 7, 0, 1, 61, 8, 0, 0, 0, 0, 0, 0, 31682, 31683, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(1854, '1854, , 8, 0, 0, 61, 8, 0, 0, 0, 0, 0, 0, 44546, 44548, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(1855, '1855, , 8, 0, 2, 61, 8, 0, 0, 0, 0, 0, 0, 44561, 0, 0, 0, 0, 0, 0, 0, 0, 1741, 0, 0, 0, 0, 0 ')
-            patch(23709, '23709, , 8, 1, 3, 61, 8, 0, 0, 0, 0, 0, 0, 1284421, 0, 0, 0, 0, 0, 0, 0, 0, 23710, 0, 0, 4, 0, 0 ')
-            patch(23710, '23710, , 6, 0, 3, 61, 8, 0, 0, 0, 0, 0, 0, 1284510, 1284521, 1284522, 1285506, 1285507, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(23711, '23711, , 0, 0, 3, 61, 8, 0, 0, 0, 0, 0, 0, 1284534, 1284535, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(23712, '23712, , 7, 0, 0, 61, 8, 0, 0, 0, 0, 0, 0, 1284602, 0, 0, 0, 0, 0, 0, 0, 0, 1740, 0, 0, 1, 0, 0 ')
-            patch(2136, '2136, , 7, 1, 0, 361, 3, 0, 0, 0, 0, 0, 0, 1284199, 0, 0, 0, 0, 0, 0, 0, 0, 1800, 0, 0, 2, 0, 0 ')
-            patch(2139, '2139, , 9, 1, 2, 361, 3, 0, 0, 0, 0, 0, 0, 53270, 0, 0, 0, 0, 0, 0, 0, 0, 2227, 0, 0, 4, 0, 0 ')
-            patch(2140, '2140, , 10, 1, 1, 361, 3, 0, 0, 0, 0, 0, 0, 1284198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(2227, '2227, , 9, 0, 1, 361, 3, 0, 0, 0, 0, 0, 0, 56314, 56315, 56316, 56317, 56318, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(2078, '2078, , 8, 0, 0, 183, 4, 0, 0, 0, 0, 0, 0, 51701, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(23707, '23707, , 6, 1, 3, 183, 4, 0, 0, 0, 0, 0, 0, 1284398, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ')
-            patch(23708, '23708, , 7, 1, 3, 183, 4, 0, 0, 0, 0, 0, 0, 1284400, 0, 0, 0, 0, 0, 0, 0, 0, 23707, 0, 0, 0, 0, 0 ')
-
-            remove(23713)
-
-            body = lines.join('\n');
+            };
+            patch(1889, ['', '', 8, 0, 2, 301, 9, 0, 0, 0, 0, [0, 0], [1295198, 0, 0, 0, 0, 0, 0, 0, 0], [23714, 0, 0], [0, 0, 0]]);
+            patch(2045, ['', '', 7, 0, 3, 301, 9, 0, 0, 0, 0, [0, 0], [47220, 47221, 47223, 0, 0, 0, 0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+            patch(23714, ['', '', 8, 0, 1, 301, 9, 0, 0, 0, 0, [0, 0], [1295358, 0, 0, 0, 0, 0, 0, 0, 0], [1676, 0, 0], [0, 0, 0]]);
+            patch(1677, ['', '', 7, 0, 2, 301, 9, 0, 0, 0, 0, [0, 0], [30288, 30289, 30290, 30291, 30292, 0, 0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+            patch(1678, ['', '', 6, 0, 2, 301, 9, 0, 0, 0, 0, [0, 0], [30293, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+            patch(1676, ['', '', 7, 1, 1, 301, 9, 0, 0, 0, 0, [0, 0], [30283, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+            patch(966, ['', '', 5, 0, 2, 301, 9, 0, 0, 0, 0, [0, 0], [17954, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0], [0, 0, 0]]);
         }
 
         // await Deno.mkdir(path.dirname(p), { recursive: true });
         // await Deno.writeTextFile(p, body);
-        return this.decodeCSV(body);
+        return rows;
     }
 }
 
