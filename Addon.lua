@@ -275,6 +275,26 @@ function Addon:GetInspectGearFrame()
     return self.InspectGearFrame
 end
 
+function Addon:GetCharacterStatsFrame()
+    if not self.CharacterStatsFrame then
+        self.CharacterStatsFrame = ns.UI.StatsFrame:Create(self.CharacterGearParent)
+        self.CharacterStatsFrame:SetGetItemLink(function(slot)
+            return GetInventoryItemLink('player', slot)
+        end)
+    end
+    return self.CharacterStatsFrame
+end
+
+function Addon:GetInspectStatsFrame()
+    if not self.InspectStatsFrame then
+        self.InspectStatsFrame = ns.UI.StatsFrame:Create(InspectPaperDollFrame)
+        self.InspectStatsFrame:SetGetItemLink(function(slot)
+            return ns.Inspect:GetItemLink(slot)
+        end)
+    end
+    return self.InspectStatsFrame
+end
+
 function Addon:OpenCharacterGearFrame()
     if ns.db.profile.characterGear then
         local characterGearFrame = self:GetCharacterGearFrame()
@@ -285,6 +305,11 @@ function Addon:OpenCharacterGearFrame()
 
         characterGearFrame:TapTo(self.CharacterGearParent, 'TOPLEFT')
         characterGearFrame:Show()
+
+        local statsFrame = self:GetCharacterStatsFrame()
+        statsFrame:TapTo(characterGearFrame, 'TOPRIGHT')
+        statsFrame:Show()
+        statsFrame:Refresh()
     end
 end
 
@@ -298,6 +323,16 @@ function Addon:OpenInspectGearFrame()
 
             characterGearFrame:TapTo(inspectGearFrame, 'TOPRIGHT')
             characterGearFrame:Show()
+
+            -- compare 模式：CharacterStatsFrame 跟在 CharacterGearFrame 右侧，隐藏 InspectStatsFrame
+            if self.InspectStatsFrame then
+                self.InspectStatsFrame:Hide()
+            end
+        else
+            local statsFrame = self:GetInspectStatsFrame()
+            statsFrame:TapTo(inspectGearFrame, 'TOPRIGHT')
+            statsFrame:Show()
+            statsFrame:Refresh()
         end
     end
 end

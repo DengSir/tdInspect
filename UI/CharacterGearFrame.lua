@@ -137,6 +137,8 @@ end
 function CharacterGearFrame:OnHide()
     self:ResetColumnWidths()
     self:UnAllEvents()
+    local sf = ns.Addon.CharacterStatsFrame
+    if sf then sf:Hide() end
     self:Hide()
     ns.Addon:OpenCharacterGearFrame()
 end
@@ -151,6 +153,8 @@ function CharacterGearFrame:UNIT_INVENTORY_CHANGED(_, unit)
     if unit == 'player' then
         self:UpdateGears()
         self:UpdateItemLevel()
+        local sf = ns.Addon.CharacterStatsFrame
+        if sf and sf:IsShown() then sf:Refresh() end
     end
 end
 

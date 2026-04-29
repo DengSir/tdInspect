@@ -58,6 +58,13 @@ L.White = '白色'
 L.Hidden = '隐藏'
 L['Show enchant for ranged weapon only for hunter'] = '仅猎人的远程武器显示附魔缺失'
 L['Set alias name'] = '设置天赋别名'
+L['Gear Bonuses'] = '装备加成'
+L['Gems'] = '宝石'
+L['Stats'] = '属性'
+L['Enchants'] = '附魔'
+L['Socket Bonuses'] = '宝石孔奖励'
+L['Set Bonuses'] = '套装加成'
+L['pieces'] = '件'
 -- @locale-fill@
 
 -- @end-import@

@@ -39,6 +39,8 @@ end
 function InspectGearFrame:OnHide()
     self:Clear()
     self:UnAllEvents()
+    local sf = ns.Addon.InspectStatsFrame
+    if sf then sf:Hide() end
     self:Hide()
 end
 
@@ -83,6 +85,9 @@ function InspectGearFrame:Update()
     self:UpdateItemLevel()
     self:UpdateTalents()
     self:UpdateDataSource()
+
+    local sf = ns.Addon.InspectStatsFrame
+    if sf and sf:IsShown() then sf:Refresh() end
 end
 
 function InspectGearFrame:GetNumTalentGroups()

@@ -47,6 +47,7 @@ Tooltip\FixMetaGem.lua
 Tooltip\FixRune.lua [AllowLoadGameType Vanilla]
 
 UI\Template.xml
+UI\StatsFrame.lua
 UI\MenuButton.lua
 UI\BaseItem.lua
 UI\SlotItem.lua

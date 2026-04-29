@@ -53,6 +53,13 @@ L["The key is bound to |cffffd100%s|r, are you sure you want to overwrite it?"] 
 L["View mouseover hotkey"] = true
 L["View target hotkey"] = true
 L["White"] = true
+L['Gear Bonuses'] = true
+L['Gems'] = true
+L['Stats'] = true
+L['Enchants'] = true
+L['Socket Bonuses'] = true
+L['Set Bonuses'] = true
+L['pieces'] = true
 -- @end-locale@
 -- @debug@
 -- @import:language=enUS@
