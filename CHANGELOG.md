@@ -1,3 +1,4 @@
+## [2.6.14](https://github.com/DengSir/tdInspect/compare/v2.6.13...v2.6.14) (2026-04-30)
 ## [2.6.13](https://github.com/DengSir/tdInspect/compare/v2.6.12...v2.6.13) (2026-04-28)
 
 
