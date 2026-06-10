@@ -6,11 +6,6 @@
 ---@class ns
 local ns = select(2, ...)
 
-<<<<<<< HEAD
-local ripairs = ipairs_reverse
-
-=======
->>>>>>> 7e05923 (恢复 Api.lua 到原版状态)
 ns.BUILD = tonumber(GetBuildInfo():match('^(%d+)%.'))
 
 ns.LEFT_MOUSE_BUTTON = [[|TInterface\TutorialFrame\UI-Tutorial-Frame:12:12:0:0:512:512:10:65:228:283|t]]
@@ -235,11 +230,7 @@ function ns.GetItemEnchantInfo(link)
             return
         end
 
-<<<<<<< HEAD
-        for _, v in ripairs(data) do
-=======
         for _, v in ipairs(data) do
->>>>>>> 7e05923 (恢复 Api.lua 到原版状态)
             if v.classId == classId and (not v.subClassMask or FlagTest(v.subClassMask, subClassId)) and
                 (not v.invTypeMask or FlagTest(v.invTypeMask, invType)) then
                 return v
