@@ -370,8 +370,6 @@ function ns.GetSocketColor(socketType)
         return 0.8, 0.8, 0
     elseif socketType == 1 then -- 多彩
         return 1, 1, 1
-    elseif socketType == 7 then -- 棱彩
-        return 0.8, 0.2, 0.8
     else
         return 0.7, 0.7, 0.7
     end
