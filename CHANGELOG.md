@@ -1,3 +1,9 @@
+## [2.6.16](https://github.com/DengSir/tdInspect/compare/v2.6.15...v2.6.16) (2026-06-11)
+
+
+### Features
+
+* 自动获取补丁数据 ([95091a2](https://github.com/DengSir/tdInspect/commit/95091a2775bdcd3417789f60d59ad3be0c9ac51c))
 ## [2.6.15](https://github.com/DengSir/tdInspect/compare/v2.6.14...v2.6.15) (2026-05-07)
 
 
