@@ -233,8 +233,7 @@ export class WowToolsClient {
                     }
 
                     const locale = hotfix.locale.toLowerCase();
-
-                    d[locale] = d[locale] ?? {};
+                    d[locale] = d[locale] ?? [];
                     d[locale].push(hotfix);
                 }
 
@@ -242,8 +241,8 @@ export class WowToolsClient {
                     break;
                 }
 
-            } catch {
-                console.warn(`fetch ${url.toString()} failed`);
+            } catch (e) {
+                console.log(e)
             }
 
 
