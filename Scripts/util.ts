@@ -27,7 +27,6 @@ export enum ProjectId {
 interface ProjectData {
     version: string;
     product: string;
-    hotfixes?: HotfixMap;
     // version_pattern?: RegExp;
 }
 
@@ -60,7 +59,7 @@ interface HotfixRecord {
     data?: any;
 }
 
-type HotfixMap = { [key: string]: { [key: string]: HotfixRecord[] } };
+type TableHotfixMap = { [key: string]: HotfixRecord[] };
 
 interface FieldInfo {
     name: string;
@@ -182,72 +181,76 @@ export class WowToolsClient {
         return [rows.map((x) => this.decodeRow(fields, x)), fields];
     }
 
-    async resolveHotfixesCachePath(id: number) {
-        const p = path.resolve('.cache', `hotfixes_${id}.json`);
+    resolveHotfixesCachePath(table: string, build: number, id: number) {
+        const p = path.resolve('.cache', `hotfixes_${table}_${build}_${id}.json`);
         return p;
     }
 
-    async getHotfixesCache(id: number) {
-        const p = await this.resolveHotfixesCachePath(id);
+    async getHotfixesCache(table: string, build: number, id: number) {
+        const p = this.resolveHotfixesCachePath(table, build, id);
         if (!await fs.exists(p)) {
             return;
         }
         const body = await Deno.readTextFile(p);
-        return JSON.parse(body) as HotfixMap;
+        return JSON.parse(body) as TableHotfixMap;
     }
 
-    async fetchHotfixes(build?: number) {
-        if (!build) {
-            return;
-        }
+    async fetchHotfixes(table: string, build: number) {
+        table = table.toLowerCase();
 
-        const d: HotfixMap = {}
+        const d: TableHotfixMap = {}
         let page = 1;
         let last = 0;
         let firstId = 0;
         do {
             const url = new URL('https://wago.tools/hotfixes');
             url.searchParams.append('page', page.toString());
-            url.searchParams.append('search', build.toString());
+            url.searchParams.append('search', build.toString() + ' ' + table);
 
             const resp = await fetch(url);
-            const data = await this.dataJson(resp);
 
-            if (page === 1) {
-                last = data?.props?.hotfixes?.last_page ?? 0;
-                firstId = data?.props?.hotfixes?.data?.[0]?.id ?? 0;
+            try {
 
-                const cd = await this.getHotfixesCache(firstId);
-                if (cd) {
-                    return cd;
+                const data = await this.dataJson(resp);
+
+                if (page === 1) {
+                    last = data?.props?.hotfixes?.last_page ?? 0;
+                    firstId = data?.props?.hotfixes?.data?.[0]?.id ?? 0;
+
+                    const cd = await this.getHotfixesCache(table, build, firstId);
+                    if (cd) {
+                        return cd;
+                    }
+
+                }
+                if (last === 0) {
+                    break;
                 }
 
-            }
-            if (last === 0) {
-                break;
-            }
+                for (const hotfix of data?.props?.hotfixes?.data ?? []) {
+                    if (hotfix.build !== build || hotfix.table_name.toLowerCase() !== table) {
+                        continue;
+                    }
 
-            for (const hotfix of data?.props?.hotfixes?.data ?? []) {
-                if (hotfix.build !== build) {
-                    continue;
+                    const locale = hotfix.locale.toLowerCase();
+
+                    d[locale] = d[locale] ?? {};
+                    d[locale].push(hotfix);
                 }
 
-                const table = hotfix.table_name.toLowerCase();
-                const locale = hotfix.locale.toLowerCase();
+                if (page >= last) {
+                    break;
+                }
 
-                d[table] = d[table] ?? {};
-                d[table][locale] = d[table][locale] ?? [];
-                d[table][locale].push(hotfix);
+            } catch {
+                console.warn(`fetch ${url.toString()} failed`);
             }
 
-            if (page >= last) {
-                break;
-            }
 
             ++page;
         } while (true);
 
-        const cachePath = await this.resolveHotfixesCachePath(firstId);
+        const cachePath = this.resolveHotfixesCachePath(table, build, firstId);
         await Deno.mkdir(path.dirname(cachePath), { recursive: true });
         await Deno.writeTextFile(cachePath, JSON.stringify(d));
 
@@ -258,8 +261,6 @@ export class WowToolsClient {
         if (!this.pro.version) {
             this.pro.version = await this.fetchVersion();
             console.log('version', this.pro.version);
-
-            this.pro.hotfixes = await this.fetchHotfixes(Number.parseInt(this.pro.version.match(/\.(\d+)$/)?.at(1) ?? '0'));
         }
 
         const url = (() => {
@@ -291,9 +292,9 @@ export class WowToolsClient {
 
         const [rows, fields] = this.decodeCSV(body);
 
-        const cache = this.pro.hotfixes?.[name.toLowerCase()]?.[locale.toLowerCase()];
+        const hotfixes = await this.fetchHotfixes(name, Number.parseInt(this.pro.version.match(/\.(\d+)$/)?.at(1) ?? '0'));
 
-        if (cache) {
+        if (hotfixes) {
             const added = (id: number, values: (string | number | (string | number)[])[]) => {
                 values[0] = id.toString();
                 const row: { [key: string]: string | string[] } = {};
@@ -325,17 +326,19 @@ export class WowToolsClient {
                 }
             };
 
-            for (const hotfix of cache) {
-                if (hotfix.status === HotfixStatus.Added) {
-                    added(hotfix.record_id, hotfix.data);
-                } else if (hotfix.status === HotfixStatus.Deleted) {
-                    deleted(hotfix.record_id);
-                } else if (hotfix.status === HotfixStatus.Invalidate) {
-                    deleted(hotfix.record_id);
+            const localeHotfixes = hotfixes[locale]
+            if (localeHotfixes) {
+                for (const hotfix of localeHotfixes) {
+                    if (hotfix.status === HotfixStatus.Added) {
+                        added(hotfix.record_id, hotfix.data);
+                    } else if (hotfix.status === HotfixStatus.Deleted) {
+                        deleted(hotfix.record_id);
+                    } else if (hotfix.status === HotfixStatus.Invalidate) {
+                        deleted(hotfix.record_id);
+                    }
                 }
             }
         }
-
 
         // await Deno.mkdir(path.dirname(p), { recursive: true });
         // await Deno.writeTextFile(p, body);
