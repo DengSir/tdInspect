@@ -27,9 +27,9 @@
     "curse_id": 500065,
     "changelog": "CHANGELOG.md",
     "builds": {
-      "Vanilla": "11508",
-      "TBC": "20505",
-      "Wrath": "38001"
+      "Vanilla": "11509",
+      "TBC": "20506",
+      "Wrath": "38002"
     },
     "scan-locale-ignores": [
       "Localization/**",
