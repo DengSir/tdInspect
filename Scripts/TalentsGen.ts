@@ -263,7 +263,7 @@ async function main() {
     await new App(ProjectId.Vanilla).run('Data/Vanilla/Talents.lua');
     await new App(ProjectId.BCC).run('Data/TBC/Talents.lua');
     await new App(ProjectId.Wrath).run('Data/Wrath/Talents.lua');
-    await new App(ProjectId.Mists).run('Data/Mists/Talents.lua');
+    // await new App(ProjectId.Mists).run('Data/Mists/Talents.lua');
 }
 
 main();

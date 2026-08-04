@@ -89,7 +89,7 @@ async function main() {
     await new App(ProjectId.Vanilla).run('Data/Vanilla/ItemSet.lua');
     await new App(ProjectId.BCC).run('Data/TBC/ItemSet.lua');
     await new App(ProjectId.Wrath).run('Data/Wrath/ItemSet.lua');
-    await new App(ProjectId.Mists).run('Data/Mists/ItemSet.lua');
+    // await new App(ProjectId.Mists).run('Data/Mists/ItemSet.lua');
 }
 
 main();

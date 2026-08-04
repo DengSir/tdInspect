@@ -43,7 +43,7 @@ select(2,...).GlyphMake()
 
 async function main() {
     await new App(ProjectId.Wrath).run('Data/Wrath/Glyph.lua');
-    await new App(ProjectId.Mists).run('Data/Mists/Glyph.lua');
+    // await new App(ProjectId.Mists).run('Data/Mists/Glyph.lua');
 }
 
 main();
